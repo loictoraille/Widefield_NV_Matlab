@@ -19,6 +19,6 @@ https://docs.google.com/document/d/1b0_dxYdU48k7Y9OTt8Mu5VUOSsmG4KNpEk-aEjlA2iM/
 Troubleshooting:
 https://docs.google.com/document/d/1dLFZ7is0jlCYq_yw_dLgQp0BuYK_Bz0ppsZZGhBwugw/edit?usp=sharing
 
-Full Google Drive Folder, including the toolboxes installer and AndorSDK3:
+Full Google Drive Folder, which includes things such as old versions, the toolboxes installer and AndorSDK3:
 https://drive.google.com/drive/folders/1J9uAAJzW01T3ghskhKyI1edZKxRXhe5I?hl=fr
 
