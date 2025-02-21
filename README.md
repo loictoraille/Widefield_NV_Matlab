@@ -1,6 +1,8 @@
 # Widefield_NV_Matlab
 Matlab interface code to acquire and treat widefield NV centers data.
 
+THIS CODE IS A WORK IN PROGRESS, IT IS NOT USER FRIENDLY. IF YOU HAVE ANY QUESTIONS PLEASE CONTACT ME.
+
 Use Matlab R2022a for the best compatibility (crucial if you use the piezo functionalities).
 
 Prerequisites vary depending on the camera you use (more on this later).
