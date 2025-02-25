@@ -4,7 +4,7 @@ function [I,Q] = getIQ(c4dev)
 		
 		% load measurement data from buffer
 		timeOutBuffer = 10000;
-		c4buf = c4dev.getBuffer(timeOut); #time out
+		c4buf = c4dev.getBuffer(timeOutBuffer); %time out
 		
 		% retrieve rawI and rawQ component
 		NFrames = c4buf.readInteger("ChunkPartCount")/2;
