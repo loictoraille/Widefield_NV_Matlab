@@ -72,5 +72,6 @@ function [] = default_initializeDevice(c4dev)
     ActualRefFrequency = c4dev.readFloat("LockInActualReferenceFrequency");
 
     fprintf('The actual Reference Frequency :  %0.2f Hz\n',ActualRefFrequency)
+    pause(3); % pause to give to the camera time to set up
 
 end
