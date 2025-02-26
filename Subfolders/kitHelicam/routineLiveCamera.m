@@ -16,7 +16,7 @@ default_initializeDevice(c4dev); % set of the camera to test settings (should ob
 startAcqMode(c4dev);
 
 
-for i 1:120
+for i = 1:120
 	tic;
 	[I,Q] = getIQ(c4dev);
 	plotIQamplitudeOnly(I,Q);
@@ -37,4 +37,4 @@ stopAcqMode(c4dev);
 c4dev.release(); %end of the interface for the camera
 c4if.release();  % cut f the network interface, mandatory to avoid conflict
 
-#plotIQ(I,Q)
+%plotIQ(I,Q)
