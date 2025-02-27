@@ -91,7 +91,7 @@ switch NumComp
         FM = FitTot(:,:,4);
         FW1 = FitTot(:,:,5);
         FW2 = FitTot(:,:,6);
-        B = Bxyz;
+        B = abs(Bxyz);
 
         if ColorRescale == 1
             [C1min,C1max] = ComputeSmartLimits(C1,StdforRescalingTeslas);C1min = max([0,C1min]);C1min = C1min*100;C1max = C1max*100;
