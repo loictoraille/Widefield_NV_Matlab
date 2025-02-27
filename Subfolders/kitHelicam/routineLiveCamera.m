@@ -19,7 +19,7 @@ startAcqMode(c4dev);
 for i = 1:120
 	tic;
 	[I,Q] = getIQ(c4dev);
-	plotIQamplitudeOnly(I,Q);
+	plotIQ(I,Q);
 	toc;
 end 
 
