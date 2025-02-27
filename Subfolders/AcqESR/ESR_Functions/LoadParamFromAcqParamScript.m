@@ -8,6 +8,8 @@ AutoAlignCam = AcqParameters.AutoAlignCam;
 AutoAlignPiezo = AcqParameters.AutoAlignPiezo;
 RefMWOff = AcqParameters.RefMWOff;
 RFAlwaysON = AcqParameters.RFAlwaysON;
+AF = AcqParameters.AF;
+AF_NumberSweeps = AcqParameters.AF_NumberSweeps;
 
 CenterF_GHz = AcqParameters.FCenter;
 Width_MHz = AcqParameters.FSpan;

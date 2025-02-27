@@ -1,6 +1,10 @@
-function UpdateAcqParam(~,~)
+function UpdateAcqParam(hobject,~)
 
-panel=guidata(gcbo);
+if exist("hobject",'var') && isfield(hobject,'Save')
+    panel = hobject;
+else
+    panel=guidata(gcbo);
+end
 
 load([getPath('Param') 'AcqParameters.mat']);
 
@@ -48,6 +52,17 @@ panel.nameFile.String = ['File: ' nomSave];
 panel.numberSweep.String = ['Sweep number /' num2str(NumSweeps)];
 panel.numberFreq.String = ['Freq number /' num2str(NumPoints)];
 
+COM_Lakeshore = panel.comLakeshore.String;
+COM_Betsa = panel.comBetsa.String;
+
+ResetPiezo = panel.ResetPiezo.Value;
+SetupType = panel.SetupType.String;
+
+AF = panel.AF.Value;
+AF_NumberSweeps = str2double(panel.AF_NumberSweeps.String);
+
+TR_Period_Minute = str2double(panel.tr_periodminute.String);
+
 SaveAcqParameters({{Data_Path,'Data_Path'},{Save,'Save'},{RandomFreq,'RandomFreq'},{RefMWOff,'RefMWOff'},{AutoAlignCrop,'AutoAlignCrop'},...
     {AutoAlignCam,'AutoAlignCam'},{AutoAlignPiezo,'AutoAlignPiezo'},{RefreshMode,'RefreshMode'},{ReadTemp,'ReadTemp'},{FinishSweep,'FinishSweep'},...
     {MWPower,'MWPower'},{NumPoints,'NumPoints'},{NumSweeps,'NumSweeps'},{FCenter,'FCenter'},{DelEx,'DelEx'},{RFAlwaysON,'RFAlwaysON'},...
@@ -55,6 +70,7 @@ SaveAcqParameters({{Data_Path,'Data_Path'},{Save,'Save'},{RandomFreq,'RandomFreq
     {PixelCalib_nm,'PixelCalib_nm'},{ROISquareSize,'ROISquareSize'},...
     {PiezoX,'PiezoX'},{PiezoY,'PiezoY'},{PiezoZ,'PiezoZ'},{PiezoRange,'PiezoRange'},{PiezoSteps,'PiezoSteps'},...
     {PiezoLight,'PiezoLight'},{CalibPiezoX,'CalibPiezoX'},{CalibPiezoY,'CalibPiezoY'},{CalibPiezoZ,'CalibPiezoZ'},...
-    {SaveMode,'SaveMode'}});
+    {SaveMode,'SaveMode'},{COM_Lakeshore,'COM_Lakeshore'},{COM_Betsa,'COM_Betsa'},{ResetPiezo,'ResetPiezo'}...
+    {SetupType,'SetupType'},{AF,'AF'},{AF_NumberSweeps,'AF_NumberSweeps'},{TR_Period_Minute,'TR_Period_Minute'}});
 
 end
