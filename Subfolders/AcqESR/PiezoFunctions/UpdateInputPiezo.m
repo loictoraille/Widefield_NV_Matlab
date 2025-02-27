@@ -1,4 +1,4 @@
-function UpdateInputPiezo(X,Y,Z,Light)
+function UpdateInputPiezo(X,Y,Z,Light,panel)
 
 hX=findobj('tag','piezoX');
 hY=findobj('tag','piezoY');
@@ -10,7 +10,11 @@ hY.String = num2str(Y);
 hZ.String = num2str(Z);
 hlight.String = num2str(Light);
 
-UpdateAcqParam();
+if exist('panel','var')
+    UpdateAcqParam(panel);
+else
+    UpdateAcqParam();
+end
 
 end
 

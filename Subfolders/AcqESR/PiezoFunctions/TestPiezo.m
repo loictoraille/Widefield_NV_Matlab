@@ -53,6 +53,10 @@ CheckMaxAndSendToNI(NI_card,0, 0, 0, 0); % initialisation à 0 V
 
 %%
 
+CheckMaxAndSendToNI(NI_card,1, 2, 3, 5); % Test
+
+%%
+
 function CheckMaxAndSendToNI(NI_card,X_value, Y_value, Z_value, L_value)
 
 if X_value < -10
