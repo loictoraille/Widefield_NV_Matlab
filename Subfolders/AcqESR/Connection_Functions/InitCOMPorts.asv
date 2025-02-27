@@ -1,0 +1,42 @@
+function InitCOMPorts(panel)
+
+load([getPath('Param') 'AcqParameters.mat']);
+
+switch AcqParameters.SetupType
+
+    case "CEA"
+        try
+    Lakeshore = serialport("COM" + AcqParameters.COM_Lakeshore, 57600, "DataBits", 7, "Parity", "odd");
+    disp("Lakeshore connected successfully.");
+catch
+    disp("Warning: Unable to connect to Lakeshore. Device not detected.");
+    Lakeshore = []; % Optionnel : stocker une valeur vide pour indiquer l'absence du device
+end
+        
+        configureTerminator(Lakeshore,"CR/LF")
+        flush(Lakeshore);
+        panel.UserData.Lakeshore = Lakeshore;
+
+        Betsa = serialport("COM" + AcqParameters.COM_Betsa, 9600);
+        flush(Betsa);
+        panel.UserData.Betsa = Betsa;
+        writeline(Betsa, "RLY61"); % turns reflected light on
+        panel.light.Value = 1;
+        panel.light.ForegroundColor = [0,1,0];
+        writeline(Betsa, "RLY50"); % switches shutter toward light mode
+        panel.shutterBetsa.Value = 1;
+        panel.shutterBetsa.ForegroundColor = [0,1,0];
+
+    case "ENS1"
+        Lakeshore = serialport("COM" + AcqParameters.COM_Lakeshore, 57600,"DataBits",7,"Parity","odd");
+        configureTerminator(Lakeshore,"CR/LF")
+        flush(Lakeshore);
+        panel.UserData.Lakeshore = Lakeshore;
+
+    otherwise
+
+end
+
+guidata(gcf,panel);
+
+end
