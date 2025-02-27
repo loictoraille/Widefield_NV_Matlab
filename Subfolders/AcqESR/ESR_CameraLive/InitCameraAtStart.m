@@ -2,8 +2,6 @@
 function InitCameraAtStart(CameraChoice)
 global ObjCamera CameraType handleImage TestWithoutHardware
 
-if ~TestWithoutHardware
-
 % Make sure to stop an eventual running acquisition
 % if ~isempty(ObjCamera)
 %     EndAcqCamera();
@@ -100,8 +98,6 @@ UpdateImageWithROI;
 
 title(['Max pixel value ' num2str(max(max(ImageZero(:,3:end-2)))) '/' num2str(maxLum)]);
 set(haxes,'Tag','Axes_Camera');
-
-end
 
 end
 
