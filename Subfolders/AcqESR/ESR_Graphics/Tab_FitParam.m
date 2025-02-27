@@ -1,4 +1,4 @@
-%%Elements of Tab2 (Open_ESR Fit Parameters) 
+%%Elements of tab Fit Parameters
 load([getPath('Param') 'FitParameters.mat'],'FitParameters');
 %% Paths
 
@@ -32,7 +32,7 @@ uicontrol('Parent',afp_panel,'Style','text','FontSize',12,'units','normalized','
 
 %% Graphic Parameters
 
-gp_panel = uipanel('Parent',tab_fitparam,'Title','Graphic Parameters','FontSize',14,'Position',[0.1 0.7 0.1 0.05]);
+gp_panel = uipanel('Parent',tab_fitparam,'Title','Graphic Parameters','FontSize',14,'Position',[0.1 0.7 0.1 0.1]);
 
 uicontrol('Parent',gp_panel,'Style','checkbox','tag','WithPreset','FontSize',12,'units','normalized','Position',[0.05 0.05 1 0.85],'Value',FitParameters.WithPreset,'String','WithPreset','Tooltip','to plot the fit preset (pStart) or not','Callback',@UpdateFit);
 

@@ -2,23 +2,61 @@
 function CloseReq(hobject,eventdata)
 global ObjCamera CameraType smb TestWithoutHardware NI_card
 
+panel = guidata(gcf);
+
+load([getPath('Param') 'AcqParameters.mat'],'-mat','AcqParameters');
+ResetPiezo = AcqParameters.ResetPiezo;
+
+if ~exist('TestWithoutHardware','var') || ~isscalar(TestWithoutHardware)
+    TestWithoutHardware = 1;
+end
+
+btnStart= findobj('tag', 'startCTR'); % Trouver le bouton start stil a un tag défini
+btnSave= findobj('tag', 'saveCTR'); % Trouver le bouton save stil a un tag défini
+if TestWithoutHardware~=1 && ~isempty(btnStart) && btnStart.Value == 1
+        if isfield(btnStart.UserData, 'timer') && isvalid(btnStart.UserData.timer)
+        stop(btnStart.UserData.timer);
+        delete(btnStart.UserData.timer);
+        btnStart.UserData = rmfield(btnStart.UserData, 'timer');
+        end
+        disp('End of continuous temperature reading');
+    SaveTemperatureData(btnSave, []);
+end
+
 h=guidata(gcbo);%handles of the graphical objects
 if exist('h','var')
     h.stopcam.Value = 0;
 end
 
-if ~isempty(CameraType) && TestWithoutHardware~=1
+if TestWithoutHardware~=1 && ~isempty(CameraType)
     EndAcqCamera();
     Exit_Camera();
 end
 
-if exist('smb','var') && any(isprop(smb,'Session')) && TestWithoutHardware~=1
+if TestWithoutHardware~=1 && exist('smb','var') && any(isprop(smb,'Session'))
     smb.Write('OUTP OFF');%RF OFF
     smb.Close();
 end
 
-if exist('NI_card','var') && any(isprop(NI_card,'Running')) && ~isempty(daqlist) && TestWithoutHardware~=1    
+if  TestWithoutHardware~=1 && strcmp(AcqParameters.SetupType,"CEA") && exist('NI_card','var') && any(isprop(NI_card,'Running')) && ~isempty(daqlist)
+    LaserOff(panel);
+end
+
+if  TestWithoutHardware~=1 && ResetPiezo && exist('NI_card','var') && any(isprop(NI_card,'Running')) && ~isempty(daqlist)
     write(NI_card,[0, 0, 0, 0]); % sets values back to 0 V
+end
+
+if TestWithoutHardware~=1 && ~isempty(panel) && isfield(panel,'UserData') && isfield(panel.UserData,'Lakeshore') 
+    Lakeshore = panel.UserData.Lakeshore;
+    flush(Lakeshore);
+    clear Lakeshore
+end
+
+if TestWithoutHardware~=1 && ~isempty(panel) && isfield(panel,'UserData') && isfield(panel.UserData,'Betsa')
+    Betsa = panel.UserData.Betsa;
+    writeline(Betsa, "RLY60"); % turns reflected light off
+    flush(Betsa);
+    clear Betsa
 end
 
 clear global ObjCamera
