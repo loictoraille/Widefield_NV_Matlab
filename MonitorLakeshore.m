@@ -9,20 +9,24 @@ while ~isempty(a)
     a=instrfind;
 end
 
-Lakeshore=serial('COM6','Baudrate',57600,'Databits',7,'Parity','odd','Terminator','CR/LF');
-fopen(Lakeshore);
+% Define serial port connection
+Lakeshore = serialport("COM3", 57600,"DataBits",7,"Parity","odd");
+configureTerminator(Lakeshore,"CR/LF")
+
+% Flush any existing data
+flush(Lakeshore);
 
 tic
 
 while 1==1
 % T=[T;ReadTemp()];
 ReadTempA='KRDG?A';
-fprintf(Lakeshore,ReadTempA);
-Ta=fscanf(Lakeshore);
+writeline(Lakeshore, ReadTempA);
+Ta = readline(Lakeshore);
 pause(0.01)
 ReadTempB='KRDG?B';
-fprintf(Lakeshore,ReadTempB);
-Tbthermocouple=fscanf(Lakeshore);
+writeline(Lakeshore, ReadTempB);
+Tbthermocouple = readline(Lakeshore);
 pause(0.01)
 Temp=[str2double(Ta),str2double(Tbthermocouple)];
 
@@ -42,9 +46,8 @@ end
 
 %% 
 
-fclose(Lakeshore);
-delete(Lakeshore);
+clear Lakeshore
 
-% saveName = ['./Data/'  date '-Descente_température'];
+% saveName = ['./Data/'  date '-Descente_tempÃ©rature'];
 % save([saveName '.mat']);
 % saveas(figure(2),[saveName '.jpg'], 'jpeg');

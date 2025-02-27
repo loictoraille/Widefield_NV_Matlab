@@ -29,35 +29,55 @@ tab1 = uitab(tgroup,'Title','ESR');
 tab2 = hguitab(tgroup,'Title','Camera');
 tab_fitparam = hguitab(tgroup,'Title','Fit Parameters');
 tab_additional = hguitab(tgroup,'Title','Additional Parameters');
+tab_readtemp = hguitab(tgroup,'Title','Continuous temperature reading');
 tgroup.SelectedTab = tab2;
 
 Tab1;
 Tab2;
 Tab_FitParam;
 Tab_Additional;
+Tab_ReadTemp;
 
-InitCameraAtStart(CameraChoice);
+if TestWithoutHardware
 
-if ~isempty(ObjCamera)
+    Total_handles=guihandles(gcf);
+    guidata(f,Total_handles);
 
-tagcamtype=findobj('tag','cameratype');
-tagcamtype.String = ['Camera ' CameraType];
+else
 
-Total_handles=guihandles(f);
-guidata(f,Total_handles);
+    Total_handles=guihandles(gcf);
+%     guidata(f,Total_handles);
 
-panel = Total_handles;
-eval(['panel.NumPeaksChoice.SelectedObject = panel.NumPeaks' num2str(FitParameters.NumPeaks) ';' ]);
+    InitCOMPorts(Total_handles);
+    Total_handles=guidata(gcf);
 
-UpdateFileInfo({{Data_Path,'Data_Path'}});
+    % To start ContinuousTempReading by default when lauching software
+%     if isfield(Total_handles, 'UserData') && ~isempty(Total_handles.UserData) && ~isempty(Total_handles.UserData.Lakeshore)
+%         btnStart = findobj('tag', 'startCTR');
+%         StartContinuousTempReading(btnStart, []);
+%     end
 
-FuncCameraRanges(Total_handles);
+    InitPiezo(Total_handles);
 
-FuncAcqContinue(Total_handles);
+    InitCameraAtStart(CameraChoice);
+
+    if ~isempty(ObjCamera)
+
+        tagcamtype=findobj('tag','cameratype');
+        tagcamtype.String = ['Camera ' CameraType];
+
+        panel = Total_handles;
+        eval(['panel.NumPeaksChoice.SelectedObject = panel.NumPeaks' num2str(FitParameters.NumPeaks) ';' ]);
+
+        UpdateFileInfo({{Data_Path,'Data_Path'}});
+
+        FuncCameraRanges(Total_handles);
+
+        FuncAcqContinue(Total_handles);
+
+    end
 
 end
-
-
 
 
 
