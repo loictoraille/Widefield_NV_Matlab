@@ -9,6 +9,9 @@ function plotIQ(I,Q)
     cs = ['r','b'];
     
     NFrames = size(I,1);
+
+    clf(subplot(2,2,1));
+    clf(subplot(2,2,2));
     
     for i = 1:length(xs)
     
