@@ -32,10 +32,20 @@ elseif strcmp(CameraType,'uEye')
     [~,CMode]=ObjCamera.PixelFormat.Get();
     [~,BytesArray]=ObjCamera.Memory.CopyToArray(LastImageID,CMode);
     ImageMatrix=reshape(uint32(BytesArray),AOI.Width,AOI.Height,1)';
-    %% if error here, check the parameter file in ESR_uEyeIniParameters: the colormode must be 26
+    %% if error here, check the parameter file in ESR_uEyeIniParameters: the colormode must be 26 '
     
 elseif strcmp(CameraType,'Peak')
     ImageMatrix = getsnapshot(ObjCamera);
+
+elseif strcmp(CameraType,'heliCam')
+	% TODO to get a single image mode for quick and live acquisition
+	disp('Unfinished TAkeCameraImage')
+	if ObjCamera.quickmode :
+	
+		ImageMatrix = heliCamGetQuickImage(ObjCamera); % quick mode setup	
+	else
+		ImageMatrix = heliCamGetImage(ObjCamera); % normal mode 
+	end
 end
 
 end

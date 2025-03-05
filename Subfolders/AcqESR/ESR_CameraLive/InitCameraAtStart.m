@@ -85,7 +85,11 @@ elseif strcmp(CameraChoice,'Peak')
     LoadCameraParam();
     ListUselessSettings = {'sldpix','pixmin','pixmax','pixtext','Input_PixelClock','maxspeed'};
     TurnOffUselessSettings(ListUselessSettings);
-       
+
+elseif strcmp(CameraChoice,'heliCam')
+	%TODO: Maybe clear the ObjCamera before initializing it
+	InitHelicam(ObjCamera);
+
 else
     disp('Wrong Camera Choice: try again');
 end
