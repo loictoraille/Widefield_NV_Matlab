@@ -21,6 +21,7 @@ for i = 1:120
 	[I,Q] = getIQ(c4dev);
 	plotIQ(I,Q);
 	toc;
+	pause(0.5); 
 end 
 
 

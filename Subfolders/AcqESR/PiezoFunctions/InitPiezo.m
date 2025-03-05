@@ -4,11 +4,11 @@ global NI_card TestWithoutHardware
 
 if ~TestWithoutHardware
     
-    % initialise la connexion à la carte NI
+    % initialise la connexion ï¿½ la carte NI
     NI_card = daq("ni");
     daq_list = daqlist;
 
-    %     dq.Rate = 8000; % pour changer le rate, à tester
+    %     dq.Rate = 8000; % pour changer le rate, ï¿½ tester
 
 if exist('NI_card','var') && any(isprop(NI_card,'Running')) && ~isempty(daqlist)
 
@@ -17,7 +17,7 @@ if exist('NI_card','var') && any(isprop(NI_card,'Running')) && ~isempty(daqlist)
     addoutput(NI_card, daq_list.DeviceID(1), "ao2", "Voltage"); % Z
     addoutput(NI_card, daq_list.DeviceID(1), "ao3", "Voltage"); % light
 
-    write(NI_card,[0, 0, 0, 0]); % initialisation à 0 V
+    write(NI_card,[0, 0, 0, 0]); % initialisation ï¿½ 0 V
     
     h=findobj('tag','initpiezo');
     
