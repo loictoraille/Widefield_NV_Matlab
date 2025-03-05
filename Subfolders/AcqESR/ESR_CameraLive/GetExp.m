@@ -14,8 +14,12 @@ elseif strcmp(CameraType,'uEye')
     Exp_unit = 'ms';
 elseif strcmp(CameraType,'Peak')
     src_mycam = get(ObjCamera, 'Source');
-    Exp = src_mycam.ExposureTime/1000; % to correct for Peak which is in µs
+    Exp = src_mycam.ExposureTime/1000; % to correct for Peak which is in ï¿½s
     Exp_unit = 'ms';
+
+elseif strcmp(CameraType,'heliCam')
+	%TODO: the acquisition of the temperature
+
 end
 
 

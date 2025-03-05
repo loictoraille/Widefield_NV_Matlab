@@ -15,6 +15,10 @@ elseif strcmp(CameraType,'uEye')
     end
 elseif strcmp(CameraType,'Peak')
     stop(ObjCamera);    
+
+elseif strcmp(CameraType,'heliCam')
+	% TODO: function to write here
+	heliCamStopAcq(ObjCamera);
 end
 
 end

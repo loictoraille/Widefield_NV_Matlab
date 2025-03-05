@@ -21,6 +21,10 @@ if strcmp(CameraType,'Andor')
 elseif strcmp(CameraType,'Peak') 
     start(ObjCamera);
     % essential so that the getsnapshot function does not initialize every time
+
+elseif strcmp(CameraType,'heliCam')
+	%TODO create the function that set up the camera
+	heliCamStartAcqMode(ObjCamera);
 else    
     % uEye has no equivalent function it seems, or would need to try out
     % with a trigger as well

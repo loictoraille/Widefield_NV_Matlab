@@ -17,7 +17,11 @@ UpdateCalibUnit();
 
 [I,ISize,AOI] = PrepareCamera();
 
-while exist('ObjCamera','var') && h.acqcont.Value % loop while checking all the buttons to allow user action
+% loop while checking all the buttons to allow user action
+
+while exist('ObjCamera','var') && h.acqcont.Value%test value of stopcam button
+	% the "if ladder" check if a parameter is being modified in the gui
+	% so the live is being paused
     if h.roidef.Value % check ROI_def
         EndAcqCamera();
         FuncROI_define(h);
@@ -54,12 +58,14 @@ while exist('ObjCamera','var') && h.acqcont.Value % loop while checking all the 
         FuncFindExposure(h);
         [I,ISize,AOI] = PrepareCamera();
     end     
+
     if h.autofocuspiezo.Value % check AutoFocus
         EndAcqCamera();
         FuncAutoFocusPiezo(h);
         [I,ISize,AOI] = PrepareCamera();
     end
 
+    % nothing is being modified
     if exist('ObjCamera','var') && ~h.stopcam.Value;I=TakeCameraImage(ISize,AOI);end 
     if exist('ObjCamera','var') && ~h.stopcam.Value;set(handleImage,'CData',I);end
     if exist('ObjCamera','var') && ~h.stopcam.Value;drawnow;end
