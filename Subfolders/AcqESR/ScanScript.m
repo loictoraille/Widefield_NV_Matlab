@@ -5,6 +5,8 @@ global M ObjCamera CameraType Ftot TestWithoutHardware NI_card Lum_Current
 
 %% Initialization
 
+LIGHT = 1; % lumiï¿½re allumï¿½e pendant les procï¿½dures d'alignement PerformAlignPiezo % value set in the Camera Panel
+
 panel=guidata(gcbo);
 panel.nameFile.String = ['File: ' nomSave];
 panel.AcqTime.String = '';
@@ -180,13 +182,13 @@ if Read_Temp
 end
 
 tic
-startTime = datetime('now'); % Capture l'heure de départ
+startTime = datetime('now'); % Capture l'heure de dï¿½part
 
 if RANDOM == 1  
     disp('Mode random freq: longer pause after generator instruction to account for longer time to reach frequency target');
 end     
 
-NPerm = 1; % découpage de la Width_MHz totale en segments pour éviter des écarts de fréquence trop grands entre les pics, utile quand random
+NPerm = 1; % dï¿½coupage de la Width_MHz totale en segments pour ï¿½viter des ï¿½carts de frï¿½quence trop grands entre les pics, utile quand random
 
 %% Starting the scan loop (not the RF loop)
 
@@ -224,9 +226,9 @@ for Acc=1:(AccNumber+99*ALIGN*AccNumber) %Loop on Accumulation number
         if ~TestWithoutHardware
             if RANDOM == 1
                 WriteSMB(['FREQ ',num2str(Ftot(RandomPerm(ii),1)),'GHz']); %Change RF freq.
-                pause(0.05/NPerm); % plus il y a de permutations, moins la pause a besoin d'être longue
+                pause(0.05/NPerm); % plus il y a de permutations, moins la pause a besoin d'ï¿½tre longue
             else
-                if mod(Acc,2) == 1 % montant puis descendant une acq sur deux pour éviter l'erreur dû au retour au premier point de la rampe
+                if mod(Acc,2) == 1 % montant puis descendant une acq sur deux pour ï¿½viter l'erreur dï¿½ au retour au premier point de la rampe
                     WriteSMB(['FREQ ',num2str(Ftot(ii,1)),'GHz']); %Change RF freq up
                 else
                     WriteSMB(['FREQ ',num2str(Ftot(NPoints-ii+1,1)),'GHz']); %Change RF freq down
@@ -272,7 +274,7 @@ for Acc=1:(AccNumber+99*ALIGN*AccNumber) %Loop on Accumulation number
             Yshift = crop1_out(1)-crop2_out(1)-sign(crop1_out(1)-crop2_out(1))*max(0,sign(crop1_out(1)-crop2_out(1))*(size(Lum_Start_Crop,1)-size(Lum_Current,1)));
             Xshift = crop1_out(3)-crop2_out(3)-sign(crop1_out(1)-crop2_out(1))*max(0,sign(crop1_out(1)-crop2_out(1))*(size(Lum_Start_Crop,2)-size(Lum_Current,2)));
             if abs(Xshift) > 10 || abs(Yshift) > 10
-                disp(['AutoAlignCrop sweep n°' num2str(Acc) ': shift > 10 pixels, cancel']);
+                disp(['AutoAlignCrop sweep nï¿½' num2str(Acc) ': shift > 10 pixels, cancel']);
             else
                 M_int = M;clear M;
                 M(:,:,:) = M_int(crop1_out(1):crop1_out(2),crop1_out(3):crop1_out(4),:);
@@ -282,7 +284,7 @@ for Acc=1:(AccNumber+99*ALIGN*AccNumber) %Loop on Accumulation number
                 clear Lum_int;
                 y_start=crop2_out(1);y_end=crop2_out(2);x_start=crop2_out(3);x_end=crop2_out(4);
                 if Xshift ~=0 || Yshift ~=0
-                    disp(['AutoAlignCrop sweep n°' num2str(Acc) ': xcrop = ' num2str(Xshift) ' pixel, ycrop = ' num2str(Yshift) ' pixel']);
+                    disp(['AutoAlignCrop sweep nï¿½' num2str(Acc) ': xcrop = ' num2str(Xshift) ' pixel, ycrop = ' num2str(Yshift) ' pixel']);
                 end
                 [ROIHeight,ROIWidth,~] = size(M);
                 UpdateStrSizeM(ROIWidth,ROIHeight,Ftot);
@@ -298,7 +300,7 @@ for Acc=1:(AccNumber+99*ALIGN*AccNumber) %Loop on Accumulation number
             Yshift = ypeak-AOI.Height;
             Xshift = xpeak-AOI.Width;            
             if abs(Xshift) > 10 || abs(Yshift) > 10
-                disp(['AutoAlignCam sweep n°' num2str(Acc) ': shift > 10 pixels, cancel']);
+                disp(['AutoAlignCam sweep nï¿½' num2str(Acc) ': shift > 10 pixels, cancel']);
             else
                 if ~TestWithoutHardware
                     if Yshift ~= 0 || Xshift ~= 0
@@ -310,7 +312,7 @@ for Acc=1:(AccNumber+99*ALIGN*AccNumber) %Loop on Accumulation number
                     AOI.X=AOI.X+Xshift; AOI.Y=AOI.Y+Yshift;
                 end
                 if Xshift ~=0 || Yshift ~=0
-                    disp(['AutoAlignCam sweep n°' num2str(Acc) ': xshift = ' num2str(Xshift) ' pixel, yshift = ' num2str(Yshift) ' pixel']);
+                    disp(['AutoAlignCam sweep nï¿½' num2str(Acc) ': xshift = ' num2str(Xshift) ' pixel, yshift = ' num2str(Yshift) ' pixel']);
                 end
             end
         end
@@ -427,7 +429,7 @@ end % end of acquisition
 
 endacq = toc;
 endTime = datetime('now'); % Capture l'heure de fin
-elapsedTime = endTime - startTime; % Calcule la durée écoulée
+elapsedTime = endTime - startTime; % Calcule la durï¿½e ï¿½coulï¿½e
 
 AcquisitionTime_minutes = round(endacq/60);
 [h, m, s] = hms(elapsedTime);
@@ -473,3 +475,7 @@ if  i_scan == AcqParameters.RepeatScan
     end
 end
 
+panel.start.Value=0;panel.start.ForegroundColor = [1,0,0];
+panel.stop.Value=0;panel.stop.ForegroundColor = [1,0,0];
+
+InitCameraAtStart(CameraType)
