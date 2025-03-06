@@ -33,6 +33,8 @@ if isfield(panel,'UserData') && isfield(panel.UserData,'Lakeshore')
     ReadTempB='KRDG?B';
     writeline(Lakeshore,ReadTempB);
     Tbthermocouple=readline(Lakeshore);
+    writeline(Lakeshore,ReadTempB);
+    Tbthermocouple=readline(Lakeshore);% dummy because first one sometimes doesn't work
     pause(0.01)
 
 
