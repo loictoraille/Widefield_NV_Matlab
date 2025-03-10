@@ -4,7 +4,7 @@ panel = guidata(gcbo);
 
 h=findobj('tag','shutterBetsa');
 
-if isfield(panel,'UserData') && ~isempty(panel.UserData)
+if isfield(panel,'UserData') && ~isempty(panel.UserData) && isfield(panel.UserData,'Betsa')
 
     Betsa = panel.UserData.Betsa;
 

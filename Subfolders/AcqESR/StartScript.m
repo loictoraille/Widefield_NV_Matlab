@@ -5,14 +5,6 @@ SwitchGEN('ON');
 
 panel=guidata(gcbo);
 
-if panel.light.Value == 1
-    LightOff(panel)% to turn off the light for the scan part
-end
-
-if panel.shutterlaser.Value == 0
-    LaserOn(panel)% to turn on the laser for the scan part
-end
-
 panel = ToggleOffButtons(); % custom built function to turn off pix button and the like
 
 load([getPath('Param') 'AcqParameters.mat']);
@@ -42,6 +34,9 @@ if ALIGN
     NPoints = 50;
 end
 
-if ~strcmp(CameraType,'Andor') % active for uEye and Peak camera
-    OptimizeAcquisitionSpeed();
+if strcmp(CameraType,'Andor')
+    maxLum = 65535;
+else
+    maxLum = 4095;
 end
+
