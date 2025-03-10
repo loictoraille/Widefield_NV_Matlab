@@ -5,7 +5,7 @@ global ObjCamera CameraType
 [rc, temp] = AT_GetFloat(ObjCamera,'SensorTemperature');
 AT_CheckWarning(rc);
 
-disp(['T = ' num2str(temp) '°C'])
+disp(['T_Andor = ' num2str(temp) '°C'])
 
 [rc,tempIndex] = AT_GetEnumIndex(ObjCamera,'TemperatureStatus');
 AT_CheckWarning(rc);

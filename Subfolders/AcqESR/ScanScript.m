@@ -16,8 +16,7 @@ if panel.acqcont.Value == 1
 end
 
 % List of variables to save
-varList = {'M', 'Ftot', 'CenterF_GHz', 'Width_MHz', 'NPoints', 'Acc', ...
-           'MWPower', 'T', 'ExposureTime', 'FrameRate', 'PixelClock', ...
+varList = {'M', 'Ftot', 'CenterF_GHz', 'Width_MHz', 'NPoints', 'Acc', 'MWPower', 'T', 'ExposureTime', 'FrameRate', 'PixelClock', ...
            'RANDOM', 'AcqParameters', 'CameraType', 'AcquisitionTime_minutes', 'Lum_Current'};
 
 varListFast = [varList, '-v7.3', '-nocompression'];
@@ -65,27 +64,56 @@ UpdateStrSizeM(ROIWidth,ROIHeight,Ftot);
 
 %% First Image
 
+if panel.shutterlaser.Value == 0
+    LaserOn(panel)% to turn on the laser for the scan part
+end
+
+if ~TestWithoutHardware && ~AutoAlignPiezo % keep light on for reference piezo image
+    LightOff(panel);% to turn off the light for the scan part
+end
+
 if ~TestWithoutHardware
     [I,ISize,AOI] = PrepareCamera();
-    ImageMatrix=TakeCameraImage(ISize,AOI);%Take Camera Image
+end
+
+% Taking reference images with light on and laser off for piezo alignment procedure
+if  ~TestWithoutHardware && i_scan == 1 && AutoAlignPiezo
+    if AcqParameters.RepeatScan > 1
+        disp('Initial Autofocus Z when RepeatScan > 1')
+        FuncIndepAutofocusPiezo(panel);
+    end
+    if panel.light.Value == 0
+        LightOn(panel);
+        if strcmp(CameraType,'Andor')
+            [I,ISize,AOI] = PrepareCamera(); % need to prepare AFTER LightOn or LightOff, I don't know why
+        end
+    end
+    Lum_Initial=TakeCameraImage(ISize,AOI);
+    writematrix(Lum_Initial,[Data_Path nomSave '_Lum_Initial.csv']);
+    ax_lum_initial = panel.ax_lum_initial;
+    imagesc(ax_lum_initial,Lum_Initial);axis(ax_lum_initial,'image');caxis(ax_lum_initial,[0 maxLum]);
+    title(ax_lum_initial, 'Initial reference image for autocorrelation');
+
+    LaserOff(panel);
+    if strcmp(CameraType,'Andor')
+        [I,ISize,AOI] = PrepareCamera(); % need to prepare AFTER LightOn or LightOff, I don't know why
+    end
+    Lum_Initial_LaserOff=TakeCameraImage(ISize,AOI);
+    LaserOn(panel);
+    LightOff(panel);
+    if strcmp(CameraType,'Andor')
+        [I,ISize,AOI] = PrepareCamera(); % need to prepare AFTER LightOn or LightOff, I don't know why
+    end
+end
+
+if ~TestWithoutHardware 
+    ImageMatrix = TakeCameraImage(ISize,AOI); % Take Start Camera Image
 else
     Acc = 1;
     ImageMatrix = ImageTestMat(1:h_test-10+1,1:w_test-10+1)+100*rand(h_test-9,w_test-9);      
 end
 
 Lum_Start = ImageMatrix;Lum_Start_Crop = Lum_Start;
-
-% Taking reference image with light on for piezo alignment procedure
-if i_scan == 1 && ~TestWithoutHardware && AutoAlignPiezo
-    LightOn(panel);
-    if strcmp(CameraType,'Andor')
-        EndAcqCamera();
-        [I,ISize,AOI] = PrepareCamera();
-    end
-    Lum_Initial=TakeCameraImage(ISize,AOI);
-    writematrix(Lum_Initial,[Data_Path nomSave '_Lum_Initial.csv']);
-    LightOff(panel);
-end
 
 PrintImage(panel.Axes1,Lum_Start,AOIParameters);
 
@@ -112,7 +140,7 @@ if RANDOM == 1
     disp('Mode random freq: longer pause after generator instruction to account for longer time to reach frequency target');
 end     
 
-NPerm = 1; % découpage de la Width_MHz totale en segments pour éviter des écarts de fréquence trop grands entre les pics
+NPerm = 1; % découpage de la Width_MHz totale en segments pour éviter des écarts de fréquence trop grands entre les pics, utile quand random
 
 %% Starting the scan loop (not the RF loop)
 

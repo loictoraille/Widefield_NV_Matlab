@@ -34,8 +34,12 @@ if TestWithoutHardware~=1 && ~isempty(CameraType)
 end
 
 if TestWithoutHardware~=1 && exist('smb','var') && any(isprop(smb,'Session'))
-    smb.Write('OUTP OFF');%RF OFF
-    smb.Close();
+    try
+        smb.Write('OUTP OFF');;%RF OFF
+        smb.Close();
+    catch
+        disp('Connexion to RF Generator was not closed properly');
+    end
 end
 
 if  TestWithoutHardware~=1 && strcmp(AcqParameters.SetupType,"CEA") && exist('NI_card','var') && any(isprop(NI_card,'Running')) && ~isempty(daqlist)

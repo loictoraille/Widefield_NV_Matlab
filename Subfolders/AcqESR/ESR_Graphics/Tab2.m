@@ -139,7 +139,7 @@ uicontrol('Parent',panel, 'Style', 'edit','FontSize',12,'units','normalized','Fo
 
 PositionRow2 = [0.1, 0, 0.25, 0.2];
 uicontrol('Parent',panel, 'Style', 'text','FontSize',12,'units','normalized','FontSize',FS2, 'String', 'Range', 'Position', PositionRow2 + [-0.02, 0.15, 0.05, 0],'HorizontalAlignment','center');
-uicontrol('Parent',panel, 'Style', 'edit','FontSize',12,'units','normalized','FontSize',FS2, 'Position', PositionRow2 + [0, 0, 0, 0],'tag','piezoRange',  'String',num2str(AcqParameters.PiezoRange),'Callback',@UpdateAcqParam,'TooltipString','Range over which XY will be scanned for auto_alignment, Z range is half that');
+uicontrol('Parent',panel, 'Style', 'edit','FontSize',12,'units','normalized','FontSize',FS2, 'Position', PositionRow2 + [0, 0, 0, 0],'tag','piezoRange',  'String',num2str(AcqParameters.PiezoRange),'Callback',@UpdateAcqParam,'TooltipString','Range over which XY will be scanned for auto_alignment, Z range is doubled');
 uicontrol('Parent',panel, 'Style', 'text','FontSize',12,'units','normalized','FontSize',FS2, 'String', 'Steps', 'Position', PositionRow2 + [0.3, 0.15, 0, 0],'HorizontalAlignment','center');
 uicontrol('Parent',panel, 'Style', 'edit','FontSize',12,'units','normalized','FontSize',FS2, 'Position', PositionRow2 + [0.3, 0, 0, 0],'tag','piezoSteps',  'String',num2str(AcqParameters.PiezoSteps),'Callback',@UpdateAcqParam,'TooltipString','Number of steps taken inside the defined range during the auto_alignement, Z steps are doubled');
 uicontrol('Parent',panel, 'Style', 'togglebutton','tag','light','FontSize',12,'units','normalized','FontSize',FS2, 'String', 'Light', 'Position', PositionRow2 + [0.56, 0.2, 0.05, 0],'HorizontalAlignment','center','Callback',@Light);
