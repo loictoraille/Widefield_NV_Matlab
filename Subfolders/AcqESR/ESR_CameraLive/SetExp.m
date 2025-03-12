@@ -10,7 +10,11 @@ elseif strcmp(CameraType,'uEye')
     ObjCamera.Timing.Exposure.Set(ExpIn); % uEye in ms
 elseif strcmp(CameraType,'Peak')
     src_mycam = get(ObjCamera, 'Source');    
-    set(src_mycam, 'ExposureTime', 1000*ExpIn); % Peak in µs
+    set(src_mycam, 'ExposureTime', 1000*ExpIn); % Peak in ï¿½s
+
+elseif strcmp('heliCam')
+	disp('warning : sensitivity is not set up for the helicam');
+	heliCamSetExp(ObjCamera,ExpIn); # TODO: to set the exposure
 else
 end
 

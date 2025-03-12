@@ -17,8 +17,14 @@ elseif strcmp(CameraType,'uEye')
 elseif strcmp(CameraType,'Peak')
     src_mycam = get(ObjCamera, 'Source');
     res = propinfo(src_mycam,'ExposureTime');
-    ExpRange.Minimum = res.ConstraintValue(1)/1000; % Peak in µs
+    ExpRange.Minimum = res.ConstraintValue(1)/1000; % Peak in ï¿½s
     ExpRange.Maximum = res.ConstraintValue(2)/1000;
+
+elseif strcmp(CameraType,'heliCam')
+	%TODO: To adapte to a version independent of the sensitivity and the frequency of the demodulation 
+    ExpRange.Minimum = 0; 
+    ExpRange.Maximum = 100;
+
 end
 
 

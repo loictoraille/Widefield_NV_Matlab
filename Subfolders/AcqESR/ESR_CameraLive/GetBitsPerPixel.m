@@ -13,6 +13,12 @@ elseif strcmp(CameraType,'Peak')
     if strcmp(Format,'Mono12')
         ImageSize = 12; % need to be checked
     end
+
+elseif strcmp('heliCam') #TODO to adapt
+	disp("warning (dev): GetsBitsPerPixel not set")
+	ImageSize = 16;
+
+
 end
 
 

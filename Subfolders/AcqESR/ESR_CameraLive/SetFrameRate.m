@@ -10,6 +10,9 @@ elseif strcmp(CameraType,'uEye')
 elseif strcmp(CameraType,'Peak')
     src_mycam = get(ObjCamera, 'Source');
     set(src_mycam, 'AcquisitionFrameRate', FrameRateIn);
+
+elseif strcmp(CameraType,'heliCam')
+	disp('warning (dev) : Set frameRate');
 else
 
 end

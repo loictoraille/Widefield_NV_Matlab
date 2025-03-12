@@ -15,6 +15,12 @@ elseif strcmp(CameraType,'Peak')
     res = propinfo(src_mycam,'AcquisitionFrameRate');
     FraRange.Minimum = res.ConstraintValue(1);
     FraRange.Maximum = res.ConstraintValue(2);
+
+elseif strcmp(CameraType,'heliCam')
+	%TODO: To be changed when the speed of the camera is improved, why is FraRange.Minimum is important ? 
+    FraRange.Minimum = 0;
+    FraRange.Maximum = 1; 
+
 end
 
 

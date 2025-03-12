@@ -15,6 +15,12 @@ elseif strcmp(CameraType,'Peak')
     AOIYmin = 0;
     AOIWidthMax = 1936;
     AOIHeightMax = 1216;    
+elseif strcmp(CameraType,'heliCam')
+    AOIXmin = 0;
+    AOIYmin = 0;
+    AOIWidthMax = 512;
+    AOIHeightMax = 542;
+
 end
 
 end
