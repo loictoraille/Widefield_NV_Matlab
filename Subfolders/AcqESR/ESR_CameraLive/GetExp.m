@@ -18,7 +18,10 @@ elseif strcmp(CameraType,'Peak')
     Exp_unit = 'ms';
 
 elseif strcmp(CameraType,'heliCam')
-	%TODO: the acquisition of the temperature
+	%TODO: the acquisition of the current exposition
+	disp("warning (dev) : GetExp not set yet")
+	Exp = 1;
+	Exp_unit = "ms";
 
 end
 

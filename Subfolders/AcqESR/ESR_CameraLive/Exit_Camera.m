@@ -29,6 +29,9 @@ elseif strcmp(CameraType, 'uEye')
 
 elseif strcmp(CameraType,'Peak')
     delete(ObjCamera);    
+elseif strcmp(CameraType,'heliCam')
+	heliCamCloseCamera(ObjCamera);
+
 end
 
 clear global ObjCamera

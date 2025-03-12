@@ -34,6 +34,21 @@ elseif strcmp(CameraType,'Peak')
         PixelEncoding = 12;
     end
 
+elseif strcmp(CameraType,'heliCam')    
+	%VideoFormat = ObjCamera.VideoFormat;
+    %if contains(VideoFormat,'8')
+    %    PixelEncoding = 8;
+    %elseif contains(VideoFormat,'10')
+    %    PixelEncoding = 10;
+    %else
+    %    PixelEncoding = 12;
+    %end
+
+	%Good enough for now
+	disp("warning (dev) : pixel encoding to set for the helicam");
+    PixelEncoding = 16; % TODO: to get from the camera the encoding 
+
+
 end
 
 

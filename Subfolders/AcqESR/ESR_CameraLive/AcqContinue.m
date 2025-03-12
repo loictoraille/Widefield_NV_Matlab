@@ -1,4 +1,3 @@
-%Continuous acquisition with the camera
 
 function AcqContinue(~,~)
 global ObjCamera CameraType handleImage

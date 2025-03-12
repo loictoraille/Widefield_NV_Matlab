@@ -11,4 +11,7 @@ SensitivityToExposureTime -> float ?
 heliCamGetFrameRate(ObjCamera) -> Fra
 
 heliCamGetExp(ObjCamera) -> exp,expUnit
+heliCamSetExp(ObjCamera,Exposure -> None 
 
+heliCamGetTemperature(ObjCamera) -> temperature (float)
+heliCamCloseCam(ObjCamera) -> None

@@ -11,9 +11,9 @@ C1=get(h.Axes_Camera,'CurrentPoint');%Get coordinate of point where the mousecli
 finalrect=rbbox;%function to draw a rectangle box and wait for mouseclick
 C2=get(h.Axes_Camera,'CurrentPoint');%Get coordinate of point where the mouseclick happens
 
-% Convert to pixels if calibration is in µm
+% Convert to pixels if calibration is in ï¿½m
 if strcmp(h.calibunit.SelectedObject.String,'nm')
-    size_pix = str2double(h.pixelcalibvalue.String)/1000; % in µm
+    size_pix = str2double(h.pixelcalibvalue.String)/1000; % in ï¿½m
     C1_int = C1;clear C1;
     C2_int = C2;clear C2;
     C1 = round(C1_int/size_pix);
@@ -43,7 +43,11 @@ AOI = GetAOI();
 if strcmp(CameraType,'uEye') 
     SetAOI(NewX+AOI.X,NewY+AOI.Y,max(16,NewWidth-mod(NewWidth,-4)),max(4,NewHeight-mod(NewHeight,-2)));
 elseif strcmp(CameraType,'Andor')
-    SetAOI(NewX+AOI.X,NewY+AOI.Y,NewWidth,NewHeight);    
+    SetAOI(NewX+AOI.X,NewY+AOI.Y,NewWidth,NewHeight); 
+
+elseif strcmp(CameraType,'heliCam')
+	disp("warning (dev) : undefinded behavior in function FuncROI_define() for heliCam")
+	   
 elseif strcmp(CameraType,'Peak')
     if NewWidth < 256
         disp('Minimum Width with Peak Camera is 256 pixel');
