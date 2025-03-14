@@ -22,6 +22,9 @@ if isfield(panel,'UserData') && ~isempty(panel.UserData) && isfield(panel.UserDa
     Init_betsa_value = h_betsa.Value;
 end
 
+ini_light_state = panel.light.Value;
+ini_laser_state = panel.shutterlaser.Value;
+
 startTime = datetime('now'); % Capture l'heure de départ
 
 Lum_Initial = [];
@@ -51,6 +54,8 @@ set(hobject,'Value',0);
 set(stop_tag,'ForegroundColor',[1,0,0]);
 set(stop_tag,'Value',0);
 
+% restore inital switch parameters
+
 if isfield(panel,'UserData') && ~isempty(panel.UserData) && isfield(panel.UserData,'Betsa')
     if Init_betsa_value == 1
         h_betsa.Value = 1;
@@ -64,5 +69,23 @@ if isfield(panel,'UserData') && ~isempty(panel.UserData) && isfield(panel.UserDa
 else
     h_betsa.Value = 0;
 end
+
+if ini_light_state
+    panel.light.Value = 1;
+    panel.light.ForegroundColor = [0 1 0];
+else
+    panel.light.Value = 0;
+    panel.light.ForegroundColor = [0 0 0];
+end
+
+if ini_laser_state
+    panel.shutterlaser.Value = 1;
+    panel.shutterlaser.ForegroundColor = [0 1 0];
+else
+    panel.shutterlaser.Value = 0;
+    panel.shutterlaser.ForegroundColor = [0 0 0];
+end
+    
+Tension4 = Smart_PZ_Light_Laser_Write(panel);
 
 end

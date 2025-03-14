@@ -45,8 +45,10 @@ if strcmp(AcqParameters.SetupType,"CEA") && isfield(panel,'UserData') && isfield
     Betsa = panel.UserData.Betsa;
     if light_state
         writeline(Betsa, "RLY61"); % turns reflected light on
+        writeline(Betsa, "RLY50"); % switches shutter toward light mode
     else
         writeline(Betsa, "RLY60"); % turns reflected light off
+        writeline(Betsa, "RLY51"); % switches shutter toward Raman mode
     end
 end
 
