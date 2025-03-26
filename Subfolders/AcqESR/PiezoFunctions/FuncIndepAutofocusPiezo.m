@@ -1,4 +1,4 @@
-function FuncIndepAutofocusPiezo(panel)
+function [Opt_Z, z_out, foc_out, Shift_Z, fit_z_successful] = FuncIndepAutofocusPiezo(panel);
 global CameraType
 % uses code "Focus Measure" from https://fr.mathworks.com/matlabcentral/fileexchange/27314-focus-measure
 % different options, 'BREN' potentially best?
@@ -29,6 +29,7 @@ Tension4 = LaserOff(panel); % the laser spot prevents perfect autofocus, especia
 
 foclist = {'BREN','CONT','GDER','GLLV','GRAE','GRAT','HELM','HISR','LAPD','LAPE','LAPV','SFRQ','TENG','TENV','VOLA','WAVV','WAVR','ACMO','CURV','DCTE','DCTR','GLVA','GLVN','GRAS','HISE','LAPM','SFIL','WAVS'}; % all possible methods
 ChoiceFocMethod = 'DCTR';
+% ChoiceFocMethod = 'DCTE'; %DCTE and GLLV also work at CEA ?
 
 ind_prog = 0;
 disp(['Starting autofocus z using ' ChoiceFocMethod ' method']);
@@ -83,7 +84,7 @@ try
     x_fit = linspace(min(x), max(x), 100);
     y_fit = A * exp(-((x_fit - mu).^2) / (2 * sigma^2)); % Corrected Gaussian formula
 
-    fit_successful = true;
+    fit_z_successful = true;
     disp('Gaussian fit successful.');
 catch
     % If the fit fails, estimate peak using a simple moving average
@@ -95,10 +96,11 @@ catch
     mu = x(idx);
     
     % Generate a fallback plot using smoothed data
-    fit_successful = false;
+    fit_z_successful = false;
 end
 
 Opt_Z = round(mu*100)/100;
+Shift_Z = Opt_Z-IniZ;
 
 % Plot results in piezo tab
 
@@ -111,7 +113,9 @@ title(ax_piezo_autofoc, 'Last Autofocus Z - Gaussian Fit');
 xlabel(ax_piezo_autofoc, 'Value of the Z piezo (V)');  
 ylabel(ax_piezo_autofoc, 'Autofocus estimation (a.u.)');  
 
-if fit_successful
+z_out = x;foc_out = FM;
+
+if fit_z_successful
     plot(ax_piezo_autofoc, x_fit, y_fit, 'r-', 'LineWidth', 2, 'DisplayName', 'Gaussian Fit');
     plot(ax_piezo_autofoc, mu, A, 'g*', 'MarkerSize', 10, 'LineWidth', 2, 'DisplayName', 'Estimated Peak');
     hold(ax_piezo_autofoc, 'off');
@@ -134,6 +138,7 @@ drawnow;
 disp(['Range tested from ' num2str(LeftZ) ' V to ' num2str(RightZ) ' V every ' num2str(StepZ) ' V'])
 disp(['IniZ = ' num2str(IniZ) ' V'])
 disp(['NewZ = ' num2str(Opt_Z) ' V'])
+disp(['ShiftZ = ' num2str(Shift_Z) ' V']);
 
 %% Send optimal value and go back to initial light and laser state
 

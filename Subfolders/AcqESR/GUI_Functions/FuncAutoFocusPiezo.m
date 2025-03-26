@@ -5,7 +5,7 @@ if TestWithoutHardware~=1 && exist('NI_card','var') && any(isprop(NI_card,'Runni
 
 set(hobject.autofocuspiezo,'ForegroundColor',[0,1,0]);
 
-FuncIndepAutofocusPiezo(hobject);
+[Opt_Z, z_out, foc_out, Shift_Z, fit_z_successful] = FuncIndepAutofocusPiezo(hobject);
 
 set(hobject.autofocuspiezo,'ForegroundColor',[0,0,0]);
 set(hobject.autofocuspiezo,'Value',0);

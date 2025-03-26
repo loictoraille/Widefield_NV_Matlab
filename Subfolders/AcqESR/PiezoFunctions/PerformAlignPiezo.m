@@ -38,7 +38,7 @@ RightX = min([IniX+PiezoRange/2,10]);
 RightY = min([IniY+PiezoRange/2,10]);
 
 %% Autofocus z
-FuncIndepAutofocusPiezo(panel);
+ [Opt_Z, z_out, foc_out, Shift_Z, fit_z_successful] = FuncIndepAutofocusPiezo(panel);
 
 %% Autocorrélation xy
 % Alignment procedure with laser off then laser spot correlation procedure with laser on
@@ -94,7 +94,6 @@ if strcmp(CameraType,'Andor')
     [I,ISize,AOI] = PrepareCamera();
 end
 
-Opt_Z = AcqParameters.PiezoZ; 
 ind_prog = 0;
 for i=1:PiezoSteps
     for j=1:PiezoSteps
@@ -261,7 +260,7 @@ try
         error('Fit failed: Invalid maximum position.');
     end
 
-    fit_successful = true;
+    fit_xy_successful = true;
     disp('2D Gaussian fit successful.');
 catch
     % If the fit fails, use simple maximum search with smoothing
@@ -278,7 +277,7 @@ catch
     x_min_pos = xmin_pos_vec(min_dist_idx);
     y_min_pos = ymin_pos_vec(min_dist_idx);
 
-    fit_successful = false;
+    fit_xy_successful = false;
 end
 
 x_min = interp1(1:length(X_piez),X_piez,x_min_pos);
@@ -286,11 +285,15 @@ y_min = interp1(1:length(Y_piez),Y_piez,y_min_pos);
 
 Opt_X = round(x_min*100)/100;
 Opt_Y = round(y_min*100)/100;
+Shift_X = Opt_X-IniX;
+Shift_Y = Opt_Y-IniY;
 
 % Plot results in piezo tab
 
+Corr_select_trans = Corr_select.';
+
 ax_piezo_autocorr = panel.ax_piezo_autocorr;
-imagesc(ax_piezo_autocorr,X_piez,Y_piez,Corr_select.'); axis(ax_piezo_autocorr,'image')
+imagesc(ax_piezo_autocorr,X_piez,Y_piez,Corr_select_trans); axis(ax_piezo_autocorr,'image')
 title(ax_piezo_autocorr, 'Last Autocorrelation XY - 2D Gaussian Fit');
 xlabel(ax_piezo_autocorr,'Value of the X piezo (V)');
 ylabel(ax_piezo_autocorr,'Value of the Y piezo (V)');
@@ -303,7 +306,7 @@ hold(ax_piezo_autocorr,'off');
 disp(['Range tested from ' num2str(LeftX) ' V to ' num2str(RightX) ' V every ' num2str(Step) ' V']);
 disp(['IniX = ' num2str(IniX) ' V']);
 disp(['NewX = ' num2str(Opt_X) ' V']);
-disp(['ShiftX = ' num2str(Opt_X-IniX) ' V']);
+disp(['ShiftX = ' num2str(Shift_X) ' V']);
 
 if Opt_X == LeftX ||  Opt_X == RightX
     disp('Edge of scanned X range reached');
@@ -313,7 +316,7 @@ disp(' ');
 disp(['Range tested from ' num2str(LeftY) ' V to ' num2str(RightY) ' V every ' num2str(Step) ' V']);
 disp(['IniY = ' num2str(IniY) ' V']);
 disp(['NewY = ' num2str(Opt_Y) ' V']);
-disp(['ShiftY = ' num2str(Opt_Y-IniY) ' V']);
+disp(['ShiftY = ' num2str(Shift_Y) ' V']);
 
 if Opt_Y == LeftY ||  Opt_Y == RightY
     disp('Edge of scanned Y range reached');

@@ -17,17 +17,23 @@ end
 
 % List of variables to save
 varList = {'M', 'Ftot', 'CenterF_GHz', 'Width_MHz', 'NPoints', 'Acc', 'MWPower', 'T', 'ExposureTime', 'FrameRate', 'PixelClock', ...
-           'RANDOM', 'AcqParameters', 'CameraType', 'AcquisitionTime_minutes', 'Lum_Current'};
+           'RANDOM', 'AcqParameters', 'CameraType', 'AcquisitionTime_minutes', 'Lum_Initial', 'Lum_Current'};
+% variables to append to save when doing AutoAlignPiezo
+var_to_append = {'z_out','foc_out', 'Shift_Z', 'fit_z_successful', 'X_piez', 'Y_piez', 'Corr_select_trans', 'Shift_X', 'Shift_Y', 'fit_xy_successful','Lum_Post_AutoCorr'};
 
 varListFast = [varList, '-v7.3', '-nocompression'];
+var_to_append_fast = [var_to_append, '-nocompression'];
 
 % Check the value of the compression variable
 if strcmp(SaveMode,'fast&heavy') % Save with -v7.3 and -nocompression    
     saveArgs = varListFast;
+    saveArgsToAppend = [var_to_append_fast, '-append'];
 elseif strcmp(SaveMode,'h5') % Spot for h5 save once I have the code from Thales?    
     saveArgs = varList;
+    saveArgsToAppend = [var_to_append_fast, '-append'];
 else % Save without additional options    
     saveArgs = varList;
+    saveArgsToAppend = [var_to_append, '-append'];
 end
 
 if ~TestWithoutHardware    
@@ -80,7 +86,7 @@ end
 if  ~TestWithoutHardware && i_scan == 1 && AutoAlignPiezo
     if AcqParameters.RepeatScan > 1
         disp('Initial Autofocus Z when RepeatScan > 1')
-        FuncIndepAutofocusPiezo(panel);
+         [Opt_Z, z_out, foc_out, Shift_Z, fit_z_successful] = FuncIndepAutofocusPiezo(panel);
     end
     if panel.light.Value == 0
         LightOn(panel);
@@ -114,6 +120,10 @@ else
 end
 
 Lum_Start = ImageMatrix;Lum_Start_Crop = Lum_Start;
+
+if ~exist('Lum_Initial','var')
+    Lum_Initial = Lum_Start;
+end
 
 PrintImage(panel.Axes1,Lum_Start,AOIParameters);
 
@@ -338,7 +348,7 @@ for Acc=1:(AccNumber+99*ALIGN*AccNumber) %Loop on Accumulation number
     end
 
     if AF && mod(Acc,AF_NumberSweeps) == 0  
-        FuncIndepAutofocusPiezo(panel);
+         [Opt_Z, z_out, foc_out, Shift_Z, fit_z_successful] = FuncIndepAutofocusPiezo(panel);
     end
     
     PixX=str2double(panel.PixX.String);%Read x_Pixel from GUI
@@ -405,6 +415,7 @@ end
 if ~TestWithoutHardware && AutoAlignPiezo && i_scan < AcqParameters.RepeatScan
     if panel.stop.Value~=1
         PerformAlignPiezo;
+        save(fullNameSave, saveArgsToAppend{:});
     end
 end
 
