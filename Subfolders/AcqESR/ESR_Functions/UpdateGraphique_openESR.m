@@ -6,7 +6,9 @@ guidata(f,Total_handles);
 
 panel = Total_handles;
 
-panel.UserData.Lum_WithLightAndLaser = Lum_WithLightAndLaser;
+if exist('Lum_WithLightAndLaser','var')
+    panel.UserData.Lum_WithLightAndLaser = Lum_WithLightAndLaser;
+end
 panel.UserData.Lum_Current = Lum_Current;
 panel.UserData.M = M;
 
@@ -15,7 +17,10 @@ ax = findobj('tag','Axes1');
 ImageMatrix = Lum_Current;
 
 if AcqParameters.DisplayLight
+    panel.DisplayLight.Value = 1;
     ImageMatrix = Lum_WithLightAndLaser;
+else
+    panel.DisplayLight.Value = 0;
 end
 
 axes(ax);

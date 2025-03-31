@@ -21,10 +21,10 @@ switch AcqParameters.SetupType
             panel.UserData.Betsa = Betsa;
             writeline(Betsa, "RLY61"); % turns reflected light on
             panel.light.Value = 1;
-            panel.light.ForegroundColor = [0,1,0];
+            panel.light.ForegroundColor = [0,0,1];
             writeline(Betsa, "RLY50"); % switches shutter toward light mode
             panel.shutterBetsa.Value = 1;
-            panel.shutterBetsa.ForegroundColor = [0,1,0];
+            panel.shutterBetsa.ForegroundColor = [0,0,1];
         catch
             disp("Warning: Unable to connect to Betsa. Device not detected or wrong COM port.");
         end

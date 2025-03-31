@@ -22,9 +22,9 @@ if ~exist('Lum_Current','var') || (exist('Lum_Current','var') && isempty(Lum_Cur
     Lum_Current = M(:,:,1);
 end
 
-if ~exist('Lum_WithLightAndLaser','var') || (exist('Lum_WithLightAndLaser','var') && isempty(Lum_WithLightAndLaser)) || (exist('Lum_WithLightAndLaser','var') && ~isempty(Lum_WithLightAndLaser) && any(size(M(:,:,1))~=size(Lum_WithLightAndLaser)))
-    Lum_WithLightAndLaser = M(:,:,1);
-end
+% if ~exist('Lum_WithLightAndLaser','var') || (exist('Lum_WithLightAndLaser','var') && isempty(Lum_WithLightAndLaser)) || (exist('Lum_WithLightAndLaser','var') && ~isempty(Lum_WithLightAndLaser) && any(size(M(:,:,1))~=size(Lum_WithLightAndLaser)))
+%     Lum_WithLightAndLaser = M(:,:,1);
+% end
 
 if ~exist('AcqParameters','var')
     AcqParameters.Save = 1;
@@ -76,7 +76,7 @@ if ~isfield(AcqParameters,'AOI')
     [AcqParameters.AOI.Height,AcqParameters.AOI.Width,~] = size(M);
 end    
 
-if ~isfield(AcqParameters,'ExposureUnit') || (isfield(AcqParameters,'ExposureUnit') && isnan(AcqParameters.ExposureUnit))
+if ~isfield(AcqParameters,'ExposureUnit') || (isfield(AcqParameters,'ExposureUnit') && any(isnan(AcqParameters.ExposureUnit)))
     AcqParameters.ExposureUnit = ''; % probably seconds but who knows
 end    
 

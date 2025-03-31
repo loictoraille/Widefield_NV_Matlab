@@ -1,7 +1,7 @@
 function CropFunction(hobject,eventdata)
 
 if get(hobject,'Value')==1    
-    set(hobject,'ForegroundColor',[0,1,0]);
+    set(hobject,'ForegroundColor',[0,0,1]);
 else    
     set(hobject,'ForegroundColor',[1,0,0]);    
 end

@@ -9,7 +9,7 @@ if isfield(panel,'UserData') && ~isempty(panel.UserData) && isfield(panel.UserDa
     Betsa = panel.UserData.Betsa;
 
     if h.Value == 1
-        h.ForegroundColor = [0,1,0];
+        h.ForegroundColor = [0,0,1];
         writeline(Betsa, "RLY50"); % switches shutter toward light mode
     else
         h.ForegroundColor = [0,0,0];

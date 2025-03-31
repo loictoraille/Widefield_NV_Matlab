@@ -1,12 +1,12 @@
 function ResetContinuousTempReading(src, ~)
 
-set(src,'ForegroundColor',[0 1 0]);
+set(src,'ForegroundColor',[0 0 1]);
 
 % Récupérer l'objet du bouton Reset (gcbo)
 btnReset = src;
 
 % Trouver l'axe du graphique à partir de son parent
-panel = BtnReset.Parent;
+panel = btnReset.Parent;
 ax_temp = findobj(panel.Parent, 'Type', 'axes');
 
 data = struct('time', [], 'Ta', [], 'Tb', []);

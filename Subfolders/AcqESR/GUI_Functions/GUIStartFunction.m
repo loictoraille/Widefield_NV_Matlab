@@ -1,7 +1,7 @@
 function GUIStartFunction(hobject,eventdata)
 global M ObjCamera CameraType handleImage smb TestWithoutHardware RF_Address Lum_Current
 
-set(hobject,'ForegroundColor',[0,1,0]);
+set(hobject,'ForegroundColor',[0,0,1]);
 stop_tag = findobj('tag','stop');
 
 load([getPath('Param') 'AcqParameters.mat'],'AcqParameters');
@@ -62,7 +62,7 @@ set(stop_tag,'Value',0);
 if isfield(panel,'UserData') && ~isempty(panel.UserData) && isfield(panel.UserData,'Betsa')
     if Init_betsa_value == 1
         h_betsa.Value = 1;
-        h_betsa.ForegroundColor = [0,1,0];
+        h_betsa.ForegroundColor = [0,0,1];
         writeline(Betsa, "RLY50"); % switches shutter toward light mode
     else
         h_betsa.Value = 0;
@@ -75,7 +75,7 @@ end
 
 if ini_light_state
     panel.light.Value = 1;
-    panel.light.ForegroundColor = [0 1 0];
+    panel.light.ForegroundColor = [0 0 1];
 else
     panel.light.Value = 0;
     panel.light.ForegroundColor = [0 0 0];
@@ -83,7 +83,7 @@ end
 
 if ini_laser_state
     panel.shutterlaser.Value = 1;
-    panel.shutterlaser.ForegroundColor = [0 1 0];
+    panel.shutterlaser.ForegroundColor = [0 0 1];
 else
     panel.shutterlaser.Value = 0;
     panel.shutterlaser.ForegroundColor = [0 0 0];

@@ -1,6 +1,6 @@
 function CompressFunction(hobject,~)
 
-set(hobject,'ForegroundColor',[0,1,0]);
+set(hobject,'ForegroundColor',[0,0,1]);
 drawnow;
 
 tic

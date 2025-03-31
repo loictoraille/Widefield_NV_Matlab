@@ -60,8 +60,10 @@ nomSave = NameGen(Data_Path,FileNamePrefix,Save);
 panel.nameFile.String = ['File: ' nomSave];
 %%
 
-panel.numberSweep.String = ['Sweep number /' num2str(NumSweeps)];
-panel.numberFreq.String = ['Freq number /' num2str(NumPoints)];
+if panel.start.Value ~=1 % do not update is scan is running
+    panel.numberSweep.String = ['Sweep number /' num2str(NumSweeps)];
+    panel.numberFreq.String = ['Freq number /' num2str(NumPoints)];
+end
 
 COM_Lakeshore = panel.comLakeshore.String;
 COM_Betsa = panel.comBetsa.String;

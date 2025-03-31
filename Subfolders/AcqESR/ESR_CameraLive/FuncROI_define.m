@@ -4,7 +4,7 @@ global ObjCamera CameraType handleImage
 
 load([getPath('Param') 'AcqParameters.mat'],'-mat','AcqParameters');
 
-set(h.roidef,'ForegroundColor',[0,1,0]);%Change button color to green in the GUI
+set(h.roidef,'ForegroundColor',[0,0,1]);%Change button color to blue in the GUI
 
 waitforbuttonpress;
 C1=get(h.Axes_Camera,'CurrentPoint');%Get coordinate of point where the mouseclick happens

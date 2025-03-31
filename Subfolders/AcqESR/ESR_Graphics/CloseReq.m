@@ -41,11 +41,19 @@ if TestWithoutHardware~=1 && exist('smb','var') && any(isprop(smb,'Session'))
 end
 
 if  TestWithoutHardware~=1 && strcmp(AcqParameters.SetupType,"CEA") && exist('NI_card','var') && any(isprop(NI_card,'Running')) && ~isempty(daqlist)
-    LaserOff(panel);
+    try
+        LaserOff(panel);
+    catch
+        disp('Unable to reach piezo hardware');
+    end
 end
 
 if  TestWithoutHardware~=1 && ResetPiezo && exist('NI_card','var') && any(isprop(NI_card,'Running')) && ~isempty(daqlist)
-    write(NI_card,[0, 0, 0, 0]); % sets values back to 0 V
+    try
+        write(NI_card,[0, 0, 0, 0]); % sets values back to 0 V
+    catch
+        disp('Unable to reach piezo hardware');
+    end
 end
 
 if TestWithoutHardware~=1 && ~isempty(panel) && isfield(panel,'UserData') && isfield(panel.UserData,'Lakeshore') 

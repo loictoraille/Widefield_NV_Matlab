@@ -8,6 +8,7 @@ panel=guidata(gcbo);
 panel = ToggleOffButtons(); % custom built function to turn off pix button and the like
 
 load([getPath('Param') 'AcqParameters.mat']);
+load([getPath('Param') 'FitParameters.mat']);
 Data_Path = AcqParameters.Data_Path;
 
 LoadParamFromAcqParamScript;

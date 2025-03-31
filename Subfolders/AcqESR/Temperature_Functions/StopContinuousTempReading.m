@@ -1,6 +1,6 @@
 function StopContinuousTempReading(src, ~)
 
-    set(src,'ForegroundColor',[0 1 0]);
+    set(src,'ForegroundColor',[0 0 1]);
 
     StopContinuousTempReadingFunc();
 

@@ -17,7 +17,7 @@ end
 
 % List of variables to save
 varList = {'M', 'Ftot', 'CenterF_GHz', 'Width_MHz', 'NPoints', 'Acc', 'MWPower', 'T', 'ExposureTime', 'FrameRate', 'PixelClock', ...
-           'RANDOM', 'AcqParameters', 'CameraType', 'AcquisitionTime_minutes', 'Lum_Initial', 'Lum_Current','Lum_WithLightAndLaser'};
+           'RANDOM', 'AcqParameters', 'FitParameters', 'CameraType', 'AcquisitionTime_minutes', 'Lum_Initial', 'Lum_Current','Lum_WithLightAndLaser'};
 % variables to add when doing AutoAlignPiezo
 var_to_add = {'z_out','foc_out', 'Shift_Z', 'fit_z_successful', 'X_piez', 'Y_piez', 'Corr_select_trans', 'Shift_X', 'Shift_Y', 'fit_xy_successful','Lum_Post_AutoCorr'};
 
@@ -79,7 +79,7 @@ if ~TestWithoutHardware && AutoAlignPiezo && i_scan > 1 && i_scan < AcqParameter
 end
 
 if ~TestWithoutHardware && AutoAlignPiezo && i_scan == 1
-    Lum_Post_AutoCorr = Lum_Initial;
+    Lum_Post_AutoCorr = Lum_Initial; X_piez = []; Y_piez = []; Corr_select_trans = []; Shift_X = []; Shift_Y = []; fit_xy_successful = [];
 end
 
 %% First Image
@@ -139,11 +139,15 @@ if ~exist('Lum_Initial','var')
     Lum_Initial = Lum_Start;
 end
 
-if AcqParameters.DisplayLight    
+if panel.DisplayLight.Value   
     PrintImage(panel.Axes1,Lum_WithLightAndLaser,AOIParameters);
 else
     PrintImage(panel.Axes1,Lum_Start,AOIParameters);
 end
+
+panel.UserData.Lum_Current = Lum_Start; % not exactly the same image potentially but simpler for now
+guidata(gcbo,panel);
+
 
 %% Switching MW on and reading the temperature
 
@@ -327,7 +331,7 @@ for Acc=1:(AccNumber+99*ALIGN*AccNumber) %Loop on Accumulation number
         drawnow; % Update GUI
 
         if panel.stop.Value==1 % Check STOP button
-            panel.stop.ForegroundColor = [0,1,0];
+            panel.stop.ForegroundColor = [0,0,1];
             if ~panel.FinishSweep.Value
                 break;
             end
@@ -348,12 +352,13 @@ for Acc=1:(AccNumber+99*ALIGN*AccNumber) %Loop on Accumulation number
         fullNameSave = [Data_Path nomSave];
         endacq = toc;
         AcquisitionTime_minutes = round(endacq/60); 
+        load([getPath('Param') 'AcqParameters.mat']);load([getPath('Param') 'FitParameters.mat']);    
         if ~TestWithoutHardware
             if DelEx
                 Store_Ftot = Ftot;Store_M = M;
                 Ftot = Ftot(2:end-1);
                 M = M(:,:,2:end-1);
-            end            
+            end                
             save(fullNameSave, varFullFast{:});
             if DelEx
                 Ftot = Store_Ftot;
@@ -373,18 +378,22 @@ for Acc=1:(AccNumber+99*ALIGN*AccNumber) %Loop on Accumulation number
     PixY=str2double(panel.PixY.String);%Read y_Pixel from GUI
     
     %%Plot Mean Image (to see if image is moving)
-    if AcqParameters.DisplayLight
-        LightOn(panel);
-        [I,ISize,AOI] = PrepareCamera();
-        Lum_WithLightAndLaser=TakeCameraImage(ISize,AOI);
-        panel.UserData.Lum_WithLightAndLaser = Lum_WithLightAndLaser;
-        LightOff(panel);% to turn off the light for the scan part
-        [I,ISize,AOI] = PrepareCamera();
-        PrintImage(panel.Axes1,Lum_WithLightAndLaser,AOIParameters);
-    else
-        PrintImage(panel.Axes1,Lum_Current,AOIParameters);
+    if panel.stop.Value ~=1
+        if  panel.DisplayLight.Value
+            LightOn(panel);
+            [I,ISize,AOI] = PrepareCamera();
+            Lum_WithLightAndLaser=TakeCameraImage(ISize,AOI);
+            panel.UserData.Lum_WithLightAndLaser = Lum_WithLightAndLaser;
+            LightOff(panel);% to turn off the light for the scan part
+            [I,ISize,AOI] = PrepareCamera();
+            PrintImage(panel.Axes1,Lum_WithLightAndLaser,AOIParameters);
+        else
+            panel.UserData.Lum_Current = Lum_Current;
+            PrintImage(panel.Axes1,Lum_Current,AOIParameters);
+        end
     end
-        
+    
+    guidata(gcbo,panel);
     PrintESR(panel,M);
     
     if panel.stop.Value==1%Check STOP Button
@@ -420,6 +429,7 @@ end
 nomSave = panel.nameFile.String(7:end);
 
 fullNameSave = [Data_Path nomSave];
+load([getPath('Param') 'AcqParameters.mat']);load([getPath('Param') 'FitParameters.mat']);    
 if ~TestWithoutHardware    
     if DelEx
         Store_Ftot = Ftot;Store_M = M;

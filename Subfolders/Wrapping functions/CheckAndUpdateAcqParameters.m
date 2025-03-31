@@ -3,10 +3,11 @@ function CheckAndUpdateAcqParameters(File,String_Default_Value)
 % Function to load AcqParameters and update it to the current list of parameters, adding default when a parameter is absent
 % The goal is that the user only needs to copy paste their parameter file and keep their configuration this way
 
-if isempty(File)
+% loads the AcqParameters stored in the file if possible, else loads the external one
+if isempty(File) || (~isempty(File) && ~ismember('AcqParameters', who('-file',File)))
     load([getPath('Param') 'AcqParameters.mat']);    
 else
-    load(File,'AcqParameters')
+    load(File,'AcqParameters'); 
 end
 
 % Get the full path to the grandparent folder

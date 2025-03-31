@@ -1,7 +1,7 @@
 
 function FuncFindExposure(h)
 global ObjCamera CameraType 
-set(h.findexposure,'ForegroundColor',[0,1,0]);%Change button color to green in the GUI
+set(h.findexposure,'ForegroundColor',[0,0,1]);%Change button color to blue in the GUI
 
 ExpRange = GetExpRange();
 mE = ExpRange.Minimum;

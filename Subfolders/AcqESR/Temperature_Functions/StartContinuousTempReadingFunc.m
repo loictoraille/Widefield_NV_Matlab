@@ -19,7 +19,7 @@ end
 disp(['Start of continuous temperature reading every ' num2str(period_sec) ' seconds']);
 
 % Initialiser les données stockées dans l'axe ou récupérer les données déjà présentes
-if isfield(ax_temp,'UserData') && ~isempty(ax_temp.UserData)
+if isprop(ax_temp,'UserData') && ~isempty(ax_temp.UserData)
     data = ax_temp.UserData;
 else
     data = struct('time', [], 'Ta', [], 'Tb', []);

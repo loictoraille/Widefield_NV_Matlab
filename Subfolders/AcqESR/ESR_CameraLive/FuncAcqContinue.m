@@ -4,7 +4,7 @@ global ObjCamera CameraType handleImage TestWithoutHardware
 
 if ~TestWithoutHardware
 
-set(h.acqcont,'ForegroundColor',[0,1,0]);
+set(h.acqcont,'ForegroundColor',[0,0,1]);
 set(h.acqcont,'Value',1);
 
 if strcmp(CameraType,'Andor')
@@ -29,7 +29,7 @@ while exist('ObjCamera','var') && h.acqcont.Value % loop while checking all the 
         pause(0.3);% seems necessary to make it work (shorter or longer depending on computer
         [I,ISize,AOI] = PrepareCamera();
     end
-    if all(h.roisquaresize.ForegroundColor == [0,1,0]) % check ROISsquare
+    if all(h.roisquaresize.ForegroundColor == [0,0,1]) % check ROISsquare
         EndAcqCamera();
         UpdateROI_Square_Input(h);
         [I,ISize,AOI] = PrepareCamera();

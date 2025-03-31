@@ -5,10 +5,10 @@ h = panel.light;
 h_betsa = panel.shutterBetsa;
 
 h.Value = 1;
-h.ForegroundColor = [0,1,0];
+h.ForegroundColor = [0,0,1];
 
 if strcmp(panel.SetupType.String,"CEA") && isfield(panel,'UserData') && isfield(panel.UserData,'Betsa')
-    h_betsa.ForegroundColor = [0,1,0];
+    h_betsa.ForegroundColor = [0,0,1];
     h_betsa.Value = 1;
 %     Betsa = panel.UserData.Betsa;
 %     writeline(Betsa, "RLY50"); % switches shutter toward light mode %% is turned on in Smart_PZ_Light_Laser_Write

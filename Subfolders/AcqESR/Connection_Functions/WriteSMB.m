@@ -8,7 +8,8 @@ for attempt = 1:maxRetries
         break; % Exit loop if successful
     catch ME
         if attempt == maxRetries
-            disp('Failed to send command to RF generator after %d attempts: %s', maxRetries, ME.message);
+            disp(['Failed to send command to RF generator after ' num2str(maxRetries) ' attempts:']);
+            disp(ME.message);
             disp('Trying to disconnect RF generator');
             try
                 smb.Close();
