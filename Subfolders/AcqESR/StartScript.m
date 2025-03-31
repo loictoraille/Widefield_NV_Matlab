@@ -12,7 +12,10 @@ Data_Path = AcqParameters.Data_Path;
 
 LoadParamFromAcqParamScript;
 
-nomSave = NameGen(Data_Path,'ESR_WideField',SAVE);%necessary if pushing start again without changing anything
+if AcqParameters.RepeatScan > 1 && i_scan ~= 1
+    nomSave = GenNextFileName(nomSave); % so that the date change does not change the name
+end
+
 DelEx = AcqParameters.DelEx; % DelEx standalone uses the script, so we get it out
 
 [~,sizelevel] = size(AcqParameters.AOI.Width);

@@ -1,8 +1,8 @@
-function [Opt_Z, z_out, foc_out, Shift_Z, fit_z_successful] = FuncIndepAutofocusPiezo(panel);
+function [Opt_Z, z_out, foc_out, Shift_Z, fit_z_successful] = FuncIndepAutofocusPiezo(panel)
 global CameraType
 % uses code "Focus Measure" from https://fr.mathworks.com/matlabcentral/fileexchange/27314-focus-measure
 % different options, 'BREN' potentially best?
-% Full working list on small example: BREN CONT GDER GLLV GRAE GRAT HELM HISR LAPD LAPE LAPV SFRQ TENG TENV VOLA WAVV WAVR
+% Full working list on small examples: BREN CONT GDER GLLV GRAE GRAT HELM HISR LAPD LAPE LAPV SFRQ TENG TENV VOLA WAVV WAVR
 
 %% Initialization
 
@@ -16,9 +16,9 @@ IniL = AcqParameters.PiezoLight;
 light_state_ini = panel.light.Value;
 laser_state_ini = panel.shutterlaser.Value;
 
-PiezoRangeZ = AcqParameters.PiezoRange*2;
-PiezoStepsZ = AcqParameters.PiezoSteps*2+1;
-StepZ = PiezoRangeZ/(PiezoStepsZ-1);
+PiezoRangeZ = AcqParameters.PiezoRangeZ;
+PiezoStepZ = AcqParameters.PiezoStepZ;
+StepZ = PiezoRangeZ/(PiezoStepZ-1);
 LeftZ = max([0,IniZ - PiezoRangeZ/2]);
 RightZ = min([IniZ+PiezoRangeZ/2,10]);
 
@@ -28,15 +28,18 @@ Tension4 = LaserOff(panel); % the laser spot prevents perfect autofocus, especia
 %% Loop on piezoZ
 
 foclist = {'BREN','CONT','GDER','GLLV','GRAE','GRAT','HELM','HISR','LAPD','LAPE','LAPV','SFRQ','TENG','TENV','VOLA','WAVV','WAVR','ACMO','CURV','DCTE','DCTR','GLVA','GLVN','GRAS','HISE','LAPM','SFIL','WAVS'}; % all possible methods
-ChoiceFocMethod = 'DCTR';
-% ChoiceFocMethod = 'DCTE'; %DCTE and GLLV also work at CEA ?
+ChoiceFocMethod = AcqParameters.AF_Method;
+% DTCR, DCTE and GLLV for CEA ; BREN for ENS?
 
 ind_prog = 0;
 disp(['Starting autofocus z using ' ChoiceFocMethod ' method']);
-for k=1:PiezoStepsZ
+for k=1:PiezoStepZ
+    if panel.stop.Value==1%Check STOP Button
+        break;
+    end
     ind_prog = ind_prog + 1;
     if rem(ind_prog,2) == 0 || ind_prog == 1
-        disp(['Autofocus z in progress ' num2str(ind_prog) '/' num2str(PiezoStepsZ)]);
+        disp(['Autofocus z in progress ' num2str(ind_prog) '/' num2str(PiezoStepZ)]);
     end
     NewZ = min([10,LeftZ + (k-1)*StepZ]);
     CheckMaxAndWriteNI(IniX, IniY, NewZ, Tension4)

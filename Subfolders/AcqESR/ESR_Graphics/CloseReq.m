@@ -11,16 +11,14 @@ if ~exist('TestWithoutHardware','var') || ~isscalar(TestWithoutHardware)
     TestWithoutHardware = 1;
 end
 
-btnStart= findobj('tag', 'startCTR'); % Trouver le bouton start stil a un tag défini
-btnSave= findobj('tag', 'saveCTR'); % Trouver le bouton save stil a un tag défini
+btnStart= findobj('tag', 'startCTR'); % Trouver le bouton start s'il a un tag défini
 if TestWithoutHardware~=1 && ~isempty(btnStart) && btnStart.Value == 1
         if isfield(btnStart.UserData, 'timer') && isvalid(btnStart.UserData.timer)
-        stop(btnStart.UserData.timer);
-        delete(btnStart.UserData.timer);
-        btnStart.UserData = rmfield(btnStart.UserData, 'timer');
+            stop(btnStart.UserData.timer);
+            delete(btnStart.UserData.timer);
+            btnStart.UserData = rmfield(btnStart.UserData, 'timer');
         end
         disp('End of continuous temperature reading');
-    SaveTemperatureData(btnSave, []);
 end
 
 h=guidata(gcbo);%handles of the graphical objects
@@ -35,7 +33,7 @@ end
 
 if TestWithoutHardware~=1 && exist('smb','var') && any(isprop(smb,'Session'))
     try
-        smb.Write('OUTP OFF');;%RF OFF
+        smb.Write('OUTP OFF'); %RF OFF
         smb.Close();
     catch
         disp('Connexion to RF Generator was not closed properly');
@@ -67,7 +65,15 @@ clear global ObjCamera
 clear global CameraType
 clear global smb
 clear global NI_card
+
+if isvalid(hobject) % Ensure the figure handle is still valid
+    delete(hobject); % Deletes only the specific figure
+    pause(0.1);      % Small delay to ensure deletion completes
+    if isvalid(hobject)
+        close(hobject, 'force'); % Force-close only this figure, if needed
+    end
+end
+
 clearvars
-delete(gcf)
 
 end

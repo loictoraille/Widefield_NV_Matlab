@@ -15,5 +15,5 @@ function TimerReadAndPlot(ax_temp)
     ax_temp.UserData = data;
 
     % Mettre à jour le graphique
-    UpdateTemperaturePlot(ax_temp, Ta, Tb);
+    UpdateTemperaturePlot(ax_temp);
 end

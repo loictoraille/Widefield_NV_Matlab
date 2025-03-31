@@ -1,11 +1,21 @@
 %%Elements of Tab1 (ESR) 
 
+
+%%%%%%%%
+%%Additional parameters
+%%%%%%%%
+
+uicontrol('Parent',tab1,'Style', 'checkbox', 'String', 'Display light','units','normalized','tag','DisplayLight',...
+    'Position', [0.45 0.825 0.065 0.025],'FontSize',10,'Value',AcqParameters.DisplayLight,'Callback',@DisplayLightOpenESR,'Tooltip','If available, displays the image with light and laser instead of only with laser');
+
+%%%%%%%%
+
 %%%%%%%%
 %%Graphs
 %%%%%%%%
 %Image taken at cycle start
 hp = uipanel('Parent',tab1,'Title','Sample Image','FontSize',12,'FontWeight','bold',...
-    'BackgroundColor','white','Position',[0 0.28 .50 .6]);
+    'BackgroundColor','white','Position',[0.05 0.28 .4 .6]);
 ax=axes('Parent',hp,'tag','Axes1','Position',[0.12 0.15  0.8 0.8]);
 %ESR on one pixel
 hp2 = uipanel('Parent',tab1,'Title','ESR One Pixel','FontSize',12,'FontWeight','bold',...

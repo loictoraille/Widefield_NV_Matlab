@@ -13,9 +13,9 @@ if ~TestWithoutHardware
     
     if exist('smb','var') && any(isprop(smb,'Session'))
     else
-        smb = Connect_RF(RF_Address);
+        smb = Connect_RF();
     end
-    smb.Write(['OUTP ' STATE]);
+    WriteSMB(['OUTP ' STATE]);
 end
 
 end

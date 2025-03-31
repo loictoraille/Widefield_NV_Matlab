@@ -1,11 +1,14 @@
-function smb = Connect_RF(RF_Address)
-global TestWithoutHardware
+function smb = Connect_RF()
+global TestWithoutHardware RF_Address
 
 if ~TestWithoutHardware
     
-    smb = VISA_Instrument(RF_Address);
-    
-    smb.Write('FREQ:MODE CW');%RF mode = continuous
+    try
+        smb = VISA_Instrument(RF_Address);
+        smb.Write('FREQ:MODE CW');%RF mode = continuous
+    catch
+        disp('Unable to connect to RF generator');
+    end    
     
 else    
     smb = NaN;

@@ -9,7 +9,7 @@ global TestWithoutHardware CameraType ObjCamera smb RF_Address
 
 [TestWithoutHardware, RF_Address, Data_Path, CameraChoice] = readConfigFile('Config.txt');
 
-CheckAndUpdateAcqParameters('','default');
+CheckAndUpdateAcqParameters('','default');CheckAndUpdateFitParameters('','default');
 
 %% Comments on Camera Andor
 
@@ -39,6 +39,7 @@ Tab_FitParam;
 Tab_Additional;
 Tab_ReadTemp;
 Tab_AlignPiezo;
+TurnUnusedSettingsInvisible();
 
 if TestWithoutHardware
 

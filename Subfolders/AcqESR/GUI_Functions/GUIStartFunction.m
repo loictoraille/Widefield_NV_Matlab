@@ -30,9 +30,12 @@ startTime = datetime('now'); % Capture l'heure de départ
 Lum_Initial = [];
 Lum_Initial_LaserOff = [];
 
+nomSave = NameGen(AcqParameters.Data_Path,AcqParameters.FileNamePrefix,AcqParameters.Save);
+
 while i_scan <= TotalScan
     disp(['Starting acquisition number ' num2str(i_scan) ' / ' num2str(TotalScan)]);
-    [Lum_Initial,Lum_Initial_LaserOff] = StartFunction(i_scan, Lum_Initial, Lum_Initial_LaserOff);
+    disp(['Current Date and Time: ', datestr(datetime('now'))]);
+    [Lum_Initial,Lum_Initial_LaserOff] = StartFunction(i_scan, Lum_Initial, Lum_Initial_LaserOff, nomSave);
     i_scan = i_scan + 1;
     if stop_tag.Value == 1 % Check STOP Button
         break;

@@ -9,7 +9,7 @@ disp('saving backup...')
 load([getPath('Param') 'AcqParameters.mat']);
 Data_Path = AcqParameters.Data_Path;
 
-nomSave = NameGen(Data_Path,'ESR_WideField',1);
+nomSave = NameGen(Data_Path,AcqParameters.FileNamePrefix,1);
 
 % List of variables to save
 varList = {'M', 'Ftot', 'CenterF_GHz', 'Width_MHz', 'NPoints', 'Acc', ...

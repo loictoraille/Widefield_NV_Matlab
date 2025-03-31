@@ -27,15 +27,18 @@ CalibPiezoX = AcqParameters.CalibPiezoX; % µm per 10V % set in the Camera Panel
 CalibPiezoY = AcqParameters.CalibPiezoY; % µm per 10V % set in the Camera Panel
 CalibPixelCam =  AcqParameters.PixelCalib_nm/1000; % µm per pixel % set in the Camera Panel
 
-PiezoRange = AcqParameters.PiezoRange;
-PiezoSteps = AcqParameters.PiezoSteps;
+PiezoRangeX = AcqParameters.PiezoRangeX;
+PiezoRangeY = AcqParameters.PiezoRangeY;
+PiezoStepX = AcqParameters.PiezoStepX;
+PiezoStepY = AcqParameters.PiezoStepY;
 
-Step = PiezoRange/(PiezoSteps-1);
+StepX = PiezoRangeX/(PiezoStepX-1);
+StepY = PiezoRangeY/(PiezoStepY-1);
 
-LeftX = max([-10,IniX - PiezoRange/2]);
-LeftY = max([-10,IniY - PiezoRange/2]);
-RightX = min([IniX+PiezoRange/2,10]);
-RightY = min([IniY+PiezoRange/2,10]);
+LeftX = max([-10,IniX - PiezoRangeX/2]);
+LeftY = max([-10,IniY - PiezoRangeY/2]);
+RightX = min([IniX+PiezoRangeX/2,10]);
+RightY = min([IniY+PiezoRangeY/2,10]);
 
 %% Autofocus z
  [Opt_Z, z_out, foc_out, Shift_Z, fit_z_successful] = FuncIndepAutofocusPiezo(panel);
@@ -58,14 +61,17 @@ end
 
 AOI_init = AOI;
 ind_prog = 0;
-for i=1:PiezoSteps
-    for j=1:PiezoSteps
+for i=1:PiezoStepX
+    for j=1:PiezoStepY
+        if panel.stop.Value==1%Check STOP Button
+            break;
+        end
         ind_prog = ind_prog + 1;
         if rem(ind_prog,5) == 0 || ind_prog == 1
-            disp(['Pre-alignment xy in progress ' num2str(ind_prog) '/' num2str(PiezoSteps^2)]);
+            disp(['Pre-alignment xy in progress ' num2str(ind_prog) '/' num2str(PiezoStepX*PiezoStepY)]);
         end
-        NewX = min([10,LeftX + (i-1)*Step]); X_piez(i) = NewX;
-        NewY = min([10,LeftY + (j-1)*Step]); Y_piez(j) = NewY;
+        NewX = min([10,LeftX + (i-1)*StepX]); X_piez(i) = NewX;
+        NewY = min([10,LeftY + (j-1)*StepY]); Y_piez(j) = NewY;
         DeltaX_pix(i,j) = -round((CalibPiezoX*(NewX-IniX)/10)/CalibPixelCam); % moves the AOI to follow the laser movement
         DeltaY_pix(i,j) = -round((CalibPiezoY*(NewY-IniY)/10)/CalibPixelCam);
 
@@ -95,11 +101,14 @@ if strcmp(CameraType,'Andor')
 end
 
 ind_prog = 0;
-for i=1:PiezoSteps
-    for j=1:PiezoSteps
+for i=1:PiezoStepX
+    for j=1:PiezoStepY
+        if panel.stop.Value==1%Check STOP Button
+            break;
+        end
         ind_prog = ind_prog + 1;
         if rem(ind_prog,5) == 0 || ind_prog == 1
-            disp(['Autocorrelation xy in progress ' num2str(ind_prog) '/' num2str(PiezoSteps^2)]);
+            disp(['Autocorrelation xy in progress ' num2str(ind_prog) '/' num2str(PiezoStepX*PiezoStepY)]);
         end
 
         %         disp(['NewX = ' num2str(NewX)]); % uncomment to test
@@ -133,8 +142,8 @@ end
 
 %% Treatment
 
-for i=1:PiezoSteps
-    for j=1:PiezoSteps
+for i=1:PiezoStepX
+    for j=1:PiezoStepY
         [crop1_out,crop2_out] = Align2Files(Lum_Initial_LaserOff,AlignmentXY_List{i,j},0); % align images without laser by autocorr
         % uses those value to crop align the images with laser
         Pic1crop{i,j} = Lum_Initial(crop1_out(1):crop1_out(2),crop1_out(3):crop1_out(4)); % result: crop both images to center laser spot
@@ -151,40 +160,40 @@ end
 
 % figure('Position',[1000,100,1200,1200]);
 % k=0;
-% for i=1:PiezoSteps
-%     for j=1:PiezoSteps
+% for i=1:PiezoStepX
+%     for j=1:PiezoStepY
 %         k=k+1;
-%         subplot(PiezoSteps,PiezoSteps,k)
+%         subplot(PiezoStepX,PiezoStepY,k)
 %         imagesc(AlignmentXY_List{i,j});axis('image');caxis([0 65535]);
 %     end
 % end
 % 
 % figure('Position',[1000,100,1200,1200]);
 % k=0;
-% for i=1:PiezoSteps
-%     for j=1:PiezoSteps
+% for i=1:PiezoStepX
+%     for j=1:PiezoStepY
 %         k=k+1;
-%         subplot(PiezoSteps,PiezoSteps,k)
+%         subplot(PiezoStepX,PiezoStepY,k)
 %         imagesc(LaserXYList{i,j});axis('image');caxis([0 65535]);
 %     end
 % end
 % 
 % figure('Position',[1000,100,1200,1200]);
 % k=0;
-% for i=1:PiezoSteps
-%     for j=1:PiezoSteps
+% for i=1:PiezoStepX
+%     for j=1:PiezoStepY
 %         k=k+1;
-%         subplot(PiezoSteps,PiezoSteps,k)
+%         subplot(PiezoStepX,PiezoStepY,k)
 %         imagesc(Pic1crop{i,j});axis('image');caxis([0 65535]);
 %     end
 % end
 % 
 % figure('Position',[1000,100,1200,1200]);
 % k=0;
-% for i=1:PiezoSteps
-%     for j=1:PiezoSteps
+% for i=1:PiezoStepX
+%     for j=1:PiezoStepY
 %         k=k+1;
-%         subplot(PiezoSteps,PiezoSteps,k)
+%         subplot(PiezoStepX,PiezoStepY,k)
 %         imagesc(Pic2crop{i,j});axis('image');caxis([0 65535]);
 %     end
 % end

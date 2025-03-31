@@ -1,5 +1,5 @@
 function PrintESR(panel,MatIn)
-global Ftot Lum_Current
+global Ftot 
 
 Cursor_Value = panel.Cursor.Value;
 RefMWOff = str2double(panel.RefMWOff.String);
@@ -32,9 +32,9 @@ end
 %we normalize with the five first values and the last five values
 
 Sp1=MatIn(PixY,PixX,:);
-lum1_value = Lum_Current(PixY,PixX);
 renorm1_value = GetRenormValue(squeeze(Sp1));
 panel.l21.XData=Ftot;panel.l21.YData=squeeze(Sp1)./renorm1_value;
+lum1_value = renorm1_value;
 
 if ind_calib_nm
 title(panel.Axes1,['(X,Y,I)=(',num2str(PixX),' pixel,',num2str(PixY),' pixel,',num2str(round(lum1_value)),')']); %Spanelow coordinates in panel title
@@ -65,8 +65,8 @@ end
 if PixX>AllLim{1}+BinLim && PixX<AllLim{2}-BinLim && PixY>AllLim{3}+BinLim && PixY<AllLim{4}-BinLim
     % check again in case modifications were not enough (rectangle ROI for example)
     Sp2=mean(mean(MatIn(PixY-BinLim:PixY+BinLim,PixX-BinLim:PixX+BinLim,:),1),2);
-    lum0_value = mean(mean(Lum_Current(PixY-BinLim:PixY+BinLim,PixX-BinLim:PixX+BinLim)));
     renorm0_value =  GetRenormValue(squeeze(Sp2));
+    lum0_value = renorm0_value;
     panel.l31.XData=Ftot;panel.l31.YData=squeeze(Sp2)./renorm0_value;
     panel.lum0text.String = num2str(round(lum0_value));
     if Cursor_Value == 1

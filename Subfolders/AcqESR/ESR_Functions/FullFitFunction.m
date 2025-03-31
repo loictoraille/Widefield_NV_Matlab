@@ -74,6 +74,8 @@ else
     saveas(figField,[TreatedDataPath SaveName(1:end-4) '-' suffix '.jpg'],'jpeg');
 end
 
-VisuFitScript
+if FitParameters.VisuFit
+    VisuFitScript;
+end
 
 end

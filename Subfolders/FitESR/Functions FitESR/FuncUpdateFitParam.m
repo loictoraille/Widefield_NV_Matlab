@@ -87,10 +87,9 @@ FitParameters.full_upper_bound = full_upper_bound;
 FitParameters.full_lower_bound_auto = full_lower_bound_auto;
 FitParameters.full_upper_bound_auto = full_upper_bound_auto;
 
+FitParameters.VisuFit = panel.VisuFit.Value;
+
 save([getPath('Param') 'FitParameters.mat'],'FitParameters');
-
-
-
 
 
 end
