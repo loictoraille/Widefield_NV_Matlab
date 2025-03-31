@@ -48,4 +48,61 @@ uicontrol('Parent', cpanel_com, 'Style', 'pushbutton', 'String', 'Test', 'units'
 uicontrol('Parent', tab_additional, 'Style', 'text', 'String', 'Setup Type','units', 'normalized', 'Position', [0.075 0.3975 0.05 0.025], 'FontSize', 12, 'HorizontalAlignment', 'left');
 edit_SetupType = uicontrol('Parent', tab_additional, 'Style', 'edit', 'String', AcqParameters.SetupType, 'units', 'normalized', 'Position', [0.13 0.4 0.05 0.025], 'FontSize', 12,'Tag','SetupType','Callback',@UpdateAcqParam,'TooltipString','CEA, ENS1, ENS2: helps defining setup differences, such as what is connected on the NI card, if there is a laser shutter, etc');
 
+%% AutoFocus method
+% Autofocus method used by the piezo z align 
 
+uicontrol('Parent', tab_additional, 'Style', 'text', 'String', 'Autofocus z method','units', 'normalized', 'Position', [0.05 0.3475 0.08 0.025], 'FontSize', 12, 'HorizontalAlignment', 'left');
+edit_SetupType = uicontrol('Parent', tab_additional, 'Style', 'edit', 'String', AcqParameters.AF_Method, 'units', 'normalized', 'Position', [0.13 0.35 0.05 0.025], 'FontSize', 12,'Tag','AF_Method','Callback',@UpdateAcqParam,'Tooltip',['Fulllist {BREN,CONT,GDER,GLLV,GRAE,GRAT,HELM,HISR,LAPD,LAPE,LAPV,SFRQ,TENG,TENV,' 10 'VOLA,WAVV,WAVR,ACMO,CURV,DCTE,DCTR,GLVA,GLVN,GRAS,HISE,LAPM,SFIL,WAVS}' 10 'CEA: DCTR works best but is slow, ENS: BREN works fast']);
+
+
+%% File Name Prefix Panel
+
+if strcmp(AcqParameters.FileNamePrefixChoice, 'Base+Date')
+    IniFileNamePrefix = date;
+else
+    IniFileNamePrefix = AcqParameters.FileNameUserPrefix;
+end
+
+% Main panel, centré dans l'onglet
+cpanel_filename = uipanel('Parent', tab_additional, 'Title', 'File Name Prefix', 'FontSize', 14, ...
+    'Position', [0.35 0.45 0.3 0.2]);  % Ajustement de la taille et position au centre
+
+% Ligne affichant "Prefix = " et la valeur associée
+uicontrol('Parent', cpanel_filename, 'Style', 'text', 'String', 'Prefix = ', ...
+    'units', 'normalized', 'FontSize', 12, 'HorizontalAlignment', 'right',  ...
+    'Position', [0.05 0.77 0.17 0.15]);
+
+uicontrol('Parent', cpanel_filename, 'Style', 'text', 'String',IniFileNamePrefix, ...
+    'units', 'normalized', 'FontSize', 12, 'HorizontalAlignment', 'left', 'FontWeight', 'bold', ...
+    'Position', [0.23 0.77 0.75 0.15], 'Tag', 'FileNamePrefix');
+
+% Sous-panel avec uibuttongroup
+bg_prefixChoice = uibuttongroup('Parent', cpanel_filename, 'Title', '', ...
+    'units', 'normalized', 'Position', [0.05 0.37 0.25 0.35], 'SelectionChangedFcn', @UpdatePrefixName, 'Tag','FileNamePrefixChoice');
+
+r1_prefixChoice = uicontrol(bg_prefixChoice, 'Style', 'radiobutton', 'String', 'Base+Date', ...
+    'units', 'normalized', 'FontSize', 12, 'Position', [0.05 0.5 0.9 0.5], 'Tag', 'PrefixChoiceDate');
+
+r2_prefixChoice = uicontrol(bg_prefixChoice, 'Style', 'radiobutton', 'String', 'UserDefined', ...
+    'units', 'normalized', 'FontSize', 12, 'Position', [0.05 0 0.9 0.5], 'Tag', 'PrefixChoiceUser');
+
+% Sélection initiale
+if strcmp(AcqParameters.FileNamePrefixChoice, 'Base+Date')
+    bg_prefixChoice.SelectedObject = r1_prefixChoice;
+else
+    bg_prefixChoice.SelectedObject = r2_prefixChoice;
+end
+
+% Ligne pour l'édition du préfixe utilisateur
+uicontrol('Parent', cpanel_filename, 'Style', 'text', 'String', 'User Prefix = ', ...
+    'units', 'normalized', 'FontSize', 12, 'HorizontalAlignment', 'left', ...
+    'Position', [0.05 0.1 0.17 0.15]);
+
+uicontrol('Parent', cpanel_filename, 'Style', 'edit', 'String', AcqParameters.FileNameUserPrefix, ...
+    'units', 'normalized', 'FontSize', 12, 'Tag', 'FileNameUserPrefix', 'HorizontalAlignment', 'left', ...
+    'Position', [0.23 0.08 0.75 0.2], 'Callback', @UpdatePrefixName);
+
+% Update FileName
+nomSave = NameGen(AcqParameters.Data_Path,IniFileNamePrefix,AcqParameters.Save);
+tag_FileName = findobj('tag','nameFile');
+set(tag_FileName,'String',['File: ' nomSave]);

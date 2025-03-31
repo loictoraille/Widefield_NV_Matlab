@@ -11,16 +11,14 @@ if ~exist('TestWithoutHardware','var') || ~isscalar(TestWithoutHardware)
     TestWithoutHardware = 1;
 end
 
-btnStart= findobj('tag', 'startCTR'); % Trouver le bouton start stil a un tag défini
-btnSave= findobj('tag', 'saveCTR'); % Trouver le bouton save stil a un tag défini
+btnStart= findobj('tag', 'startCTR'); % Trouver le bouton start s'il a un tag défini
 if TestWithoutHardware~=1 && ~isempty(btnStart) && btnStart.Value == 1
         if isfield(btnStart.UserData, 'timer') && isvalid(btnStart.UserData.timer)
-        stop(btnStart.UserData.timer);
-        delete(btnStart.UserData.timer);
-        btnStart.UserData = rmfield(btnStart.UserData, 'timer');
+            stop(btnStart.UserData.timer);
+            delete(btnStart.UserData.timer);
+            btnStart.UserData = rmfield(btnStart.UserData, 'timer');
         end
         disp('End of continuous temperature reading');
-    SaveTemperatureData(btnSave, []);
 end
 
 h=guidata(gcbo);%handles of the graphical objects
@@ -35,7 +33,7 @@ end
 
 if TestWithoutHardware~=1 && exist('smb','var') && any(isprop(smb,'Session'))
     try
-        smb.Write('OUTP OFF');;%RF OFF
+        smb.Write('OUTP OFF'); %RF OFF
         smb.Close();
     catch
         disp('Connexion to RF Generator was not closed properly');
@@ -43,11 +41,19 @@ if TestWithoutHardware~=1 && exist('smb','var') && any(isprop(smb,'Session'))
 end
 
 if  TestWithoutHardware~=1 && strcmp(AcqParameters.SetupType,"CEA") && exist('NI_card','var') && any(isprop(NI_card,'Running')) && ~isempty(daqlist)
-    LaserOff(panel);
+    try
+        LaserOff(panel);
+    catch
+        disp('Unable to reach piezo hardware');
+    end
 end
 
 if  TestWithoutHardware~=1 && ResetPiezo && exist('NI_card','var') && any(isprop(NI_card,'Running')) && ~isempty(daqlist)
-    write(NI_card,[0, 0, 0, 0]); % sets values back to 0 V
+    try
+        write(NI_card,[0, 0, 0, 0]); % sets values back to 0 V
+    catch
+        disp('Unable to reach piezo hardware');
+    end
 end
 
 if TestWithoutHardware~=1 && ~isempty(panel) && isfield(panel,'UserData') && isfield(panel.UserData,'Lakeshore') 
@@ -67,7 +73,15 @@ clear global ObjCamera
 clear global CameraType
 clear global smb
 clear global NI_card
+
+if isvalid(hobject) % Ensure the figure handle is still valid
+    delete(hobject); % Deletes only the specific figure
+    pause(0.1);      % Small delay to ensure deletion completes
+    if isvalid(hobject)
+        close(hobject, 'force'); % Force-close only this figure, if needed
+    end
+end
+
 clearvars
-delete(gcf)
 
 end

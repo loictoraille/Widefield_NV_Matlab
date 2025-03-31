@@ -5,7 +5,7 @@ global ObjCamera CameraType handleImage
 h=guidata(gcbo);%handles of the graphical objects
 
 UpdateAcqParam();
-set(h.roisquaresize,'ForegroundColor',[0,1,0])
+set(h.roisquaresize,'ForegroundColor',[0,0,1])
 
 if ~h.acqcont.Value
     UpdateROI_Square_Input(h);

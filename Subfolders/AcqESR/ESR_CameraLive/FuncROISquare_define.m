@@ -6,7 +6,7 @@ load([getPath('Param') 'AcqParameters.mat'],'-mat','AcqParameters');
 
 ROISquareSize = AcqParameters.ROISquareSize;
 
-set(panel.roisquare,'ForegroundColor',[0,1,0]);%Change button color to green in the GUI
+set(panel.roisquare,'ForegroundColor',[0,0,1]);%Change button color to blue in the GUI
 
 % Create a square
 square = rectangle('Position', [panel.Axes_Camera.XLim(2)/2-ROISquareSize/2, panel.Axes_Camera.YLim(2)/2-ROISquareSize/2, ROISquareSize, ROISquareSize], 'EdgeColor', 'red');

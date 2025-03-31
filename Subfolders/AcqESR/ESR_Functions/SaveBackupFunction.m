@@ -1,6 +1,6 @@
 function SaveBackupFunction(hobject,~)
 
-set(hobject,'ForegroundColor',[0,1,0]);
+set(hobject,'ForegroundColor',[0,0,1]);
 drawnow;
 
 tic
@@ -9,7 +9,7 @@ disp('saving backup...')
 load([getPath('Param') 'AcqParameters.mat']);
 Data_Path = AcqParameters.Data_Path;
 
-nomSave = NameGen(Data_Path,'ESR_WideField',1);
+nomSave = NameGen(Data_Path,AcqParameters.FileNamePrefix,1);
 
 % List of variables to save
 varList = {'M', 'Ftot', 'CenterF_GHz', 'Width_MHz', 'NPoints', 'Acc', ...

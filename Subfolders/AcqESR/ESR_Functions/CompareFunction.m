@@ -1,7 +1,7 @@
 function CompareFunction(hobject,eventdata)
 if get(hobject,'Value')==1
 
-set(hobject,'ForegroundColor',[0,1,0]);
+set(hobject,'ForegroundColor',[0,0,1]);
 h=guidata(gcbo);
 h.l32=line('parent',h.Axes3);
 h.l22=line('parent',h.Axes2);

@@ -1,10 +1,14 @@
+
 %%Elements of Tab1 (ESR) 
 load([getPath('Param') 'AcqParameters.mat']);
 
 if TestWithoutHardware
     valuetestwohar = 'on';
+    DisplayLight = 0;
+    SaveAcqParameters({{DisplayLight,'DisplayLight'}});
 else    
     valuetestwohar = 'off';
+    DisplayLight = AcqParameters.DisplayLight;
 end
 
 %%%%%%%%
@@ -69,11 +73,18 @@ uicontrol('Parent',tab1,'Style', 'checkbox', 'String', 'MW always ON','units','n
     'Position', [0.005 0.887 0.065 0.025],'FontSize',10,'Value',0,'Callback',@UpdateRF); %start on 0 to prevent wire burning
 
 %%%%%%%%
+%%Additional parameters
+%%%%%%%%
+
+uicontrol('Parent',tab1,'Style', 'checkbox', 'String', 'Display light','units','normalized','tag','DisplayLight',...
+    'Position', [0.45 0.825 0.065 0.025],'FontSize',10,'Value',DisplayLight,'Callback',@DisplayLight,'Tooltip','If available, displays the image with light and laser instead of only with laser');
+
+%%%%%%%%
 %%Graphs
 %%%%%%%%
 %Image taken at cycle start
 hp = uipanel('Parent',tab1,'Title','Sample Image','FontSize',12,'FontWeight','bold',...
-    'BackgroundColor','white','Position',[0 0.28 .50 .6]);
+    'BackgroundColor','white','Position',[0.05 0.28 .4 .6]);
 ax=axes('Parent',hp,'tag','Axes1','Position',[0.12 0.15  0.8 0.8]);
 %ESR on one pixel
 hp2 = uipanel('Parent',tab1,'Title','ESR One Pixel','FontSize',12,'FontWeight','bold',...
@@ -100,7 +111,7 @@ CompButton=uicontrol('Parent',tab1,'Style', 'togglebutton', 'String', 'Compare',
 %To stop acquisition
 StopButton=uicontrol('Parent',tab1,'Style', 'togglebutton', 'String', 'STOP','units','normalized','tag','stop',...
     'Position', [0.425 0.92 0.07 0.08],'FontSize',20,'ForegroundColor',[1,0,0],...
-    'Value',0);
+    'Value',0,'Callback',@StopFunction);
 %To start acquisition
 StartButton=uicontrol('Parent',tab1,'Style', 'togglebutton', 'String', 'START','units','normalized','tag','start',...
     'Position', [0 0.92 0.07 0.08],'FontSize',20,'ForegroundColor',[1,0,0],...
@@ -179,7 +190,7 @@ r3_np = uicontrol(bg_np,'Style','radiobutton','units','normalized',...
                   'String','8','FontSize',12,'tag','NumPeaks8',...
                   'Position',[0.86 0.01 0.25 1]);            
               
-uicontrol('Parent',bg_np,'Style','text','FontSize',12,'units','normalized','Position',[0.01 0.3 0.3 0.45],'HorizontalAlignment','left','String','Peaks');
+uicontrol('Parent',bg_np,'Style','text','FontSize',12,'units','normalized','Position',[0.01 0.1 0.3 0.7],'HorizontalAlignment','left','String','Peaks');
 
 
 %%%%%%%%%%%%%%%%%%

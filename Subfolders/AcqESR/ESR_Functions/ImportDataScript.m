@@ -7,7 +7,7 @@ if contains(fname, '.mat')
 end
 
 variableInfo = who('-file',file);
-listVariables = {'M','Ftot','T','Acc','AcqParameters', 'CameraType', 'AcquisitionTime_minutes', 'Lum_Current'};
+listVariables = {'M','Ftot','T','Acc','AcqParameters', 'CameraType', 'AcquisitionTime_minutes', 'Lum_Current','Lum_WithLightAndLaser'};
 for i=1:numel(listVariables)
     if ismember(listVariables{i},variableInfo)
         load(file,listVariables{i})
@@ -22,6 +22,10 @@ if ~exist('Lum_Current','var') || (exist('Lum_Current','var') && isempty(Lum_Cur
     Lum_Current = M(:,:,1);
 end
 
+% if ~exist('Lum_WithLightAndLaser','var') || (exist('Lum_WithLightAndLaser','var') && isempty(Lum_WithLightAndLaser)) || (exist('Lum_WithLightAndLaser','var') && ~isempty(Lum_WithLightAndLaser) && any(size(M(:,:,1))~=size(Lum_WithLightAndLaser)))
+%     Lum_WithLightAndLaser = M(:,:,1);
+% end
+
 if ~exist('AcqParameters','var')
     AcqParameters.Save = 1;
 end
@@ -35,15 +39,11 @@ for i=1:numel(list2)
     end
 end  
 
-if ~isfield(AcqParameters,'AOILEVEL')
+if ~isfield(AcqParameters,'AOILEVEL') || (isfield(AcqParameters,'AOILEVEL') && isnan(AcqParameters.AOILEVEL))
     AcqParameters.AOILEVEL = 1;
 end
 
-if ~isfield(AcqParameters,'ROISquareSize')
-    AcqParameters.ROISquareSize = 200;
-end
-
-if ~isfield(AcqParameters,'FCenter')
+if ~isfield(AcqParameters,'FCenter') 
     load(file,'CenterF_GHz');
 else
     CenterF_GHz = AcqParameters.FCenter;
@@ -53,6 +53,10 @@ if ~isfield(AcqParameters,'FSpan')
     load(file,'Width_MHz');
 else
     Width_MHz = AcqParameters.FSpan;
+end
+
+if ~isfield(AcqParameters,'DisplayLight') || (isfield(AcqParameters,'DisplayLight') && isnan(AcqParameters.DisplayLight))
+    AcqParameters.DisplayLight = 0;
 end
 
 if isempty(CameraType)
@@ -72,13 +76,15 @@ if ~isfield(AcqParameters,'AOI')
     [AcqParameters.AOI.Height,AcqParameters.AOI.Width,~] = size(M);
 end    
 
-if ~isfield(AcqParameters,'ExposureUnit')
+if ~isfield(AcqParameters,'ExposureUnit') || (isfield(AcqParameters,'ExposureUnit') && any(isnan(AcqParameters.ExposureUnit)))
     AcqParameters.ExposureUnit = ''; % probably seconds but who knows
 end    
 
 CheckAndUpdateAcqParameters(file,'none');
 
 load([getPath('Param') 'FitParameters.mat'],'FitParameters');
+
+CheckAndUpdateFitParameters(file,'default');
 
 NumPeaks = FitParameters.NumPeaks;
 

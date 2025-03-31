@@ -4,7 +4,7 @@ function Tension4 = LaserOn(panel)
 h=findobj('tag','shutterlaser');
 
 h.Value = 1;
-h.ForegroundColor = [0,1,0];
+h.ForegroundColor = [0,0,1];
 
 Tension4 = Smart_PZ_Light_Laser_Write(panel);
 

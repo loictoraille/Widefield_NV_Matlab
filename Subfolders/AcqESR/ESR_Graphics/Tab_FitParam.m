@@ -128,3 +128,7 @@ uicontrol('Parent',fbp_panel,'Style','text','FontSize',12,'units','normalized','
 %% Default
 
 uicontrol('Parent',tab_fitparam,'Style','pushbutton','tag','RestoreDefault','units','normalized','FontSize',16,'Position',[0.43 0.1 0.08 0.03],'String','Restore Default','Tooltip','To restore default values stored in Start_and_Test_Files','Callback',@RestoreDefaultFitParameters);
+
+%% VisuFit
+
+uicontrol('Parent',tab_fitparam,'Style','checkbox','tag','VisuFit','FontSize',12,'units','normalized','Position',[0.35 0.4 0.13 0.03],'Value',FitParameters.VisuFit,'String','Open VisuFit at end of FullFit','Tooltip','to launch the VisuFit Script at end of fullfit','Callback',@UpdateVisuFit);

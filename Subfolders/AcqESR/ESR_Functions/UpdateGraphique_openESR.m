@@ -6,13 +6,23 @@ guidata(f,Total_handles);
 
 panel = Total_handles;
 
+if exist('Lum_WithLightAndLaser','var')
+    panel.UserData.Lum_WithLightAndLaser = Lum_WithLightAndLaser;
+end
+panel.UserData.Lum_Current = Lum_Current;
+panel.UserData.M = M;
+
 ax = findobj('tag','Axes1');
 
-if exist('Lum_Current','var')
-    ImageMatrix = Lum_Current;
+ImageMatrix = Lum_Current;
+
+if AcqParameters.DisplayLight
+    panel.DisplayLight.Value = 1;
+    ImageMatrix = Lum_WithLightAndLaser;
 else
-    ImageMatrix=M(:,:,1);
+    panel.DisplayLight.Value = 0;
 end
+
 axes(ax);
 
 [~,sizelevel] = size(AcqParameters.AOI.Width);
@@ -21,11 +31,13 @@ AOIParameters.AOI.Height = AcqParameters.AOI.Height(min(sizelevel,AcqParameters.
 AOIParameters.AOI.Width = AcqParameters.AOI.Width(min(sizelevel,AcqParameters.AOILEVEL));
 AOIParameters.PixelCalib_nm = AcqParameters.PixelCalib_nm;
 AOIParameters.CalibUnit_str = AcqParameters.CalibUnit_str;
+
+panel.UserData.AOIParameters = AOIParameters;
               
 if strcmp(AcqParameters.CalibUnit_str,'pixel')
    panel.calibunit.SelectedObject = panel.calib_pixel_r1;
 else
-    panel.calibunit.SelectedObject = panel.calib_nm_r2;
+   panel.calibunit.SelectedObject = panel.calib_nm_r2;
 end
 
 eval(['panel.NumPeaksChoice.SelectedObject = panel.NumPeaks' num2str(NumPeaks) ';' ]);
@@ -65,3 +77,6 @@ PrintESR(panel,M)
 
 panel.DataPath.String = FitParameters.DataPath;
 panel.TreatedDataPath.String = FitParameters.TreatedDataPath;
+
+guidata(gcf,panel);
+

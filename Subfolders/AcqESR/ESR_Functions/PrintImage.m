@@ -22,5 +22,4 @@ c = colorbar;
 c.Label.FontSize = 11;
 c.Label.String = 'Photoluminescence';
 set(ax,'Tag','Axes1');%Necessary to rewrite tag of Axes1 after imagesc (I don't know why)
-
 end

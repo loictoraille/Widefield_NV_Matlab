@@ -36,7 +36,7 @@ drawnow;
 
 PixObject = findobj('Tag','PixVisuFit');
 PixObject.Value = 1;
-set(PixObject,'ForegroundColor',[0,1,0]);
+set(PixObject,'ForegroundColor',[0,0,1]);
 set(gcf,'WindowButtonMotionFcn', @(object,eventdata) mousemove(object,eventdata,ESRMatrix,x_start,y_start,x_stoptoend,y_stoptoend,v_MHz,FitTot,BinThr,VarWidths,NumComp,IsPair,Smoothing_Factor,Detrending_Factor,ClearFFT,RemPositive, FitParameters))
 
 function mousemove(object,eventdata,ESRMatrix,x_start,y_start,x_stoptoend,y_stoptoend,v_MHz,FitTot,BinThr,VarWidths,NumComp,IsPair,Smoothing_Factor,Detrending_Factor,ClearFFT,RemPositive,FitParameters)   

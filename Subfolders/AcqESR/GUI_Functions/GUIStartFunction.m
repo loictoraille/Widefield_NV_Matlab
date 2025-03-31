@@ -1,7 +1,7 @@
 function GUIStartFunction(hobject,eventdata)
 global M ObjCamera CameraType handleImage smb TestWithoutHardware RF_Address Lum_Current
 
-set(hobject,'ForegroundColor',[0,1,0]);
+set(hobject,'ForegroundColor',[0,0,1]);
 stop_tag = findobj('tag','stop');
 
 load([getPath('Param') 'AcqParameters.mat'],'AcqParameters');
@@ -30,9 +30,12 @@ startTime = datetime('now'); % Capture l'heure de départ
 Lum_Initial = [];
 Lum_Initial_LaserOff = [];
 
+nomSave = NameGen(AcqParameters.Data_Path,AcqParameters.FileNamePrefix,AcqParameters.Save);
+
 while i_scan <= TotalScan
     disp(['Starting acquisition number ' num2str(i_scan) ' / ' num2str(TotalScan)]);
-    [Lum_Initial,Lum_Initial_LaserOff] = StartFunction(i_scan, Lum_Initial, Lum_Initial_LaserOff);
+    disp(['Current Date and Time: ', datestr(datetime('now'))]);
+    [Lum_Initial,Lum_Initial_LaserOff] = StartFunction(i_scan, Lum_Initial, Lum_Initial_LaserOff, nomSave);
     i_scan = i_scan + 1;
     if stop_tag.Value == 1 % Check STOP Button
         break;
@@ -59,7 +62,7 @@ set(stop_tag,'Value',0);
 if isfield(panel,'UserData') && ~isempty(panel.UserData) && isfield(panel.UserData,'Betsa')
     if Init_betsa_value == 1
         h_betsa.Value = 1;
-        h_betsa.ForegroundColor = [0,1,0];
+        h_betsa.ForegroundColor = [0,0,1];
         writeline(Betsa, "RLY50"); % switches shutter toward light mode
     else
         h_betsa.Value = 0;
@@ -72,7 +75,7 @@ end
 
 if ini_light_state
     panel.light.Value = 1;
-    panel.light.ForegroundColor = [0 1 0];
+    panel.light.ForegroundColor = [0 0 1];
 else
     panel.light.Value = 0;
     panel.light.ForegroundColor = [0 0 0];
@@ -80,7 +83,7 @@ end
 
 if ini_laser_state
     panel.shutterlaser.Value = 1;
-    panel.shutterlaser.ForegroundColor = [0 1 0];
+    panel.shutterlaser.ForegroundColor = [0 0 1];
 else
     panel.shutterlaser.Value = 0;
     panel.shutterlaser.ForegroundColor = [0 0 0];

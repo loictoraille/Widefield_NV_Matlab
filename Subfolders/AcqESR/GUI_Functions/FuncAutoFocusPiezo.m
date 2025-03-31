@@ -3,7 +3,7 @@ global NI_card TestWithoutHardware
 
 if TestWithoutHardware~=1 && exist('NI_card','var') && any(isprop(NI_card,'Running')) && ~isempty(daqlist)
 
-set(hobject.autofocuspiezo,'ForegroundColor',[0,1,0]);
+set(hobject.autofocuspiezo,'ForegroundColor',[0,0,1]);
 
 [Opt_Z, z_out, foc_out, Shift_Z, fit_z_successful] = FuncIndepAutofocusPiezo(hobject);
 

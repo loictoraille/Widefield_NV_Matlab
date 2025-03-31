@@ -22,20 +22,20 @@ if strcmp(AcqParameters.SetupType,"CEA") || strcmp(AcqParameters.SetupType,"ENS1
 
         panel.switchpiezo.String = 'Piezo ON';
         panel.switchpiezo.Value = 1;
-        panel.switchpiezo.ForegroundColor = [0,1,0];
+        panel.switchpiezo.ForegroundColor = [0,0,1];
 
         if strcmp(AcqParameters.SetupType,"ENS1")
             panel.light.Value = 1;
-            panel.light.ForegroundColor = [0,1,0];
+            panel.light.ForegroundColor = [0,0,1];
         end
 
         if strcmp(AcqParameters.SetupType,"CEA")
             panel.shutterlaser.Value = 1;
-            panel.shutterlaser.ForegroundColor = [0,1,0];
+            panel.shutterlaser.ForegroundColor = [0,0,1];
         end
 
         Smart_PZ_Light_Laser_Write(panel);
-
+        disp('Piezo via NI_card connected successfully.')
     else
         disp('NI_card was not found, check if it is plugged in and turned on, then restart Matlab')
     end

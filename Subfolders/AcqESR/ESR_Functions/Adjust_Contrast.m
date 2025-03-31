@@ -13,31 +13,31 @@ while 1==1
 
 C1=[];C2=[];C3=[];C4=[];
 Pref=0;P1=0;P2=0;P3=0;P4=0;
-smb.Write(['POW 25 DBm']);
+WriteSMB('POW 25 DBm');
 
-for ii=1:Acc;
-smb.Write('OUTP OFF');
+for ii=1:Acc
+WriteSMB('OUTP OFF');
 ImageMatrix=TakeCameraImage;
 Pref=Pref+mean(mean(double(ImageMatrix(PixY-floor((PixBin-1)/2):PixY+floor(PixBin/2),PixX-floor((PixBin-1)/2):PixX+floor(PixBin/2)))));
 
-smb.Write('OUTP ON');
+WriteSMB('OUTP ON');
 
-smb.Write(['FREQ ',num2str(f1),'GHz'], Ftot(ii,1)*1e9);%Change RF freq.
+WriteSMB(['FREQ ',num2str(f1),'GHz']);%Change RF freq.
 pause(0.01);
 ImageMatrix=TakeCameraImage;
 P1=P1+mean(mean(double(ImageMatrix(PixY-floor((PixBin-1)/2):PixY+floor(PixBin/2),PixX-floor((PixBin-1)/2):PixX+floor(PixBin/2)))));
 
-smb.Write(['FREQ ',num2str(f2),'GHz'], Ftot(ii,1)*1e9);%Change RF freq.
+WriteSMB(['FREQ ',num2str(f2),'GHz']);%Change RF freq.
 pause(0.01);
 ImageMatrix=TakeCameraImage;
 P2=P2+mean(mean(double(ImageMatrix(PixY-floor((PixBin-1)/2):PixY+floor(PixBin/2),PixX-floor((PixBin-1)/2):PixX+floor(PixBin/2)))));
 
-% smb.Write(['FREQ ',num2str(f3),'GHz'], Ftot(ii,1)*1e9);%Change RF freq.
+% WriteSMB(['FREQ ',num2str(f3),'GHz']);%Change RF freq.
 % pause(0.01);
 % ImageMatrix=TakeCameraImage;
 % P3=P3+mean(mean(double(ImageMatrix(PixY-floor((PixBin-1)/2):PixY+floor(PixBin/2),PixX-floor((PixBin-1)/2):PixX+floor(PixBin/2)))));
 % 
-% smb.Write(['FREQ ',num2str(f4),'GHz'], Ftot(ii,1)*1e9);%Change RF freq.
+% WriteSMB(['FREQ ',num2str(f4),'GHz']);%Change RF freq.
 % pause(0.01);
 % ImageMatrix=TakeCameraImage;
 % P4=P4+mean(mean(double(ImageMatrix(PixY-floor((PixBin-1)/2):PixY+floor(PixBin/2),PixX-floor((PixBin-1)/2):PixX+floor(PixBin/2)))));

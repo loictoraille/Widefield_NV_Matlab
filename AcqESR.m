@@ -9,7 +9,7 @@ global TestWithoutHardware CameraType ObjCamera smb RF_Address
 
 [TestWithoutHardware, RF_Address, Data_Path, CameraChoice] = readConfigFile('Config.txt');
 
-CheckAndUpdateAcqParameters('','default');
+CheckAndUpdateAcqParameters('','default');CheckAndUpdateFitParameters('','default');
 
 %% Comments on Camera Andor
 
@@ -25,8 +25,8 @@ if isprop(f,'WindowState')
 end
 
 tgroup = uitabgroup(f);
-tab1 = uitab(tgroup,'Title','ESR');
-tab2 = hguitab(tgroup,'Title','Camera');
+tab1 = uitab(tgroup,'Title','ESR - Main Acquisition Tab');
+tab2 = hguitab(tgroup,'Title','Camera - Vizualisation');
 tab_fitparam = hguitab(tgroup,'Title','Fit Parameters');
 tab_additional = hguitab(tgroup,'Title','Additional Parameters');
 tab_readtemp = hguitab(tgroup,'Title','Continuous temperature reading');
@@ -39,6 +39,7 @@ Tab_FitParam;
 Tab_Additional;
 Tab_ReadTemp;
 Tab_AlignPiezo;
+TurnUnusedSettingsInvisible();
 
 if TestWithoutHardware
 

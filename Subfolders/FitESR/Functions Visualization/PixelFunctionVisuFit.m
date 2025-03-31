@@ -2,7 +2,7 @@ function PixelFunctionVisuFit(hobject,eventdata,ESRMatrix,x_start,y_start,x_stop
 if sum(sum(ESRMatrix(:,:,end)))~=0
 set(gcf,'WindowButtonMotionFcn', @(object,eventdata) mousemove(object,eventdata,ESRMatrix,x_start,y_start,x_stoptoend,y_stoptoend,v_MHz,FitTot,BinThr,VarWidths,NumComp,IsPair,Smoothing_Factor,Detrending_Factor,ClearFFT,RemPositive, FitParameters))
 set(gcf,'WindowButtonUpFcn', @(object,eventdata) mouseclick(object,eventdata,ESRMatrix,x_start,y_start,x_stoptoend,y_stoptoend,v_MHz,FitTot,BinThr,VarWidths,NumComp,IsPair,Smoothing_Factor,Detrending_Factor,ClearFFT,RemPositive, FitParameters))
-set(hobject,'ForegroundColor',[0,1,0]);
+set(hobject,'ForegroundColor',[0,0,1]);
 end
 
 function mousemove(object,eventdata,ESRMatrix,x_start,y_start,x_stoptoend,y_stoptoend,v_MHz,FitTot,BinThr,VarWidths,NumComp,IsPair,Smoothing_Factor,Detrending_Factor,ClearFFT,RemPositive, FitParameters)   

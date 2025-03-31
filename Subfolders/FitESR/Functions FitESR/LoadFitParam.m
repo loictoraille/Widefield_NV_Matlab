@@ -56,4 +56,6 @@ panel.fdmax.String = FitParameters.fdmax;
 panel.fwmax.String = FitParameters.fwmax;
 panel.y0max.String = FitParameters.y0max;
 
+panel.VisuFit.Value = FitParameters.VisuFit;
+
 end

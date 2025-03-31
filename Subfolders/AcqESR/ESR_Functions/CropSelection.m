@@ -1,5 +1,5 @@
 function CropSelection(object,~)
-set(object,'ForegroundColor',[0,1,0]);%Change button color to green in the GUI
+set(object,'ForegroundColor',[0,0,1]);%Change button color to blue in the GUI
 
 panel=guidata(gcbo);%handles of the graphical objects
 
@@ -48,7 +48,7 @@ panel.X2.String = num2str(x2);
 panel.Y2.String = num2str(y2);
 
 panel.Crop.Value=1;
-set(panel.Crop,'ForegroundColor',[0,1,0]);
+set(panel.Crop,'ForegroundColor',[0,0,1]);
 CropOrUpdateImage();
 UpdateWHValues()
 

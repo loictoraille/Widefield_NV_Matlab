@@ -83,7 +83,7 @@ elseif strcmp(CameraChoice,'Peak')
     
     InitAOILEVEL();
     LoadCameraParam();
-    ListUselessSettings = {'sldpix','pixmin','pixmax','pixtext','Input_PixelClock'};
+    ListUselessSettings = {'sldpix','pixmin','pixmax','pixtext','Input_PixelClock','maxspeed'};
     TurnOffUselessSettings(ListUselessSettings);
        
 else

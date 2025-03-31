@@ -3,7 +3,7 @@ global M Lum_Current
 if sum(sum(M(:,:,end)))~=0
 set(gcf,'WindowButtonMotionFcn',@mousemove)
 set(gcf,'WindowButtonUpFcn',@mouseclick)
-set(hobject,'ForegroundColor',[0,1,0]);
+set(hobject,'ForegroundColor',[0,0,1]);
 end
 
 panel = guidata(gcbo);

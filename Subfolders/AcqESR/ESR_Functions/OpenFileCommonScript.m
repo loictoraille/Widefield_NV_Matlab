@@ -35,6 +35,6 @@ end
 
 if ind_fit
     panel.Fit.Value = 1;
-    panel.Fit.ForegroundColor = [0,1,0];
+    panel.Fit.ForegroundColor = [0,0,1];
     panel = CreateFit();
 end
