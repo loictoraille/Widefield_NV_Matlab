@@ -1,6 +1,6 @@
 
 TestWithoutHardware
-1
+0
 
 RF_Address
 TCPIP::129.175.56.96::inst0::INSTR
@@ -9,4 +9,4 @@ Data_Path
 C:\Users\ADM_TORAILLEL\Desktop\Working folder\
 
 CameraChoice (uEye, Peak, Andor,heliCam)
-uEye
+heliCam
