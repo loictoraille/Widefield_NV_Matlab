@@ -14,7 +14,7 @@ function ifNo = selectInterface(c4sys)
         curIfName = c4sys.getInterfaceName(i);
         disp(num2str(i + 1) + ": " + string(curIfName));
 
-		if lenght(strfind(string(curIfName),'192.168.2.70'))
+		if length(strfind(string(curIfName),'192.168.2.70'))
 			ifNo = i;
 			disp('found interface');
 		end
