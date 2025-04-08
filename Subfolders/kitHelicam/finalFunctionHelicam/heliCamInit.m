@@ -34,7 +34,7 @@ function InitHelicam(ObjCamera)
 
 	ObjCamera.TriggerMode    = "TriggerSoftware"; 
 	%TODO : charge a config file for parameters 
-	ObjCamera.firstSetp = true;
+	ObjCamera.firstSetup = true;
 	ObjCamera.AcqMode        = false;
 	
 	% for the heliCamGetImage functiun
