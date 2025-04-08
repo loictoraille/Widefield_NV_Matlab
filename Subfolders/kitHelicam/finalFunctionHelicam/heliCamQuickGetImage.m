@@ -3,10 +3,13 @@ function ImageMatrix = heliCamGetImage(ObjCamera)
 		%TODO : Add a checkup on the state of acquisition mode
 		%  
 		c4dev = ObjCamera.c4dev;
-		
+
 		% launch frame start trigger
-		c4dev.executeCommand("TriggerSoftware");
-		
+		if strcmp(ObjCamera.triggerMode,"TriggerSoftware")
+			c4dev.executeCommand("TriggerSoftware");
+		else
+			ObjCamera.lunchSequency();
+		end
 		% load measurement data from buffer
 		timeOutBuffer = 10000;
 		c4buf = c4dev.getBuffer(timeOutBuffer); %time out

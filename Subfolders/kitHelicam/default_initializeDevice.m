@@ -56,9 +56,9 @@ function [] = default_initializeDevice(c4dev)
     % For external reference signal only
     c4dev.writeString("LockInReferenceFrequencyScaler", "Off");
     c4dev.writeString("LockInReferenceSourceSignal", "FI2");
+
     
-    % Illumination
-    
+    % Illumination    
     c4dev.writeFloat("SignalGeneratorOffset", sgnOffset);
     c4dev.writeFloat("SignalGeneratorAmplitude", sgnAmplitude);
     c4dev.writeString("LightControllerSelector", "LightController0");
