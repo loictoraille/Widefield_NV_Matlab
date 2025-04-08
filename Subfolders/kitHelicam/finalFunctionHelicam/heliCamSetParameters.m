@@ -8,15 +8,15 @@ function heliCamSetParameters(ObjCamera)
 	%TODO check change in the parameter that need to be updated 
 	% as to not set up everything each time
 	
-	Parameters that need to be set regularly
-	sensitivity
-	phase % TODO: phase exploration is something to look for
+	%Parameters that need to be set regularly
+	%sensitivity
+	%phase % TODO: phase exploration is something to look for
 	
-	frequence multiplier
-	NbFrames
-	Trigger mode
+	%frequence multiplier
+	%NbFrames
+	%Trigger mode
 	%Calibration
-	AC/DC coupling
+	%AC/DC coupling
 
 
 	if ObjCamera.firstSetup
