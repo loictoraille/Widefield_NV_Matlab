@@ -2,6 +2,13 @@ function InitHelicam(ObjCamera)
 	% establish camera connection	
 	% must be call to comunicate with the camera at startup
 
+	if ~NET.isNETSupported
+	    disp('Supported .NET Framework not found')
+	    return
+	end
+	
+	NET.addAssembly('C4HdlCLR');
+	import C4HdlCLR.*
 	
 	c4sys = heliotis.C4HandlerCLR();
 	c4sys.reset();
