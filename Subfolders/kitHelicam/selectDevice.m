@@ -14,7 +14,7 @@ function devNo = selectDevice(c4if)
         curDevName = c4if.getDeviceName(i);
         disp(num2str(i + 1) + ": " + string(curDevName));
 
-        if lenght(strfind(string(curDevName),'192.168.2.71'))
+        if length(strfind(string(curDevName),'192.168.2.71'))
         	devNo = i;
         	disp('found device');
         	return
