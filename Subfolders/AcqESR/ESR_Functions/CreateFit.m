@@ -108,8 +108,8 @@ if PixX>AllLim{1}+BinLim && PixX<AllLim{2}-BinLim && PixY>AllLim{3}+BinLim && Pi
             FitResultBin = FitResultBin/renorm_bin;
             
             if WithPreset == 1
-                panel.l23=line('parent',panel.Axes2);
-                panel.l33=line('parent',panel.Axes3);
+                panel.l23=line('parent',panel.Axes2,'tag','l23');
+                panel.l33=line('parent',panel.Axes3,'tag','l33');
                 panel.l23.XData=SPX/1000;
                 panel.l23.YData=FitPreset;
                 panel.l33.XData=SPXbin/1000;
@@ -118,8 +118,8 @@ if PixX>AllLim{1}+BinLim && PixX<AllLim{2}-BinLim && PixY>AllLim{3}+BinLim && Pi
                 set(panel.l23,'Color','g');
             end
             
-            panel.l34=line('parent',panel.Axes3);
-            panel.l24=line('parent',panel.Axes2);
+            panel.l34=line('parent',panel.Axes3,'tag','l34');
+            panel.l24=line('parent',panel.Axes2,'tag','l24');
             
             panel.l34.XData=SPXbin/1000;
             panel.l34.YData=FitResultBin;
