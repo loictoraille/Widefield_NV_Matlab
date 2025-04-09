@@ -21,6 +21,20 @@ varList = {'M', 'Ftot', 'CenterF_GHz', 'Width_MHz', 'NPoints', 'Acc', 'MWPower',
 % variables to add when doing AutoAlignPiezo
 var_to_add = {'z_out','foc_out', 'Shift_Z', 'fit_z_successful', 'X_piez', 'Y_piez', 'Corr_select_trans', 'Shift_X', 'Shift_Y', 'fit_xy_successful','Lum_Post_AutoCorr'};
 
+% Initialize variables if empty
+
+for i_init = 1:numel(varList)
+    if ~exist(varList{i_init},'var')
+        eval([varList{i_init} '= [];'])
+    end
+end
+
+for i_init = 1:numel(var_to_add)
+    if ~exist(var_to_add{i_init},'var')
+        eval([var_to_add{i_init} '= [];'])
+    end
+end
+
 if AutoAlignPiezo
     varFull = [varList, var_to_add];
 else

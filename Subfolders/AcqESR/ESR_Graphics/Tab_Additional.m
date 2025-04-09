@@ -57,8 +57,8 @@ edit_SetupType = uicontrol('Parent', tab_additional, 'Style', 'edit', 'String', 
 
 %% File Name Prefix Panel
 
-if strcmp(AcqParameters.FileNamePrefixChoice, 'Base+Date')
-    IniFileNamePrefix = date;
+if strcmp(AcqParameters.FileNamePrefixChoice, 'Date+Base')
+    IniFileNamePrefix = [date '-ESR-WideField'];
 else
     IniFileNamePrefix = AcqParameters.FileNameUserPrefix;
 end
@@ -80,14 +80,14 @@ uicontrol('Parent', cpanel_filename, 'Style', 'text', 'String',IniFileNamePrefix
 bg_prefixChoice = uibuttongroup('Parent', cpanel_filename, 'Title', '', ...
     'units', 'normalized', 'Position', [0.05 0.37 0.25 0.35], 'SelectionChangedFcn', @UpdatePrefixName, 'Tag','FileNamePrefixChoice');
 
-r1_prefixChoice = uicontrol(bg_prefixChoice, 'Style', 'radiobutton', 'String', 'Base+Date', ...
+r1_prefixChoice = uicontrol(bg_prefixChoice, 'Style', 'radiobutton', 'String', 'Date+Base', ...
     'units', 'normalized', 'FontSize', 12, 'Position', [0.05 0.5 0.9 0.5], 'Tag', 'PrefixChoiceDate');
 
 r2_prefixChoice = uicontrol(bg_prefixChoice, 'Style', 'radiobutton', 'String', 'UserDefined', ...
     'units', 'normalized', 'FontSize', 12, 'Position', [0.05 0 0.9 0.5], 'Tag', 'PrefixChoiceUser');
 
 % Sélection initiale
-if strcmp(AcqParameters.FileNamePrefixChoice, 'Base+Date')
+if strcmp(AcqParameters.FileNamePrefixChoice, 'Date+Base')
     bg_prefixChoice.SelectedObject = r1_prefixChoice;
 else
     bg_prefixChoice.SelectedObject = r2_prefixChoice;

@@ -28,7 +28,7 @@ fieldNames = {'Data_Path','Save','RandomFreq','RefMWOff','AutoAlignCrop','AutoAl
 
 defaultValues = {grandparentPath,0,0,0,0,1,0,0,1,20,200,20,2.87,200,5,1,'backup',0.1,'ms',AOI,20,40,'pixel',...
         463,1,1,0,0,8,3,6,0.2,0.2,0.5,5,5,11,0.027,294,206,300,200,'slow&compressed',"3","20",1,'ENS2',0,3,...
-        'DCTR',1,0,1,'Diode',1,'Thermocouple','PlaceHolder','Base+Date','Data_Acq'};
+        'DCTR',1,0,1,'Diode',1,'Thermocouple','PlaceHolder','Date+Base','Data_Acq'};
 
 % Loop through each field name
 for i = 1:length(fieldNames)

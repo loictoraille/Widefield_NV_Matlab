@@ -9,7 +9,7 @@ if SaveValue
 
     while exist(fullfile(PATH,[nomSave '.mat']), 'file')==2
         ch = ch + 1;    
-        nomSave = [nomSave '-' sprintf('%03d', ch)]; % Zero-padded number
+        nomSave = [strIn '-' sprintf('%03d', ch)]; % Zero-padded number
     end
 else
     nomSave = 'backup';
