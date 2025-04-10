@@ -35,6 +35,9 @@ nomSave = NameGen(AcqParameters.Data_Path,AcqParameters.FileNamePrefix,AcqParame
 while i_scan <= TotalScan
     disp(['Starting acquisition number ' num2str(i_scan) ' / ' num2str(TotalScan)]);
     disp(['Current Date and Time: ', datestr(datetime('now'))]);
+    if AcqParameters.RepeatScan > 1 && i_scan ~= 1
+        nomSave = GenNextFileName(nomSave); % so that the date change does not change the name
+    end
     [Lum_Initial,Lum_Initial_LaserOff] = StartFunction(i_scan, Lum_Initial, Lum_Initial_LaserOff, nomSave);
     i_scan = i_scan + 1;
     if stop_tag.Value == 1 % Check STOP Button

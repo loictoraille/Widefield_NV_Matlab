@@ -13,10 +13,6 @@ Data_Path = AcqParameters.Data_Path;
 
 LoadParamFromAcqParamScript;
 
-if AcqParameters.RepeatScan > 1 && i_scan ~= 1
-    nomSave = GenNextFileName(nomSave); % so that the date change does not change the name
-end
-
 DelEx = AcqParameters.DelEx; % DelEx standalone uses the script, so we get it out
 
 [~,sizelevel] = size(AcqParameters.AOI.Width);
