@@ -346,6 +346,15 @@ if panel.stop.Value~=1
             disp('Edge of scanned Y range reached');
         end
         disp(' ');
+
+        if isnan(Opt_X)
+            Opt_X = IniX;
+            disp('Opt_X was NaN, reverting to IniX');
+        end
+        if isnan(Opt_Y)
+            Opt_Y = IniY;
+            disp('Opt_Y was NaN, reverting to IniY');
+        end
     end
 
 
