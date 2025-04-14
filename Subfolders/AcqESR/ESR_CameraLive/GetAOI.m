@@ -27,11 +27,16 @@ elseif strcmp(CameraType,'heliCam') %TODO: creat the ObjCamera.ROIPOsition
 	disp("warning (dev) : ObjCamera.ROIPOsition might not have been defind yet");
 	%% another possibiility is to write :
 	% AOI_re = HardWrittenAOIEdges.m
-    [AOI_re] = ObjCamera.ROIPOsition;
-    AOI.X = AOI_re(1);
-    AOI.Y = AOI_re(2);
-    AOI.Width = AOI_re(3);
-    AOI.Height = AOI_re(4);
+    % [AOI_re] = ObjCamera.ROIPOsition;
+    % AOI.X = AOI_re(1);
+    % AOI.Y = AOI_re(2);
+    % AOI.Width = AOI_re(3);
+    % AOI.Height = AOI_re(4);
+
+    AOI.X = 0;
+    AOI.Y = 0;
+    AOI.Width = 542;
+    AOI.Height = 512;
 
 end
 
