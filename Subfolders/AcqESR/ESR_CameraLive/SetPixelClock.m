@@ -21,7 +21,7 @@ if strcmp(CameraType,'Andor')
 elseif strcmp(CameraType,'uEye') 
     ObjCamera.Timing.PixelClock.Set(PixelClockIn);
 
-    #TODO : is it fine to have the Peak and the heliCam undefined
+    %TODO : is it fine to have the Peak and the heliCam undefined
 end
 
 end

@@ -91,7 +91,7 @@ elseif strcmp(CameraType,'Peak')
     max_fr_rate = bound_frame_rate(2);
     set(src_mycam, 'AcquisitionFrameRate', max_fr_rate);    
 elseif strcmp(CameraType,'heliCam')
-	#TODO make sure the right value are loaded
+	%TODO make sure the right value are loaded
 	disp("OptimizeAcquisitionSpeed() not define for heliCam")
 end
 

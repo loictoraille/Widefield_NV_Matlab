@@ -23,7 +23,7 @@ elseif strcmp(CameraType,'Peak')
     AOI.Width = AOI_re(3);
     AOI.Height = AOI_re(4);
 
-elseif strcmp(CameraType,'heliCam') #TODO: creat the ObjCamera.ROIPOsition 
+elseif strcmp(CameraType,'heliCam') %TODO: creat the ObjCamera.ROIPOsition 
 	disp("warning (dev) : ObjCamera.ROIPOsition might not have been defind yet");
 	%% another possibiility is to write :
 	% AOI_re = HardWrittenAOIEdges.m

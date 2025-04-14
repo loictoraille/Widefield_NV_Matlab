@@ -14,7 +14,7 @@ elseif strcmp(CameraType,'Peak')
 
 elseif strcmp('heliCam')
 	disp('warning : sensitivity is not set up for the helicam');
-	heliCamSetExp(ObjCamera,ExpIn); # TODO: to set the exposure
+	heliCamSetExp(ObjCamera,ExpIn); % TODO: to set the exposure
 else
 end
 
