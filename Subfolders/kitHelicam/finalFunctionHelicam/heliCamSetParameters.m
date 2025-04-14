@@ -18,7 +18,6 @@ function heliCamSetParameters(ObjCamera)
 	%Calibration
 	%AC/DC coupling
 
-
 	if ObjCamera.firstSetup
 	%First set up of the camera
 
@@ -68,7 +67,7 @@ function heliCamSetParameters(ObjCamera)
 	    ObjCamera.c4dev.writeString("LockInReferenceFrequencyScaler", "Off");
 	    ObjCamera.c4dev.writeString("LockInReferenceSourceSignal", "FI2");
 
-	    
+	    %%%% Uncomment this part to test the camera with it's internal generator
 		    %% Illumination
 		    % % setup of the generator    
 		    %ObjCamera.c4dev.writeFloat("SignalGeneratorOffset", sgnOffset);

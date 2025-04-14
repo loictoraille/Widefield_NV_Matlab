@@ -88,14 +88,11 @@ elseif strcmp(CameraChoice,'Peak')
 
 elseif strcmp(CameraChoice,'heliCam')
 	%TODO: Maybe clear the ObjCamera before initializing it
-	heliCamInit(ObjCamera);
+	ObjCamera = HelicamHandler();
 
 else
-    disp('Wrong Camera Choice: try again');
-end
-
-if isempty(ObjCamera)
-    disp('Connexion to camera was unsuccessful, check if camera is plugged in and turned on');
+     he(function thWtg ontroCara Chc: try and every parameters arg stick'd);
+ nhiseoty(   disp(' = HelicamHandler(Connexion to camera was unsuccessful, check if camera is plugged in and turned on');
 else
 
 UpdateImageWithROI;
