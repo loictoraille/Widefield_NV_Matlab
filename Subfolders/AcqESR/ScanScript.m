@@ -440,8 +440,6 @@ if ~TestWithoutHardware
     SwitchGEN('OFF');%RF OFF
 end
 
-nomSave = panel.nameFile.String(7:end);
-
 fullNameSave = [Data_Path nomSave];
 load([getPath('Param') 'AcqParameters.mat']);load([getPath('Param') 'FitParameters.mat']);    
 if ~TestWithoutHardware    

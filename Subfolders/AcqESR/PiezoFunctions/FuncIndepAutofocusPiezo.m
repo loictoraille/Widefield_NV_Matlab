@@ -153,6 +153,12 @@ if panel.stop.Value~=1
         if Opt_Z == LeftZ ||  Opt_Z == RightZ
             disp('Edge of scanned Z range reached');
         end
+
+        if isnan(Opt_Z)
+            Opt_Z = IniZ;
+            disp('Opt_Z was NaN, reverting to IniZ');
+        end
+
         disp(' ');
     end
 

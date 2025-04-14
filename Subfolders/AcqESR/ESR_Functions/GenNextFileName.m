@@ -18,7 +18,7 @@ else
     
     % Generate the new file name with the incremented number
     newNum = sprintf('%03d', num + 1);
-    newFileName = [baseName(1:end-length(numStr{1})), num2str(newNum), '.mat'];
+    newFileName = [baseName(1:end-length(numStr{1})), num2str(newNum)];
 
 end
 

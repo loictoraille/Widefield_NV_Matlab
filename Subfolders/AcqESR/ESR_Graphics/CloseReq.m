@@ -58,8 +58,12 @@ end
 
 if TestWithoutHardware~=1 && ~isempty(panel) && isfield(panel,'UserData') && isfield(panel.UserData,'Lakeshore') 
     Lakeshore = panel.UserData.Lakeshore;
-    flush(Lakeshore);
-    clear Lakeshore
+    try
+        flush(Lakeshore);
+        clear Lakeshore
+    catch
+        disp('Unable to reach Lakeshore');
+    end
 end
 
 if TestWithoutHardware~=1 && ~isempty(panel) && isfield(panel,'UserData') && isfield(panel.UserData,'Betsa')
