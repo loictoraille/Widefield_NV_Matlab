@@ -14,7 +14,7 @@ elseif strcmp(CameraType,'Peak')
         ImageSize = 12; % need to be checked
     end
 
-elseif strcmp('heliCam') %TODO to adapt
+elseif strcmp(CameraType,'heliCam') %TODO to adapt
 	disp("warning (dev): GetsBitsPerPixel not set")
 	ImageSize = 16;
 

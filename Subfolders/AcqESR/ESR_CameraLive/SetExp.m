@@ -12,7 +12,7 @@ elseif strcmp(CameraType,'Peak')
     src_mycam = get(ObjCamera, 'Source');    
     set(src_mycam, 'ExposureTime', 1000*ExpIn); % Peak in �s
 
-elseif strcmp('heliCam')
+elseif strcmp(CameraType,'heliCam')
 	disp('warning : sensitivity is not set up for the helicam');
 	heliCamSetExp(ObjCamera,ExpIn); % TODO: to set the exposure
 else
