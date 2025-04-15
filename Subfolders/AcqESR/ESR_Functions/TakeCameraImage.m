@@ -40,7 +40,8 @@ elseif strcmp(CameraType,'Peak')
 elseif strcmp(CameraType,'heliCam')
 	% TODO to get a single image mode for quick and live acquisition
 	disp('Unfinished TAkeCameraImage')
-	if ObjCamera.quickmode :
+	if ObjCamera.quickmode
+		%TODO: improve the change between
 	
 		ImageMatrix = heliCamGetQuickImage(ObjCamera); % quick mode setup	
 	else
