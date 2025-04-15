@@ -5,7 +5,7 @@ function heliCamSetParameters(ObjCamera)
 	% structure, depending on the type of the parameter different parameters must be called
 	
 
-	%TODO check change in the parameter that need to be updated 
+	%TODO check change in the parameters that need to be updated 
 	% as to not set up everything each time
 	
 	%Parameters that need to be set regularly
@@ -36,12 +36,12 @@ function heliCamSetParameters(ObjCamera)
 		
 		% Illumination Driving Signal
 		
-			% Signal generator DC offset in % of full range
-			ObjCamera.sgnOffset = 20.0;
-			% Signal generator peak-to-peak amplitude in % of full range
-			ObjCamera.sgnAmplitude = 10.0;
-			% Signal generator frequency in Hz
-			ObjCamera.sgnFrequency = 9975.0;
+		% Signal generator DC offset in % of full range
+		ObjCamera.sgnOffset = 20.0;
+		% Signal generator peak-to-peak amplitude in % of full range
+		ObjCamera.sgnAmplitude = 10.0;
+		% Signal generator frequency in Hz
+		ObjCamera.sgnFrequency = 9975.0;
 
 
 	    ObjCamera.c4dev.writeString("TriggerSelector", "RecordingStart");
@@ -70,14 +70,17 @@ function heliCamSetParameters(ObjCamera)
 	    %%%% Uncomment this part to test the camera with it's internal generator
 		    %% Illumination
 		    % % setup of the generator    
-		    %ObjCamera.c4dev.writeFloat("SignalGeneratorOffset", sgnOffset);
-		    %ObjCamera.c4dev.writeFloat("SignalGeneratorAmplitude", sgnAmplitude);
-		    %ObjCamera.c4dev.writeString("LightControllerSelector", "LightController0");
-		    %ObjCamera.c4dev.writeString("SignalGeneratorMode", "On");
-		    %ObjCamera.c4dev.writeFloat("SignalGeneratorFrequency", sgnFrequency);
-		    %ObjCamera.c4dev.writeString("LightControllerSource", "SignalGenerator");
+	    ObjCamera.c4dev.writeFloat("SignalGeneratorOffset", ObjCamera.sgnOffset);
+	    ObjCamera.c4dev.writeFloat("SignalGeneratorAmplitude", ObjCamera.sgnAmplitude);
+	    ObjCamera.c4dev.writeString("LightControllerSelector", "LightController0");
+	    ObjCamera.c4dev.writeString("SignalGeneratorMode", "On");
+	    ObjCamera.c4dev.writeFloat("SignalGeneratorFrequency",ObjCamera.sgnFrequency);
+	    ObjCamera.c4dev.writeString("LightControllerSource", "SignalGenerator");
 
 		ObjCamera.firstSetup = false;
+		pause(1); %TODO safety measure to let time to the camera to do the setup
 	end		
+
+	
 
 end
