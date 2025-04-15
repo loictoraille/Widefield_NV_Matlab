@@ -8,7 +8,7 @@ function heliCamStartAcqMode(ObjCamera)
 	if ObjCamera.AcqMode
 		disp("warning : Camera mode already set to Acquisition"); % the camera may crash if the command is send when the camera 
 	else
-		Objcamera.c4dev.startAcquisition(4); % I do not know why it take an integer but 4 worked so far TODO: find why is this parameter important
+		ObjCamera.c4dev.startAcquisition(4); % I do not know why it take an integer but 4 worked so far TODO: find why is this parameter important
 		ObjCamera.AcqMode = true;
 	end
 end
