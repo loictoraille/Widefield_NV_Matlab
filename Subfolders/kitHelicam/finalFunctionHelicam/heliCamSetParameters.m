@@ -83,7 +83,7 @@ function heliCamSetParameters(ObjCamera)
 
 		ObjCamera.firstSetup = false;
 		disp("heliCamSetParameters dev : First set of the Camera is default, pause of one seconde");
-		pause(1); %TODO safety measure to let time to the camera to do the setup
+		pause(3); %TODO safety measure to let time to the camera to do the setup
 	end		
 
 	
