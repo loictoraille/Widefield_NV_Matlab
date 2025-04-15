@@ -16,8 +16,8 @@ function ImageMatrix = heliCamGetImage(ObjCamera)
 		c4buf = ObjCamera.c4dev.getBuffer(timeOutBuffer); %time out
 		
 		% retrieve rawI and rawQ component
-		NFrames = ObjCamera.c4buf.readInteger("ChunkPartCount")/2;
-		frameDimension = ObjCamera.c4buf.getPartDimension(1);
+		NFrames = c4buf.readInteger("ChunkPartCount")/2;
+		frameDimension = c4buf.getPartDimension(1);
 		width = frameDimension(1);
 		height = frameDimension(2);
 		
