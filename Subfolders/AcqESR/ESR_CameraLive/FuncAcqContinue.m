@@ -10,7 +10,7 @@ set(h.acqcont,'Value',1);
 if strcmp(CameraType,'Andor')
     maxLum = 65535;
 elseif strcmp(CameraType,"heliCam")
-	maxLum = 600; %TODO : find the actual max value
+	maxLum = ObjCamera.maxLum; %TODO : find the actual max value
 else
     maxLum = 4095;
 end

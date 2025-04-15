@@ -41,6 +41,9 @@ classdef  HelicamHandler < handle
 		removeOffset = false; % TODO: setup a calibration methode
 		quickmode = true; % TODO: add methode to change the configuration between quick and slow acquisition
 
+		% maximum brightness of pixel
+		maxLum = 600; % TODO: change to the real value of the camera
+
 
 	end
 

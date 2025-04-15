@@ -3,6 +3,8 @@ global CameraType
 
 if strcmp(CameraType,'Andor')
     maxLum = 65535;
+elseif strcmp(CameraType,"heliCam")
+	maxLum = 600; %TODO: mustfound a way to carry this variable accross function 
 else
     maxLum = 4095;
 end
