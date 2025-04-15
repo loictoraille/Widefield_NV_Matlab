@@ -18,6 +18,10 @@ function heliCamSetParameters(ObjCamera)
 	%Calibration
 	%AC/DC coupling
 
+
+	if ObjCamera.AcqMode
+		disp("WARNING : AcqMode = true ,the setting of parameters might not work ");
+	end
 	if ObjCamera.firstSetup
 	%First set up of the camera
 
@@ -78,6 +82,7 @@ function heliCamSetParameters(ObjCamera)
 	    ObjCamera.c4dev.writeString("LightControllerSource", "SignalGenerator");
 
 		ObjCamera.firstSetup = false;
+		disp("heliCamSetParameters dev : First set of the Camera is default, pause of one seconde");
 		pause(1); %TODO safety measure to let time to the camera to do the setup
 	end		
 
