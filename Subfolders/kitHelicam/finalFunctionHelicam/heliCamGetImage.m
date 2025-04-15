@@ -52,9 +52,6 @@ function ImageMatrix = heliCamGetImage(ObjCamera)
 		end
 		% release buffer
 		c4buf.release();
-		% launch frame start trigger
-		ObjCamera.c4dev.executeCommand("TriggerSoftware");		
-		end
 		
 		ImageMatrix = squeeze(sqrt(mean(I.^2 + Q.^2)));
 
