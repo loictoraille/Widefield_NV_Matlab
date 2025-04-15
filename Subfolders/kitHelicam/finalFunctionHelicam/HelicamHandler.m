@@ -32,6 +32,7 @@ classdef  HelicamHandler < handle
 		firstSetup = true;
 		AcqMode = false;
 		removeOffset = false; % TODO: setup a calibration methode
+		quickmode = true; % TODO: add methode to change the configuration between quick and slow acquisition
 
 
 	end
