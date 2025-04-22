@@ -30,7 +30,7 @@ function heliCamSetParameters(ObjCamera)
 		% Number of intergration periods
 		ObjCamera.NPeriods = 5;
 		% Background suppression on/off switch, 'AC' or 'DC'
-		ObjCamera.coupling = 'DC';
+		ObjCamera.coupling = 'AC';
 		% Reference frequency in Hz
 		ObjCamera.refFrequency = 10000.0;
 		% Source of reference signal, 'Internal' or 'External'
@@ -47,6 +47,8 @@ function heliCamSetParameters(ObjCamera)
 		% Signal generator frequency in Hz
 		ObjCamera.sgnFrequency = 9975.0;
 
+		%Number of frame per burst of acquisition
+		ObjCamera.NbFrames = 4; %minimum value
 
 	    ObjCamera.c4dev.writeString("TriggerSelector", "RecordingStart");
 	    ObjCamera.c4dev.writeString("TriggerMode", "Off");
@@ -81,9 +83,11 @@ function heliCamSetParameters(ObjCamera)
 	    ObjCamera.c4dev.writeFloat("SignalGeneratorFrequency",ObjCamera.sgnFrequency);
 	    ObjCamera.c4dev.writeString("LightControllerSource", "SignalGenerator");
 
-		ObjCamera.firstSetup = false;
-		disp("heliCamSetParameters dev : First set of the Camera is default, pause of one seconde");
-		pause(3); %TODO safety measure to let time to the camera to do the setup
+	    ObjCamera.c4dev.writeInteger("AcquisitionBurstFrameCount",ObjCamera.NbFrames);
+			ObjCamera.firstSetup = false;
+			disp("heliCamSetParameters dev : default mode to fast");
+			disp("heliCamSetParameters dev : First set of the Camera is default, pause of one seconde");
+			pause(3); %TODO safety measure to let time to the camera to do the setup
 	end		
 
 	

@@ -14,12 +14,14 @@ classdef  HelicamHandler < handle
 		%%%%%%%%%%% Camera parameters
 
 		TriggerMode;
-		NFramesDiscard = 3;
+		NFramesDiscard = 1; %TODO: check if this value is really irrelevent, i.e if first frame are really not exploitable
 		sensitivity = 0.5;
 		% Number of intergration periods
-		NPeriods = 5;
+		NPeriods = 10; % Increase this value and exposure to get more accurate values
 		
-		coupling = 'DC';
+		NbFrames = 4;
+		
+		coupling = 'AC';
 		% Reference frequency in Hz
 		refFrequency = 10000.0;
 		% Source of reference signal, 'Internal' or 'External'
@@ -33,7 +35,8 @@ classdef  HelicamHandler < handle
 		sgnAmplitude = 10.0;
 		% Signal generator frequency in Hz
 		sgnFrequency = 9975.0;
-		
+
+			
 		%%%%%%%%%%% other persistante parameters
 
 		firstSetup = true;
