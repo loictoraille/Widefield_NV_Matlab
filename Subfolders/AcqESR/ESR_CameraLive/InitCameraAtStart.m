@@ -88,7 +88,7 @@ elseif strcmp(CameraChoice,'Peak')
 
 elseif strcmp(CameraChoice,'heliCam')
 	%TODO: Maybe clear the ObjCamera before initializing it
-	if ~isempty(ObjCamera)
+	if isempty(ObjCamera)
 		ObjCamera = HelicamHandler();
 		heliCamSetParameters(ObjCamera);
 		CameraType = "heliCam";

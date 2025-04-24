@@ -471,7 +471,7 @@ if  i_scan == AcqParameters.RepeatScan
     panel.stop.Value=0;panel.stop.ForegroundColor = [1,0,0];
 
     if ~TestWithoutHardware
-        InitCameraAtStart(CameraType);
+        InitCameraAtStart(CameraType); % why ?
     end
 end
 
@@ -479,5 +479,5 @@ panel.start.Value=0;panel.start.ForegroundColor = [1,0,0];
 panel.stop.Value=0;panel.stop.ForegroundColor = [1,0,0];
 
 
-% TODO: Why asking for the camera again
+% TODO: Why doing it again ?
 InitCameraAtStart(CameraType)
