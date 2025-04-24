@@ -1,6 +1,6 @@
 *.asv
+*.mat
 .DS_Store
 html/
 documentation/
-*.asv
 Config.txt
