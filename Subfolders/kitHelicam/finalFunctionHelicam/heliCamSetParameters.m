@@ -24,17 +24,18 @@ function heliCamSetParameters(ObjCamera)
 	end
 	if ObjCamera.firstSetup
 	%First set up of the camera
-
+		disp("heliCamSetParameters : default mode");
 	 %TODO: Initialize default parameters elsewhere to avoid conflict
-		ObjCamera.sensitivity = 0.5;
+		%ObjCamera.sensitivity = 0.5;
 		% Number of intergration periods
-		ObjCamera.NPeriods = 5;
+		%ObjCamera.NPeriods = 5;
 		% Background suppression on/off switch, 'AC' or 'DC'
 		ObjCamera.coupling = 'AC';
 		% Reference frequency in Hz
 		ObjCamera.refFrequency = 10000.0;
 		% Source of reference signal, 'Internal' or 'External'
 		ObjCamera.refSource = 'Internal';
+		disp("default to internal oscillateur for setting");
 		% Expected frequency deviation of external reference input in %
 		ObjCamera.expFrequencyDev = 5;
 		

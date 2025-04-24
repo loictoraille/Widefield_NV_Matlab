@@ -46,6 +46,7 @@ classdef  HelicamHandler < handle
 
 		% maximum brightness of pixel
 		maxLum = 600; % TODO: change to the real value of the camera
+		lumFactor = 10; % TODO: adapt in a way the luminosity of the camera to the live mode for better representation
 
 
 	end

@@ -478,4 +478,6 @@ end
 panel.start.Value=0;panel.start.ForegroundColor = [1,0,0];
 panel.stop.Value=0;panel.stop.ForegroundColor = [1,0,0];
 
+
+% TODO: Why asking for the camera again
 InitCameraAtStart(CameraType)

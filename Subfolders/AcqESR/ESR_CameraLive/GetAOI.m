@@ -35,8 +35,8 @@ elseif strcmp(CameraType,'heliCam') %TODO: creat the ObjCamera.ROIPOsition
 
     AOI.X = 0;
     AOI.Y = 0;
-    AOI.Width = 542;
-    AOI.Height = 512;
+    AOI.Width = 512;
+    AOI.Height = 542;
 
 end
 

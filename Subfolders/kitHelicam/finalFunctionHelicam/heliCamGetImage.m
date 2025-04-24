@@ -1,6 +1,6 @@
 function ImageMatrix = heliCamGetImage(ObjCamera)
 
-
+		% TODO: optimize the Camera 
 		% function that acquire the images at periodique time stamp
 
 		if ~ ObjCamera.AcqMode % should ideally never happend
@@ -53,7 +53,6 @@ function ImageMatrix = heliCamGetImage(ObjCamera)
 		% release buffer
 		c4buf.release();
 		
-		ImageMatrix = squeeze(sqrt(mean(I.^2 + Q.^2)));
-
+		ImageMatrix = squeeze(sqrt(mean(I.^2 + Q.^2)))*ObjCamera.lumFactor;
 
 end
