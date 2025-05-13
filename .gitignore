@@ -1,5 +1,4 @@
 *.asv
-*.sav
 .DS_Store
 html/
 documentation/
