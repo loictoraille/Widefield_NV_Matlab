@@ -11,9 +11,9 @@ C1=get(h.Axes_Camera,'CurrentPoint');%Get coordinate of point where the mousecli
 finalrect=rbbox;%function to draw a rectangle box and wait for mouseclick
 C2=get(h.Axes_Camera,'CurrentPoint');%Get coordinate of point where the mouseclick happens
 
-% Convert to pixels if calibration is in �m
+% Convert to pixels if calibration is in um
 if strcmp(h.calibunit.SelectedObject.String,'nm')
-    size_pix = str2double(h.pixelcalibvalue.String)/1000; % in �m
+    size_pix = str2double(h.pixelcalibvalue.String)/1000; % in um
     C1_int = C1;clear C1;
     C2_int = C2;clear C2;
     C1 = round(C1_int/size_pix);

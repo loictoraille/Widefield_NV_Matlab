@@ -17,7 +17,7 @@ elseif strcmp(CameraType,'uEye')
 elseif strcmp(CameraType,'Peak')
     src_mycam = get(ObjCamera, 'Source');
     res = propinfo(src_mycam,'ExposureTime');
-    ExpRange.Minimum = res.ConstraintValue(1)/1000; % Peak in �s
+    ExpRange.Minimum = res.ConstraintValue(1)/1000; % Peak in us
     ExpRange.Maximum = res.ConstraintValue(2)/1000;
 
 elseif strcmp(CameraType,'heliCam')

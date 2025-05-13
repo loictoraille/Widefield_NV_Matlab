@@ -5,7 +5,7 @@ global ObjCamera CameraType
 if strcmp(CameraType,'Andor') 
     [rc, PixelReadoutRateIndex] = AT_GetEnumIndex(ObjCamera,'PixelReadoutRate');
     AT_CheckWarning(rc);
-    % donne le num�ro et il faut utiliser la fonction d'apr�s pour
+    % donne le numero et il faut utiliser la fonction d'apres pour
     % convertir
 
     [rc,PixelReadoutRateStatus] = AT_GetEnumStringByIndex(ObjCamera,'PixelReadoutRate',PixelReadoutRateIndex,256);
