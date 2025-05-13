@@ -19,6 +19,10 @@ elseif strcmp(CameraType,'uEye')
     ObjCamera.Size.AOI.Set(SetLeft, SetTop, SetWidth, SetHeight);    
 elseif strcmp(CameraType,'Peak')    
     set(ObjCamera,'ROI',[SetLeft, SetTop, SetWidth, SetHeight]);
+elseif strcmp(CameraType,'heliCam') %TODO : check here for debug
+	%% the same solution is used for the heliCam as in the Peak case
+    %set(ObjCamera,'ROI',[SetLeft, SetTop, SetWidth, SetHeight]); %commented because it break the script
+    %% TODO: Is it OK to ignore the commande ? 
 else
     
 end

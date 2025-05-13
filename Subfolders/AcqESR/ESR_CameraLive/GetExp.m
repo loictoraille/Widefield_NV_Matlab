@@ -14,8 +14,15 @@ elseif strcmp(CameraType,'uEye')
     Exp_unit = 'ms';
 elseif strcmp(CameraType,'Peak')
     src_mycam = get(ObjCamera, 'Source');
-    Exp = src_mycam.ExposureTime/1000; % to correct for Peak which is in µs
+    Exp = src_mycam.ExposureTime/1000; % to correct for Peak which is in us
     Exp_unit = 'ms';
+
+elseif strcmp(CameraType,'heliCam')
+	%TODO: the acquisition of the current exposition
+	disp("warning (dev) : GetExp not set yet")
+	Exp = 1;
+	Exp_unit = "ms";
+
 end
 
 

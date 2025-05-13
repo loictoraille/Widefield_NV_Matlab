@@ -15,6 +15,8 @@ AOIParameters.CalibUnit_str = AcqParameters.CalibUnit_str;
 
 if strcmp(CameraType,'Andor')
     maxLum = 65535;
+elseif strcmp(CameraType,"heliCam")
+	maxLum = 600; %TODO : harcoded value here
 else
     maxLum = 4095;
 end

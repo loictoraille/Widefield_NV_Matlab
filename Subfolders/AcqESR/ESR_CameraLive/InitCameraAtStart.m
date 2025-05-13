@@ -85,19 +85,24 @@ elseif strcmp(CameraChoice,'Peak')
     LoadCameraParam();
     ListUselessSettings = {'sldpix','pixmin','pixmax','pixtext','Input_PixelClock','maxspeed'};
     TurnOffUselessSettings(ListUselessSettings);
-       
-else
-    disp('Wrong Camera Choice: try again');
+
+elseif strcmp(CameraChoice,'heliCam')
+	%TODO: Maybe clear the ObjCamera before initializing it
+	if isempty(ObjCamera)
+		ObjCamera = HelicamHandler();
+		heliCamSetParameters(ObjCamera);
+		CameraType = "heliCam";
+	end
 end
 
 if isempty(ObjCamera)
     disp('Connexion to camera was unsuccessful, check if camera is plugged in and turned on');
 else
 
-UpdateImageWithROI;
+	UpdateImageWithROI;
 
-title(['Max pixel value ' num2str(max(max(ImageZero(:,3:end-2)))) '/' num2str(maxLum)]);
-set(haxes,'Tag','Axes_Camera');
+	title(['Max pixel value ' num2str(max(max(ImageZero(:,3:end-2)))) '/' num2str(maxLum)]);
+	set(haxes,'Tag','Axes_Camera');
 
 end
 

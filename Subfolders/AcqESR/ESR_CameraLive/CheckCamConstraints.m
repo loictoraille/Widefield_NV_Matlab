@@ -8,7 +8,8 @@ if strcmp(CameraType,'uEye')
         disp('Minimum Width with uEye Camera is 16 pixel')
     end
     ROISquareSize = max(16,ROISquareSize-mod(ROISquareSize,-4));
-elseif strcmp(CameraType,'Andor') 
+elseif strcmp(CameraType,'Andor')
+elseif strcmp(CameraType,'heliCam') % sames as the Andor, they will hardwritten 
 elseif strcmp(CameraType,'Peak')
     if ROISquareSize < 256
         disp('Minimum Width with Peak Camera is 256 pixel')

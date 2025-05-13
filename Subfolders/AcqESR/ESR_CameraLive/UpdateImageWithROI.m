@@ -2,6 +2,8 @@
 % Define new area
 if strcmp(CameraType,'Andor')
     maxLum = 65535;
+elseif strcmp(CameraType,"heliCam")
+	maxLum = 600; %TODO: "unhardcode" this, the variable ObjCamera.maxLum
 else
     maxLum = 4095;
 end

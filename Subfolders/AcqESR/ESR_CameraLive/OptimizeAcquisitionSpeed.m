@@ -90,6 +90,9 @@ elseif strcmp(CameraType,'Peak')
     bound_frame_rate = propinfo(src_mycam,'AcquisitionFrameRate').ConstraintValue;
     max_fr_rate = bound_frame_rate(2);
     set(src_mycam, 'AcquisitionFrameRate', max_fr_rate);    
+elseif strcmp(CameraType,'heliCam')
+	%TODO make sure the right value are loaded
+	disp("OptimizeAcquisitionSpeed() not define for heliCam")
 end
 
 end
