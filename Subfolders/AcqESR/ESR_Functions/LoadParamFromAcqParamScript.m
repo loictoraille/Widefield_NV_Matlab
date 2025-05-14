@@ -22,3 +22,5 @@ FrameRate = AcqParameters.FrameRate;
 PixelClock = AcqParameters.PixelClock;
 
 SaveMode = AcqParameters.SaveMode;
+
+MaxLum = AcqParameters.MaxLum;

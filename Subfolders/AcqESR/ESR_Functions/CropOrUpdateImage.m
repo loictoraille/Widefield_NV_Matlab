@@ -11,6 +11,7 @@ end
 
 load([pname fname '.mat'],'AcqParameters');
 [~,sizelevel] = size(AcqParameters.AOI.Width);
+MaxLum = AcqParameters.MaxLum;
 
 panel=guidata(gcbo);
 
@@ -39,10 +40,11 @@ end
 ax = panel.Axes1;
 AOIParameters.PixelCalib_nm = str2double(panel.pixelcalibvalue.String);
 AOIParameters.CalibUnit_str = panel.calibunit.SelectedObject.String;
-PrintImage(ax,ImageMatrix,AOIParameters);
+PrintImage(ax,ImageMatrix,AOIParameters,MaxLum);
 PixXStart = round(AOIParameters.AOI.Width/2);
 PixYStart = round(AOIParameters.AOI.Height/2);
 UpdatePixPos(PixXStart,PixYStart);
 PrintESR(panel,MatToPlot);
+panel.UserData.AOIParameters = AOIParameters;
 
 end

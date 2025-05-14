@@ -99,9 +99,9 @@ if isempty(ObjCamera)
     disp('Connexion to camera was unsuccessful, check if camera is plugged in and turned on');
 else
 
-	UpdateImageWithROI;
+	UpdateImageWithROIScript;
 
-	title(['Max pixel value ' num2str(max(max(ImageZero(:,3:end-2)))) '/' num2str(maxLum)]);
+	title(haxes,['Max pixel value = ' num2str(round(max(max(ImageZero))))]);
 	set(haxes,'Tag','Axes_Camera');
 
 end

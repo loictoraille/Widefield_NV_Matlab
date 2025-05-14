@@ -13,13 +13,7 @@ AOIParameters.AOI.Width = AcqParameters.AOI.Width(min(sizelevel,AcqParameters.AO
 AOIParameters.PixelCalib_nm = AcqParameters.PixelCalib_nm;
 AOIParameters.CalibUnit_str = AcqParameters.CalibUnit_str;
 
-if strcmp(CameraType,'Andor')
-    maxLum = 65535;
-elseif strcmp(CameraType,"heliCam")
-	maxLum = 600; %TODO : harcoded value here
-else
-    maxLum = 4095;
-end
+MaxLum = AcqParameters.MaxLum;
 
 haxes = findobj('tag','Axes_Camera');
 
@@ -28,14 +22,14 @@ haxes = findobj('tag','Axes_Camera');
 Data_Image = handleImage.CData;
 
 axes(haxes);%Set current axes
-handleImage = imagesc(x_axis,y_axis,Data_Image,[0,maxLum]);
+handleImage = imagesc(x_axis,y_axis,Data_Image,[0,MaxLum]);
 axis('image');
 xlabel(x_label);
 ylabel(y_label);
 c = colorbar;
 c.Label.FontSize = 11;
 c.Label.String = 'Photoluminescence';
-title(['Max pixel value ' num2str(max(max(Data_Image(:,3:end-2)))) '/' num2str(maxLum)]);
+title(haxes,['Max pixel value = ' num2str(round(max(max(Data_Image))))]);
 set(haxes,'Tag','Axes_Camera');
 
 end

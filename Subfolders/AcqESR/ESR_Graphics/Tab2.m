@@ -239,3 +239,12 @@ uicontrol('Parent', tab2, 'Style', 'togglebutton','tag','autofocuspiezo','Foregr
 uicontrol('Parent', tab2, 'Style', 'togglebutton','tag','shutterBetsa','ForegroundColor',[0,0,0],'Value',0, 'String', 'Shutter Betsa', 'FontSize',14,'units','normalized',...
 'Tooltip','Switches the shutter from Betsa between Raman measure and light','Position', [0.588, 0.93, 0.08, 0.04], 'Callback', @SwitchShutterBetsa);
 
+%% MaxLum
+
+uicontrol('Parent',tab2,'Style','text','FontSize',10,'units','normalized','HorizontalAlignment','center','Position',[0.81 0.127 0.035 0.025],'String','MaxLum');
+uicontrol('Parent',tab2,'Style','edit','tag','MaxLumLive','FontSize',10,'units','normalized','Position',[0.85 0.13 0.035 0.025],'String',num2str(AcqParameters.MaxLum),'Callback',@UpdateMaxLumLive,...
+    'Tooltip',['To modify maximum display value of camera' 10 'Peak and uEye saturate at 4095' 10 'Andor saturates at 65535' 10 'Heliotis saturates at ??']);
+
+uicontrol('Parent',tab2,'Style', 'pushbutton', 'String', 'Auto','units','normalized','tag','autoMaxLumLive',...
+    'Position', [0.9 0.13 0.035 0.025],'FontSize',10,'Callback',@AutoMaxLumLive,'Tooltip','Auto sets the MaxLum value to 1.05 times the max value observed');
+

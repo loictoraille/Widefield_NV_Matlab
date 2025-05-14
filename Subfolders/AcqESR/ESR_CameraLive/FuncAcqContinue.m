@@ -7,13 +7,7 @@ if ~TestWithoutHardware
 set(h.acqcont,'ForegroundColor',[0,0,1]);
 set(h.acqcont,'Value',1);
 
-if strcmp(CameraType,'Andor')
-    maxLum = 65535;
-elseif strcmp(CameraType,"heliCam")
-	maxLum = ObjCamera.maxLum; %TODO : find the actual max value
-else
-    maxLum = 4095;
-end
+MaxLum = str2double(h.MaxLum.String);
 
 UpdateCalibUnit();
 
@@ -71,7 +65,7 @@ while exist('ObjCamera','var') && h.acqcont.Value%test value of stopcam button
     if exist('ObjCamera','var') && ~h.stopcam.Value;I=TakeCameraImage(ISize,AOI);end 
     if exist('ObjCamera','var') && ~h.stopcam.Value;set(handleImage,'CData',I);end
     if exist('ObjCamera','var') && ~h.stopcam.Value;drawnow;end
-    if exist('ObjCamera','var') && ~h.stopcam.Value;title(['Max pixel value ' num2str(max(max(I(:,3:end-2)))) '/' num2str(maxLum)]);end
+    if exist('ObjCamera','var') && ~h.stopcam.Value;title(h.Axes_Camera,['Max pixel value = ' num2str(round(max(max(I))))]);end
         
     if exist('ObjCamera','var') && h.stopcam.Value % check Stop button
         EndAcqCamera();

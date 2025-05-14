@@ -3,6 +3,9 @@ global M Ftot Lum_Current
 
 h=guidata(gcbo);
 
+hMaxLum = findobj('tag','MaxLum');
+MaxLum = str2double(hMaxLum.String);
+
 % Fit Button
 
 hobjectfit = findobj('tag','Fit');
@@ -58,7 +61,7 @@ hobjectcrop = findobj('tag','Crop');
     else
         ImageMatrix=M(:,:,1);
     end
-    PrintImage(ax,ImageMatrix,AcqParameters);
+    PrintImage(ax,ImageMatrix,AcqParameters,MaxLum)
  end
 
 end

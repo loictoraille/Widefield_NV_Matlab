@@ -23,6 +23,12 @@ else
     panel.DisplayLight.Value = 0;
 end
 
+if AcqParameters.MaxLum
+    panel.MaxLum.Value = 1;
+else
+    panel.MaxLum.Value = 0;
+end
+
 axes(ax);
 
 [~,sizelevel] = size(AcqParameters.AOI.Width);
@@ -42,7 +48,9 @@ end
 
 eval(['panel.NumPeaksChoice.SelectedObject = panel.NumPeaks' num2str(NumPeaks) ';' ]);
 
-PrintImage(ax,ImageMatrix,AOIParameters);
+MaxLum = str2double(panel.MaxLum.String);
+
+PrintImage(ax,ImageMatrix,AOIParameters,MaxLum);
 
 if exist('T','var') && ~isempty(T)
     panel.Temp_txt.String = sprintf(['Ta=' num2str(roundn(mean(T(:,1)),-2)) '\nTb=' num2str(roundn(mean(T(:,2)),-2))]);

@@ -323,6 +323,7 @@ if panel.stop.Value~=1
         ylabel(ax_piezo_autocorr,'Value of the Y piezo (V)');
         c = colorbar(ax_piezo_autocorr);
         c.Label.String = 'Difference from the reference image (a.u.)';
+        set(ax_piezo_autocorr,'Tag','ax_piezo_autocorr'); % Necessary to rewrite tag of axes after imagesc (I don't know why)
         hold(ax_piezo_autocorr,'on');
         plot(ax_piezo_autocorr,x_min,y_min,'rx','MarkerSize',20,'LineWidth',2);
         hold(ax_piezo_autocorr,'off');
@@ -387,7 +388,8 @@ if panel.stop.Value~=1
         Lum_Post_AutoCorr = TakeCameraImage(ISize,AOI);
 
         ax_lum_post_autocorr = panel.ax_lum_post_autocorr;
-        imagesc(ax_lum_post_autocorr,Lum_Post_AutoCorr);axis(ax_lum_post_autocorr,'image');caxis(ax_lum_post_autocorr,[0 maxLum]);
+        imagesc(ax_lum_post_autocorr,Lum_Post_AutoCorr);axis(ax_lum_post_autocorr,'image');caxis(ax_lum_post_autocorr,[0 MaxLum]);
+        set(ax_lum_post_autocorr,'Tag','ax_lum_post_autocorr'); % Necessary to rewrite tag of axes after imagesc (I don't know why)
         title(ax_lum_post_autocorr, 'New image post autocorrelation');
     end
 

@@ -1,10 +1,11 @@
-function DisplayLight(hobject,~)
+function DisplayLightUpdate(hobject,~)
 global NI_card
 
 DisplayLight = hobject.Value;
 panel = guidata(gcbo);
 
 load([getPath('Param') 'AcqParameters.mat']);
+MaxLum = AcqParameters.MaxLum;
 
 LightControl = 0;
 if DisplayLight
@@ -30,11 +31,11 @@ if LightControl == 0
     hobject.Value = 0;
 
     if isfield(panel,'UserData') && isfield(panel.UserData,'Lum_Current') && ~isempty(panel.UserData.Lum_Current)
-        PrintImage(panel.Axes1,panel.UserData.Lum_Current,AOIParameters);
+        PrintImage(panel.Axes1,panel.UserData.Lum_Current,AOIParameters,MaxLum);
     end
 else
     if isfield(panel,'UserData') && isfield(panel.UserData,'Lum_WithLightAndLaser') && ~isempty(panel.UserData.Lum_WithLightAndLaser)
-        PrintImage(panel.Axes1,panel.UserData.Lum_WithLightAndLaser,AOIParameters);
+        PrintImage(panel.Axes1,panel.UserData.Lum_WithLightAndLaser,AOIParameters,MaxLum);
     end
 end
 
