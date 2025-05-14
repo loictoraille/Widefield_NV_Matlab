@@ -36,11 +36,12 @@ renorm1_value = GetRenormValue(squeeze(Sp1));
 panel.l21.XData=Ftot;panel.l21.YData=squeeze(Sp1)./renorm1_value;
 lum1_value = renorm1_value;
 
-if ind_calib_nm
-title(panel.Axes1,['(X,Y,I)=(',num2str(PixX),' pixel,',num2str(PixY),' pixel,',num2str(round(lum1_value)),')']); %Spanelow coordinates in panel title
-else
-title(panel.Axes1,['(X,Y,I)=(',num2str(PixX),',',num2str(PixY),',',num2str(round(lum1_value)),')']); %Spanelow coordinates in panel title
-end
+% if ind_calib_nm
+% title(panel.Axes1,['(X,Y,I)=(',num2str(PixX),' pixel,',num2str(PixY),' pixel,',num2str(round(lum1_value)),')']); %Spanelow coordinates in panel title
+% else
+% title(panel.Axes1,['(X,Y,I)=(',num2str(PixX),',',num2str(PixY),',',num2str(round(lum1_value)),')']); %Spanelow coordinates in panel title
+% end
+
 panel.lum1text.String = num2str(round(lum1_value));
 
 %case binning

@@ -59,7 +59,11 @@ if ~isfield(AcqParameters,'DisplayLight') || (isfield(AcqParameters,'DisplayLigh
     AcqParameters.DisplayLight = 0;
 end
 
-if isempty(CameraType)
+if ~isfield(AcqParameters,'MaxLum') || (isfield(AcqParameters,'MaxLum') && isnan(AcqParameters.MaxLum))
+    AcqParameters.MaxLum = 65535;
+end
+
+if ~exist('CameraType','var') || (exist('CameraType','var') && isempty(CameraType))
     CameraType = 'uEye';
 end
 

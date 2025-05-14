@@ -58,7 +58,7 @@ end
 set(h.roidef,'ForegroundColor',[0,0,0]);%Change button color to black
 set(h.roidef,'Value',0);
 
-UpdateImageWithROI;
+UpdateImageWithROIScript;
 
 FuncCameraRanges(h);%Update Ranges of the camera parameters/slider (they change with ROI)
 

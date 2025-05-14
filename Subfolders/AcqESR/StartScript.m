@@ -33,12 +33,3 @@ end
 if ALIGN 
     NPoints = 50;
 end
-
-if strcmp(CameraType,'Andor')
-    maxLum = 65535;
-elseif strcmp(CameraType,"heliCam")
-	maxLum = 600; %TODO: hardcoded value to be change
-else
-    maxLum = 4095;
-end
-

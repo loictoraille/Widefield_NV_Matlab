@@ -124,7 +124,8 @@ if  ~TestWithoutHardware && i_scan == 1 && AutoAlignPiezo
     Lum_Initial=Lum_WithLightAndLaser;
     writematrix(Lum_Initial,[Data_Path nomSave '_Lum_Initial.csv']);
     ax_lum_initial = panel.ax_lum_initial;
-    imagesc(ax_lum_initial,Lum_Initial);axis(ax_lum_initial,'image');caxis(ax_lum_initial,[0 maxLum]);
+    imagesc(ax_lum_initial,Lum_Initial);axis(ax_lum_initial,'image');caxis(ax_lum_initial,[0 str2double(panel.MaxLum.String)]);
+    set(ax_lum_initial,'Tag','ax_lum_initial'); % Necessary to rewrite tag of axes after imagesc (I don't know why)
     title(ax_lum_initial, 'Initial reference image for autocorrelation');
 
     LaserOff(panel);
@@ -155,10 +156,10 @@ if ~exist('Lum_Initial','var')
     Lum_Initial = Lum_Start;
 end
 
-if panel.DisplayLight.Value   
-    PrintImage(panel.Axes1,Lum_WithLightAndLaser,AOIParameters);
+if panel.DisplayLight.Value
+    PrintImage(panel.Axes1,Lum_WithLightAndLaser,AOIParameters,str2double(panel.MaxLum.String));
 else
-    PrintImage(panel.Axes1,Lum_Start,AOIParameters);
+    PrintImage(panel.Axes1,Lum_Start,AOIParameters,str2double(panel.MaxLum.String));
 end
 
 panel.UserData.Lum_Current = Lum_Start; % not exactly the same image potentially but simpler for now
@@ -402,10 +403,10 @@ for Acc=1:(AccNumber+99*ALIGN*AccNumber) %Loop on Accumulation number
             panel.UserData.Lum_WithLightAndLaser = Lum_WithLightAndLaser;
             LightOff(panel);% to turn off the light for the scan part
             [I,ISize,AOI] = PrepareCamera();
-            PrintImage(panel.Axes1,Lum_WithLightAndLaser,AOIParameters);
+            PrintImage(panel.Axes1,Lum_WithLightAndLaser,AOIParameters,str2double(panel.MaxLum.String));
         else
             panel.UserData.Lum_Current = Lum_Current;
-            PrintImage(panel.Axes1,Lum_Current,AOIParameters);
+            PrintImage(panel.Axes1,Lum_Current,AOIParameters,str2double(panel.MaxLum.String));
         end
     end
     
@@ -461,7 +462,7 @@ if ~TestWithoutHardware
     end
 else
     save(fullNameSave,'M','Ftot','CenterF_GHz','Width_MHz','NPoints','Acc','MWPower','T','RANDOM','AcqParameters');
-    disp(['File saved as' nomSave]);
+    disp(['File saved as ' nomSave]);
 end 
 
 if  i_scan == AcqParameters.RepeatScan
@@ -470,14 +471,7 @@ if  i_scan == AcqParameters.RepeatScan
     panel.start.Value=0;panel.start.ForegroundColor = [1,0,0];
     panel.stop.Value=0;panel.stop.ForegroundColor = [1,0,0];
 
-    if ~TestWithoutHardware
-        InitCameraAtStart(CameraType); % why ?
-    end
+%     if ~TestWithoutHardware
+%         InitCameraAtStart(CameraType); % why ?
+%     end
 end
-
-panel.start.Value=0;panel.start.ForegroundColor = [1,0,0];
-panel.stop.Value=0;panel.stop.ForegroundColor = [1,0,0];
-
-
-% TODO: Why doing it again ?
-InitCameraAtStart(CameraType)

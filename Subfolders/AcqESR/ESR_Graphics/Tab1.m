@@ -59,7 +59,7 @@ uicontrol('Parent',tab1,'Style','edit','tag','BackupNSweeps','FontSize',10,'unit
 uicontrol('Parent',tab1,'Style','text','FontSize',10,'units','normalized','HorizontalAlignment','left','Position',[0.301 0.882 0.034 0.022],'String','sweeps');   
 
 uicontrol('Parent',tab1,'Style','text','FontSize',10,'units','normalized','HorizontalAlignment','right','Position',[0.33 0.909 0.043 0.025],'String','RepeatScan');
-uicontrol('Parent',tab1,'Style','edit','tag','RepeatScan','FontSize',10,'units','normalized','Position',[0.375 0.913 0.025 0.025],'String',num2str(AcqParameters.RepeatScan),'Callback',@UpdateAcqParam,...
+uicontrol('Parent',tab1,'Style','edit','tag','RepeatScan','FontSize',10,'units','normalized','Position',[0.375 0.913 0.025 0.025],'String',num2str(AcqParameters.RepeatScan),'Callback',@UpdateRepeatScan,...
     'Tooltip','To repeat the full acquisition with a new incremented name, the value is the total number of scans');
 
 uicontrol('Parent',tab1,'Style','text','FontSize',10,'units','normalized','HorizontalAlignment','right','Position',[0.33 0.882 0.043 0.022],'String','RefMWOff');
@@ -77,7 +77,14 @@ uicontrol('Parent',tab1,'Style', 'checkbox', 'String', 'MW always ON','units','n
 %%%%%%%%
 
 uicontrol('Parent',tab1,'Style', 'checkbox', 'String', 'Display light','units','normalized','tag','DisplayLight',...
-    'Position', [0.45 0.825 0.065 0.025],'FontSize',10,'Value',DisplayLight,'Callback',@DisplayLight,'Tooltip','If available, displays the image with light and laser instead of only with laser');
+    'Position', [0.45 0.825 0.065 0.025],'FontSize',10,'Value',DisplayLight,'Callback',@DisplayLightUpdate,'Tooltip','If available, displays the image with light and laser instead of only with laser');
+
+uicontrol('Parent',tab1,'Style','text','FontSize',10,'units','normalized','HorizontalAlignment','center','Position',[0.457 0.785 0.035 0.025],'String','MaxLum');
+uicontrol('Parent',tab1,'Style','edit','tag','MaxLum','FontSize',10,'units','normalized','Position',[0.457 0.765 0.035 0.025],'String',num2str(AcqParameters.MaxLum),'Callback',@UpdateMaxLum,...
+    'Tooltip',['To modify maximum display value of camera' 10 'Peak and uEye saturate at 4095' 10 'Andor saturates at 65535' 10 'Heliotis saturates at ??']);
+
+uicontrol('Parent',tab1,'Style', 'pushbutton', 'String', 'Auto','units','normalized','tag','autoMaxLum',...
+    'Position', [0.457 0.735 0.035 0.025],'FontSize',10,'Callback',@AutoMaxLum,'Tooltip','Auto sets the MaxLum value to 1.05 times the max value observed');
 
 %%%%%%%%
 %%Graphs

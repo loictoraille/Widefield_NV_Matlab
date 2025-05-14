@@ -6,7 +6,7 @@ ROISquareSize = CheckCamConstraints(ROISquareSize,CameraType);
 
 SetAOI(NewX,NewY,ROISquareSize,ROISquareSize);
 
-UpdateImageWithROI;
+UpdateImageWithROIScript;
 
 FuncCameraRanges(h);%Update Ranges of the camera parameters/slider (they change with ROI)
 end
