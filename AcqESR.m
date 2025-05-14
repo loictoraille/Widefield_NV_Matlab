@@ -34,7 +34,8 @@ tab_fitparam = hguitab(tgroup,'Title','Fit Parameters');
 tab_additional = hguitab(tgroup,'Title','Additional Parameters');
 tab_readtemp = hguitab(tgroup,'Title','Continuous temperature reading');
 tab_alignpiezo = hguitab(tgroup,'Title','Check Piezo Auto-Alignment');
-tgroup.SelectedTab = tab2;
+tab_helicam = hguitab(tgroup,'Title','HeliCam Control');
+tgroup.SelectedTab = tab_helicam;
 
 Tab1;
 Tab2;
@@ -42,6 +43,7 @@ Tab_FitParam;
 Tab_Additional;
 Tab_ReadTemp;
 Tab_AlignPiezo;
+Tab_HeliCam;
 TurnUnusedSettingsInvisible();
 
 if TestWithoutHardware
