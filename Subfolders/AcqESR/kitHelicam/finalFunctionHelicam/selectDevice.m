@@ -1,6 +1,6 @@
 function devNo = selectDevice(c4if)
     % device selection with user interaction 
-	% TODO : add the expected ip address too variable of the Camera to change it from an interface
+	% TODO : add the expected ip address to variable of the Camera to change it from an interface
     devNo = -1;
     disp('Device: ')
     nofDev = c4if.updateDeviceList();
