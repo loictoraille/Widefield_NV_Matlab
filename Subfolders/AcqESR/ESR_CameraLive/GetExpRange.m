@@ -25,6 +25,8 @@ elseif strcmpi(CameraType,'Thorlabs')
     
 elseif strcmp(CameraType,'heliCam')
 	%TODO: To adapte to a version independent of the sensitivity and the frequency of the demodulation 
+
+	% The real thing that is modified with the camera is the sensitivity
     ExpRange.Minimum = 0; 
     ExpRange.Maximum = 100;
 

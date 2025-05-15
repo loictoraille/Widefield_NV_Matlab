@@ -13,19 +13,21 @@ classdef  HelicamHandler < handle
 
 		%%%%%%%%%%% Camera parameters
 
-		TriggerMode;
-		NFramesDiscard = 1; %TODO: check if this value is really irrelevent, i.e if first frame are really not exploitable
+		TriggerMode = "TriggerSoftware";
+		NFramesDiscard = 3; %TODO: check if this value is really irrelevent, i.e if first frame are really not exploitable
 		sensitivity = 0.5;
 		% Number of intergration periods
 		NPeriods = 10; % Increase this value and exposure to get more accurate values
-		
-		NbFrames = 4;
-		
+
+		%Number of frames per burst of acquisition 
+		NbFrames = 5;
+
+		%Coupling mode of the camera
 		coupling = 'AC';
 		% Reference frequency in Hz
 		refFrequency = 10000.0;
 		% Source of reference signal, 'Internal' or 'External'
-		refSource = 'Internal';
+		refSource = 'External';
 		% Expected frequency deviation of external reference input in "%"
 		expFrequencyDev = 5;
 
@@ -36,12 +38,14 @@ classdef  HelicamHandler < handle
 		% Signal generator frequency in Hz
 		sgnFrequency = 9975.0;
 
-			
+		%reference freuency entry for external source
+		LockInReferenceSourceSignal = "FI2";
+				
 		%%%%%%%%%%% other persistante parameters
 
 		firstSetup = true;
 		AcqMode = false;
-		removeOffset = false; % TODO: setup a calibration methode
+		removeOffset = true; % TODO: setup a calibration methode
 		quickmode = true; % TODO: add methode to change the configuration between quick and slow acquisition
 
 		% maximum brightness of pixel
@@ -52,7 +56,7 @@ classdef  HelicamHandler < handle
 	end
 
 	methods 
-	function obj = HelicamHandler(obj)
+	function ObjCamera = HelicamHandler(ObjCamera)
 			% establish camera connection	
 			% must be call to comunicate with the camera at startup
 	
@@ -79,21 +83,17 @@ classdef  HelicamHandler < handle
 			% -> c4sys TODO : describe what the c4sys object is for (probably the driver interface)
 		    % -> c4if is the network interface
 		    
-			obj.c4dev = c4dev;
-			obj.c4sys = c4sys;
-			obj.c4if  = c4if;
+			ObjCamera.c4dev = c4dev;
+			ObjCamera.c4sys = c4sys;
+			ObjCamera.c4if  = c4if;
 
-			%TODO: set all variable fo the ObjCamera
-			% from the ToWrite.md file
-
-			obj.TriggerMode    = "TriggerSoftware"; 
+			%TODO: set all variable fo the ObjCamerad			% from the ToWrite.md file
 			%TODO : charge a config file for parameters 
-			obj.firstSetup     = true;
-			obj.AcqMode        = false;
 			
 			% for the heliCamGetImage functiun
-			obj.removeOffset   = true;
-			obj.NFramesDiscard =  3; 
+			disp("default parameters");
+			heliCamSetParameters(ObjCamera);
+			
 	end
 
 end

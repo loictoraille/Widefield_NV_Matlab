@@ -21,10 +21,13 @@ elseif strcmpi(CameraType,'Thorlabs')
     Exp_unit = 'ms';
 
 elseif strcmp(CameraType,'heliCam')
-	%TODO: the acquisition of the current exposition
-	disp("warning (dev) : GetExp not set yet")
-	Exp = 1;
-	Exp_unit = "ms";
+    % sensitivity ratio of acquising time for the capteur on the whole acquisition
+    % One way to estimate equivalent time would be :
+    % Exp = nbPeriode*sensitivity/freq <- To be checked
+    % 
+    % TODO: write a real function for the equivalence between sensitivity and other things
+	Exp = ObjCamera.sensitivity*100;
+	Exp_unit = "%";
 
 end
 

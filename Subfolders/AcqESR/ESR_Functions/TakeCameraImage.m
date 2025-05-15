@@ -60,17 +60,8 @@ elseif strcmpi(CameraType,'Thorlabs')
     end
     
 elseif strcmp(CameraType,'heliCam')
-	% TODO to get a single image mode for quick and live acquisition
-	disp('Unfinished TAkeCameraImage');
-	heliCamSetParameters(ObjCamera); % must be called to update parameters before images acquisitions
-	
-	if ObjCamera.quickmode
-		%TODO: improve the change between
-	
-		ImageMatrix = heliCamGetQuickImage(ObjCamera); % quick mode setup	
-	else
-		ImageMatrix = heliCamGetImage(ObjCamera); % normal mode 
-	end
+	ImageMatrix = heliCamGetImage(ObjCamera);
+
 end
 
 end
