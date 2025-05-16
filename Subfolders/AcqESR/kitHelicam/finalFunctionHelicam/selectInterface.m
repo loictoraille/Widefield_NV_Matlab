@@ -1,5 +1,9 @@
 function ifNo = selectInterface(c4sys)
     % interface selection with user interaction
+    %
+    % TODO : maje the expected IP an variable editable
+    % from the user interface
+    % 
     ifNo = -1;
     disp('Interfaces: ')
     nofIf = c4sys.updateInterfaceList();
@@ -8,13 +12,13 @@ function ifNo = selectInterface(c4sys)
         return
     end
 
-    disp('Automatic selection of interface activated, expect the ethernet interface to be at 192.168.2.70');
+    disp('Automatic selection of interface activated, expect the ethernet interface to be at 169.254.2.1');
     
     for i = 0:(nofIf-1)
         curIfName = c4sys.getInterfaceName(i);
         disp(num2str(i + 1) + ": " + string(curIfName));
 
-		if length(strfind(string(curIfName),'192.168.2.70'))
+		if length(strfind(string(curIfName),'169.254.2.1'))
 			ifNo = i;
 			disp('found interface');
 		end

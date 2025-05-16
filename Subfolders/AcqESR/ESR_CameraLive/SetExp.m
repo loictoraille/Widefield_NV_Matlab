@@ -13,8 +13,10 @@ elseif strcmp(CameraType,'Peak')
     set(src_mycam, 'ExposureTime', 1000*ExpIn); % Peak in us
 
 elseif strcmp(CameraType,'heliCam')
-	disp('warning : sensitivity is not set up for the helicam');
-	heliCamSetExp(ObjCamera,ExpIn); % TODO: to set the exposure
+	%writing the value to later make a call to charge new parameters altogether
+	% in the camera
+	ObjCamera.sensitivity = ExpIn/100;
+	% TODO: Do we make a call right on fast parameters away ?
 else
 end
 
