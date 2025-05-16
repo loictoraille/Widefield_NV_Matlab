@@ -8,5 +8,6 @@ if isnan(val) || val < 4
 end
 
 ObjCamera.NbFrames = round(val); % Ensure integer
+hObject.String = num2str(ObjCamera.NbFrames);
 
 end

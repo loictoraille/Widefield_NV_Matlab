@@ -1,7 +1,7 @@
-function updateSensitivityEditFromSlider(eventData, heliHandles_local) % Listener callback
+function updateSensitivityEditFromSlider(~,eventData) % Listener callback
 
-newValue = eventdata.AffectedObject.Value;
+newValue = eventData.AffectedObject.Value;
 
-set(heliHandles_local.editSensitivity, 'String', sprintf('%.2f', newValue));
+set(findobj('tag','editSensitivity'), 'String', num2str(newValue)); % Update edit box
 
 end
