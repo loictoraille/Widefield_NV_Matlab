@@ -9,7 +9,7 @@ Data_Path
 C:\Users\ADM_TORAILLEL\Desktop\Working folder\
 
 CameraChoice (uEye, Peak, Andor, heliCam, Thorlabs)
-uEye
+heliCam
 
 SetupType (BASE, CEA, ENS, LIST, THALES, etc)
 CEA

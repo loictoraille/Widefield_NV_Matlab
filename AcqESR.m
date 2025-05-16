@@ -36,7 +36,7 @@ tab_readtemp = hguitab(tgroup,'Title','Continuous temperature reading');
 tab_alignpiezo = hguitab(tgroup,'Title','Check Piezo Auto-Alignment');
 tab_helicam = hguitab(tgroup,'Title','HeliCam Control');
 
-if strcmp(CameraType,'heliCam')
+if strcmp(CameraChoice,'heliCam')
 tgroup.SelectedTab = tab_helicam;
     else
 tgroup.SelectedTab = tab2;
