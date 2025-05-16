@@ -1,9 +1,9 @@
-function setModulationFrequency(hObject, ~, heliHandles_local) % Slider callback
+function setModulationFrequency(hObject, ~) % Slider callback
 global ObjCamera;
 
 val = get(hObject, 'Value');
-ObjCamera.refFrequency = round(val); % Often frequencies are integers
+ObjCamera.refFrequency = 1000*val;
 
-set(heliHandles_local.editModFreq, 'String', num2str(ObjCamera.refFrequency)); % Update edit box
+set(findobj('tag','editModFreq'), 'String', num2str(ObjCamera.refFrequency/1000)); % Update edit box
 
 end
