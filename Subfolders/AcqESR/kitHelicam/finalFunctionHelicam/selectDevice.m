@@ -1,6 +1,8 @@
 function devNo = selectDevice(c4if)
     % device selection with user interaction 
 	% TODO : add the expected ip address to variable of the Camera to change it from an interface
+
+	cameraIP = '169.254.2.3';
     devNo = -1;
     disp('Device: ')
     nofDev = c4if.updateDeviceList();
@@ -9,13 +11,14 @@ function devNo = selectDevice(c4if)
         return
     end
 	
-	disp('Autmatic detection of device activate, expecting to find a device at 169.254.2.3');
+	disp('Autmatic detection of device activate, expecting to find a device at :');
+	disp(cameraIP);
 
     for i = 0:(nofDev-1)
         curDevName = c4if.getDeviceName(i);
         disp(num2str(i + 1) + ": " + string(curDevName));
 
-        if length(strfind(string(curDevName),'169.254.2.3'))
+        if length(strfind(string(curDevName),cameraIP))
         	devNo = i;
         	disp('found device');
         	return
