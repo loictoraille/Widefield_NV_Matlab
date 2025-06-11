@@ -1,15 +1,7 @@
 function heliCamSetParameters(ObjCamera)
-	% Function that set all parameters of the camera
-	% we change every parameters at oncek	
-
-	%TODO check change in the parameters that need to be updated 
-	% as to not set up everything each time
-	
-	%Parameters that need to be set regularly
-	%sensitivity
-	%phase % TODO: adding phase 
-	
-
+	%	function that load the parameters of the camera from
+	% the attributs of the objects
+	% Might be irrelevant since we can us the config file
 
 	if ObjCamera.AcqMode
 		disp("WARNING : AcqMode = true ,the setting of parameters might not work ");
