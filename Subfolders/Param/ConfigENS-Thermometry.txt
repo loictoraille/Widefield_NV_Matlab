@@ -1,0 +1,12 @@
+
+TestWithoutHardware
+1
+
+RF_Address
+TCPIP::169.254.2.20::inst0::INSTR
+
+Data_Path
+C:\Users\Melissa\Documents
+
+CameraChoice (uEye, Peak, Andor, heliCam)
+heliCam
