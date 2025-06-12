@@ -4,6 +4,8 @@ if ~NET.isNETSupported
     return
 end
 
+addpath(genpath("Subfolders"));
+
 NET.addAssembly('C4HdlCLR');
 
 import C4HdlCLR.*
