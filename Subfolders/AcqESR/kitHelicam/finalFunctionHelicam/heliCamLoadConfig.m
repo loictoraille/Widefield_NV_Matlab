@@ -28,13 +28,16 @@ function heliCamLoadConfig(ObjCamera,path)
       continue;
     end 
 
+	%parsing of the command
     registerName = formatedLine(1);
     registerValue = formatedLine(2);
-
+	%charging of the command
     heliCamSet1Parameter(ObjCamera,registerName,registerValue);
 
 
    end
+
+   fclose(configFile);
 
 
 end

@@ -15,8 +15,7 @@ function heliCamSet1Parameter(ObjCamera,registerName,registerValue)
   	ObjCamera.c4dev.writeInteger(registerName,registerValue);
  
   elseif strcomp(regType,"Boolean")
-  	disp('must be checked on the library first');
-  	%ObjCamera.c4dev.writeString(registerName,registerValue);
+  	ObjCamera.c4dev.writeInteger(registerName,registerValue);
   end
 	
 end
