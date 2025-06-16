@@ -48,7 +48,7 @@ Tab_FitParam;
 Tab_Additional;
 Tab_ReadTemp;
 Tab_AlignPiezo;
-Tab_HeliCam;
+
 TurnUnusedSettingsInvisible();
 
 if TestWithoutHardware
@@ -76,6 +76,12 @@ else
     InitCameraAtStart(CameraChoice,Total_handles);
     Total_handles=guidata(gcf);
 
+    % TODO: move the helicam tab script back with other
+    if strcmp(CameraChoice,"heliCam")
+    	Tab_HeliCam; % must run after the camera lunch
+	end
+
+	
     if ~isempty(ObjCamera)
 
         tagcamtype=findobj('tag','cameratype');

@@ -8,7 +8,6 @@ global ObjCamera
 % Initialize ObjCamera if it hasn't been (ensure fields exist)
 if isempty(ObjCamera) || ~isstruct(ObjCamera) % Or ~isobject if it's an object
     disp('Initializing global ObjCamera for Heliotis Tab testing...');
-    ObjCamera = struct(); % Or your class constructor
 end
 if ~isfield(ObjCamera, 'NbFrames'), ObjCamera.NbFrames = 100; end
 if ~isfield(ObjCamera, 'NPeriods'), ObjCamera.NPeriods = 10; end
