@@ -20,17 +20,17 @@ classdef  HelicamHandler < handle
 		NPeriods = 10; % Increase this value and exposure to get more accurate values
 
 		%Number of frames per burst of acquisition 
-		NbFrames = 5;
+		NbFrames = 8;
 
 		%Coupling mode of the camera
 		coupling = 'AC';
 		% Reference frequency in Hz
 		refFrequency = 10000.0;
 		% Source of reference signal, 'Internal' or 'External'
-		refSource = 'External';
+		refSource = 'Internal';
 		% Expected frequency deviation of external reference input in "%"
-		expFrequencyDev = 5;
-
+		expFrequencyDev = 0; % TODO: check if this is responsible for the demodulation instability
+		
 		% Signal generator DC offset in % of full range
 		sgnOffset = 20.0;
 		% Signal generator peak-to-peak amplitude in % of full range

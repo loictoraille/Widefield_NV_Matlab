@@ -13,7 +13,7 @@ end
 
 % set(hObject, 'String', num2str(val)); % Update edit box (sanitized)
 
-ObjCamera.refFrequency = val;
+ObjCamera.refFrequency = val*1000;
 set(findobj('tag','sldModFreq'), 'Value', val); % Update slider
 
 end
