@@ -87,7 +87,7 @@ classdef  HelicamHandler < handle
 			ObjCamera.c4sys = c4sys;
 			ObjCamera.c4if  = c4if;
 
-			%TODO: set all variable fo the ObjCamerad			% from the ToWrite.md file
+			%TODO: set all variable fo the ObjCamera			% from the ToWrite.md file
 			%TODO : charge a config file for parameters 
 			
 			% for the heliCamGetImage functiun
