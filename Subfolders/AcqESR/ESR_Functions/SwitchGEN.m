@@ -15,6 +15,7 @@ if ~TestWithoutHardware
     else
         smb = Connect_RF();
     end
+    WriteSMB(['POW ',num2str(MWPower),' DBm']);% update at each switch
     WriteSMB(['OUTP ' STATE]);
 end
 
