@@ -37,7 +37,7 @@ uicontrol('Parent',tab1,'Style', 'text', 'String', sprintf('TEST WITHOUT\n HARDW
     'Position', [0.076 0.917 0.085 0.05],'FontSize',15,'FontWeight','bold','VISIBLE',valuetestwohar);
 
 uicontrol('Parent',tab1,'Style','text','FontSize',10,'units','normalized','HorizontalAlignment','right','Position',[0.235 0.968 0.041 0.025],'String','MWPower');
-uicontrol('Parent',tab1,'Style','edit','tag','MWPower','FontSize',10,'units','normalized','Position',[0.279 0.973 0.02 0.025],'String',num2str(AcqParameters.MWPower),'Callback',@UpdateAcqParam);
+uicontrol('Parent',tab1,'Style','edit','tag','MWPower','FontSize',10,'units','normalized','Position',[0.279 0.973 0.02 0.025],'String',num2str(AcqParameters.MWPower),'Callback',@UpdateMWPower);
 uicontrol('Parent',tab1,'Style','text','FontSize',10,'units','normalized','HorizontalAlignment','left','Position',[0.301 0.968 0.02 0.025],'String','dBm');
     
 uicontrol('Parent',tab1,'Style','text','FontSize',10,'units','normalized','HorizontalAlignment','right','Position',[0.227 0.938 0.05 0.025],'String','NumPoints');
