@@ -55,7 +55,7 @@ if panel.stop.Value~=1
         [I,ISize,AOI] = PrepareCamera(); % need to prepare AFTER LightOn or LightOff, I don't know why
     end
 
-    % figure;imagesc(Lum_Initial);axis('image');caxis([0 65535]); % uncomment to test
+%     figure;imagesc(Lum_Initial);axis('image');caxis([0 11000]); % uncomment to test
 
 
     % disp(['IniX = ' num2str(IniX)]); % uncomment to test
@@ -72,7 +72,7 @@ if panel.stop.Value~=1
                 end
                 ind_prog = ind_prog + 1;
                 if rem(ind_prog,5) == 0 || ind_prog == 1
-                    disp(['Pre-alignment xy in progress ' num2str(ind_prog) '/' num2str(PiezoStepX*PiezoStepY)]);
+                    disp(['Scanning xy in progress ' num2str(ind_prog) '/' num2str(PiezoStepX*PiezoStepY)]);
                 end
                 NewX = min([10,LeftX + (i-1)*StepX]); X_piez(i) = NewX;
                 NewY = min([10,LeftY + (j-1)*StepY]); Y_piez(j) = NewY;
@@ -85,57 +85,10 @@ if panel.stop.Value~=1
 
                 SendAOItoCAM(AOI_init.X+DeltaX_pix(i,j),AOI_init.Y+DeltaY_pix(i,j),AOI_init.Width,AOI_init.Height);
 
+                Tension4 = LaserOff(panel);
                 if strcmp(CameraType,'Andor')
                     [I,ISize,AOI] = PrepareCamera();
                 end
-
-                %         if i == 3 && j == 3
-                %             disp('test');
-                %         end
-
-                ImageCurrent = TakeCameraImage(ISize,AOI);
-                %         figure;imagesc(ImageCurrent);axis('image');caxis([0 65535]); % uncomment to test
-                AlignmentXY_List{i,j}=ImageCurrent;
-            end
-        end
-
-    end
-
-    Tension4 = LaserOn(panel);
-    if strcmp(CameraType,'Andor')
-        [I,ISize,AOI] = PrepareCamera();
-    end
-
-    if panel.stop.Value~=1
-
-        ind_prog = 0;
-        for i=1:PiezoStepX
-            for j=1:PiezoStepY
-                if panel.stop.Value==1%Check STOP Button
-                    break;
-                end
-                ind_prog = ind_prog + 1;
-                if rem(ind_prog,5) == 0 || ind_prog == 1
-                    disp(['Autocorrelation xy in progress ' num2str(ind_prog) '/' num2str(PiezoStepX*PiezoStepY)]);
-                end
-
-                %         disp(['NewX = ' num2str(NewX)]); % uncomment to test
-                %         disp(['NewY = ' num2str(NewY)]);
-                %         disp(['i = ' num2str(i)]);
-                %         disp(['j = ' num2str(j)]);
-                %         disp(DeltaX_pix(i,j));
-                %         disp(DeltaY_pix(i,j));
-
-                if strcmp(CameraType,'Andor')
-                    EndAcqCamera();
-                end
-
-                SendAOItoCAM(AOI_init.X+DeltaX_pix(i,j),AOI_init.Y+DeltaY_pix(i,j),AOI_init.Width,AOI_init.Height);
-
-                if strcmp(CameraType,'Andor')
-                    [I,ISize,AOI] = PrepareCamera();
-                end
-
                 CheckMaxAndWriteNI(X_piez(i), Y_piez(j), Opt_Z, Tension4)
 
                 %         if i == 3 && j == 3
@@ -144,11 +97,23 @@ if panel.stop.Value~=1
 
                 ImageCurrent = TakeCameraImage(ISize,AOI);
                 %         figure;imagesc(ImageCurrent);axis('image');caxis([0 65535]); % uncomment to test
+                AlignmentXY_List{i,j}=ImageCurrent;
+
+                Tension4 = LaserOn(panel);
+                if strcmp(CameraType,'Andor')
+                    [I,ISize,AOI] = PrepareCamera();
+                end
+                CheckMaxAndWriteNI(X_piez(i), Y_piez(j), Opt_Z, Tension4)
+
+                ImageCurrent = TakeCameraImage(ISize,AOI);
+                %         figure;imagesc(ImageCurrent);axis('image');caxis([0 65535]); % uncomment to test
                 LaserXYList{i,j}=ImageCurrent;
+
             end
         end
 
     end
+
 
     %% Treatment
 
@@ -170,70 +135,75 @@ if panel.stop.Value~=1
 
     %%  % uncomment to test
 
-    % figure('Position',[1000,100,1200,1200]);
-    % k=0;
-    % for i=1:PiezoStepX
-    %     for j=1:PiezoStepY
-    %         k=k+1;
-    %         subplot(PiezoStepX,PiezoStepY,k)
-    %         imagesc(AlignmentXY_List{i,j});axis('image');caxis([0 65535]);
-    %     end
-    % end
-    %
-    % figure('Position',[1000,100,1200,1200]);
-    % k=0;
-    % for i=1:PiezoStepX
-    %     for j=1:PiezoStepY
-    %         k=k+1;
-    %         subplot(PiezoStepX,PiezoStepY,k)
-    %         imagesc(LaserXYList{i,j});axis('image');caxis([0 65535]);
-    %     end
-    % end
-    %
-    % figure('Position',[1000,100,1200,1200]);
-    % k=0;
-    % for i=1:PiezoStepX
-    %     for j=1:PiezoStepY
-    %         k=k+1;
-    %         subplot(PiezoStepX,PiezoStepY,k)
-    %         imagesc(Pic1crop{i,j});axis('image');caxis([0 65535]);
-    %     end
-    % end
-    %
-    % figure('Position',[1000,100,1200,1200]);
-    % k=0;
-    % for i=1:PiezoStepX
-    %     for j=1:PiezoStepY
-    %         k=k+1;
-    %         subplot(PiezoStepX,PiezoStepY,k)
-    %         imagesc(Pic2crop{i,j});axis('image');caxis([0 65535]);
-    %     end
-    % end
+%     plotMaxLum = 11000;
+% 
+%     figure('Position',[1000,100,1200,1200]);
+%     k=0;
+%     for i=1:PiezoStepX
+%         for j=1:PiezoStepY
+%             k=k+1;
+%             subplot(PiezoStepX,PiezoStepY,k)
+%             imagesc(AlignmentXY_List{i,j});axis('image');caxis([0 plotMaxLum]);
+%         end
+%     end
+%     
+%     figure('Position',[1000,100,1200,1200]);
+%     k=0;
+%     for i=1:PiezoStepX
+%         for j=1:PiezoStepY
+%             k=k+1;
+%             subplot(PiezoStepX,PiezoStepY,k)
+%             imagesc(LaserXYList{i,j});axis('image');caxis([0 plotMaxLum]);
+%         end
+%     end
+%     
+%     figure('Position',[1000,100,1200,1200]);
+%     k=0;
+%     for i=1:PiezoStepX
+%         for j=1:PiezoStepY
+%             k=k+1;
+%             subplot(PiezoStepX,PiezoStepY,k)
+%             imagesc(Pic1crop{i,j});axis('image');caxis([0 plotMaxLum]);
+%         end
+%     end
+%     
+%     figure('Position',[1000,100,1200,1200]);
+%     k=0;
+%     for i=1:PiezoStepX
+%         for j=1:PiezoStepY
+%             k=k+1;
+%             subplot(PiezoStepX,PiezoStepY,k)
+%             imagesc(Pic2crop{i,j});axis('image');caxis([0 plotMaxLum]);
+%         end
+%     end
 
     % Image plotted in Piezo tab is inverted compared to the image listing
     % here, to compare, plot this new one and position is consistent with full
     % subplot images listings
-    % figure;imagesc(Y_piez,X_piez,Corr_select);axis('image');caxis([0 maxLum]);
+%     figure;imagesc(Y_piez,X_piez,Corr_select);axis('image');caxis([0 maxLum]);
 
-    %% Corr_pos version (I like it best for now)
+    %% Corr_pos version (I like it best for now?)
     if panel.stop.Value~=1
     Corr_pos = (abs(xpeak-sizepicx)+abs(ypeak-sizepicy)); % Finding the most correlated images
     [~, min_idx_Corr_pos] = min(Corr_pos(:));
     [x_best_Corr_pos, y_best_Corr_pos] = ind2sub(size(Corr_pos), min_idx_Corr_pos);
 
-    %% Corr_simple version
+    % Corr_simple version
 
     Corr_renorm = Corr_simple./Number_pixels; % better to renormalize by the number of pixels in the cropped images
 
-    %% Version selected
+    % Version selected
     % arbitrary threshold to ignore Corr_pos when it's not precise enough, generally indicate that the scanned range is too small
 
-    if numel(find(Corr_pos == 0)) > numel(Corr_pos)/2
-        Corr_select = Corr_renorm;
-        disp('Using Corr_renorm to estimate best position, check if range is large enough')
-    else
-        Corr_select = Corr_pos;
-    end
+%     if numel(find(Corr_pos == 0)) > numel(Corr_pos)/2
+%         Corr_select = Corr_renorm;
+%         disp('Using Corr_renorm to estimate best position, check if range is large enough')
+%     else
+%         Corr_select = Corr_pos;
+%     end
+
+    Corr_select = Corr_renorm; % seems better in our case now?
+
     end
     %% Fit
     if panel.stop.Value~=1
@@ -303,9 +273,10 @@ if panel.stop.Value~=1
 
     x_min = interp1(1:length(X_piez),X_piez,x_min_pos);
     y_min = interp1(1:length(Y_piez),Y_piez,y_min_pos);
+    
 
-    Opt_X = round(x_min*100)/100;
-    Opt_Y = round(y_min*100)/100;
+    Opt_X = round(x_min*1000)/1000;
+    Opt_Y = round(y_min*1000)/1000;
     Shift_X = Opt_X-IniX;
     Shift_Y = Opt_Y-IniY;
 
@@ -333,7 +304,7 @@ if panel.stop.Value~=1
         disp(['NewX = ' num2str(Opt_X) ' V']);
         disp(['ShiftX = ' num2str(Shift_X) ' V']);
 
-        if Opt_X == LeftX ||  Opt_X == RightX
+        if Opt_X <= LeftX ||  Opt_X >= RightX
             disp('Edge of scanned X range reached');
         end
         disp(' ');
@@ -343,7 +314,7 @@ if panel.stop.Value~=1
         disp(['NewY = ' num2str(Opt_Y) ' V']);
         disp(['ShiftY = ' num2str(Shift_Y) ' V']);
 
-        if Opt_Y == LeftY ||  Opt_Y == RightY
+        if Opt_Y <= LeftY ||  Opt_Y >= RightY
             disp('Edge of scanned Y range reached');
         end
         disp(' ');

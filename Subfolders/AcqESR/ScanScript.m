@@ -9,7 +9,13 @@ LIGHT = 1; % lumiere allumee pendant les procedures d'alignement PerformAlignPie
 
 panel=guidata(gcbo);
 panel.nameFile.String = ['File: ' nomSave];
-panel.AcqTime.String = '';
+
+if TotalScan > 1 && i_scan > 1
+    rem_time_all = (TotalScan-i_scan)*time_one_scan;
+    panel.AcqTime.String = ['Total Remaining = ' formatDuration(rem_time_all)];
+else
+    panel.AcqTime.String = '';
+end
 
 if panel.acqcont.Value == 1
     set(panel.acqcont,'ForegroundColor',[0,0,0]);
@@ -88,7 +94,7 @@ UpdateStrSizeM(ROIWidth,ROIHeight,Ftot);
 
 %% PerformAlignPiezo
 
-if ~TestWithoutHardware && AutoAlignPiezo && i_scan > 1 && i_scan < AcqParameters.RepeatScan
+if ~TestWithoutHardware && AutoAlignPiezo && i_scan > 1 && i_scan < TotalScan
     if panel.stop.Value~=1
         PerformAlignPiezo;
     end
@@ -116,7 +122,7 @@ end
 
 % Taking reference images with light on and laser off for piezo alignment procedure
 if  ~TestWithoutHardware && i_scan == 1 && AutoAlignPiezo
-    if AcqParameters.RepeatScan > 1
+    if TotalScan > 1
         disp('Initial Autofocus Z when RepeatScan > 1')
          [Opt_Z, z_out, foc_out, Shift_Z, fit_z_successful] = FuncIndepAutofocusPiezo(panel);
     end
@@ -192,6 +198,8 @@ end
 NPerm = 1; % decoupage de la Width_MHz totale en segments pour eviter des ecarts de frequence trop grands entre les pics, utile quand random
 
 %% Starting the scan loop (not the RF loop)
+
+disp('Start of ODMR scan')
 
 for Acc=1:(AccNumber+99*ALIGN*AccNumber) %Loop on Accumulation number
     if RANDOM == 1    
@@ -421,10 +429,18 @@ for Acc=1:(AccNumber+99*ALIGN*AccNumber) %Loop on Accumulation number
         time_one_sweep = toc; 
     end
     
-    rem_tim_minutes = round((AccNumber-Acc)*time_one_sweep/60);
-    panel.AcqTime.String = ['Remaining time = ' num2str(rem_tim_minutes) ' minutes'];
+    rem_time = (AccNumber-Acc)*time_one_sweep;
+    if TotalScan > 1 && i_scan > 1
+        rem_time_all = (TotalScan-i_scan)*time_one_scan;
+        panel.AcqTime.String = ['Remaining time = ' formatDuration(rem_time) ' / Total = ' formatDuration(rem_time_all)];
+    else
+        panel.AcqTime.String = ['Remaining time = ' formatDuration(rem_time)];
+    end
+
     
 end % end of acquisition
+
+disp('End of ODMR scan')
 
 %% Saving Data
 
@@ -436,7 +452,12 @@ AcquisitionTime_minutes = round(endacq/60);
 [h, m, s] = hms(elapsedTime);
 disp(['Scan lasted: ', num2str(floor(h)), 'h ', num2str(floor(m)), 'm ', num2str(round(s)), 's']);
 
-panel.AcqTime.String = ['Acquisition time = ' num2str(AcquisitionTime_minutes) ' minutes'];
+if TotalScan > 1 && i_scan > 1
+    rem_time_all = (TotalScan-i_scan)*time_one_scan;
+    panel.AcqTime.String = ['Acquisition time = ' formatDuration(endacq) '/ Total Remaining = ' formatDuration(rem_time_all)];
+else
+    panel.AcqTime.String = ['Acquisition time = ' formatDuration(endacq)];
+end
 
 if ~TestWithoutHardware
     EndAcqCamera();
@@ -465,7 +486,7 @@ else
     disp(['File saved as ' nomSave]);
 end 
 
-if  i_scan == AcqParameters.RepeatScan
+if  i_scan == TotalScan
     LightOn(panel); % start light and camera again at the true end of the acquisition
 
     panel.start.Value=0;panel.start.ForegroundColor = [1,0,0];

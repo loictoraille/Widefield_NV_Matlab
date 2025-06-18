@@ -1,7 +1,6 @@
 %% Create Graphique
 
-clear f
-close all
+
 
 % screensize = get(groot,'Screensize');
 % wS = screensize(3);
