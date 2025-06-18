@@ -1,7 +1,9 @@
 
 % separated from scan script for ease of reading
 
-SwitchGEN('ON');
+LoadParamFromAcqParamScript;
+
+SwitchGEN('ON',MWPower);
 
 panel=guidata(gcbo);
 
@@ -11,7 +13,6 @@ load([getPath('Param') 'AcqParameters.mat']);
 load([getPath('Param') 'FitParameters.mat']);
 Data_Path = AcqParameters.Data_Path;
 
-LoadParamFromAcqParamScript;
 
 DelEx = AcqParameters.DelEx; % DelEx standalone uses the script, so we get it out
 

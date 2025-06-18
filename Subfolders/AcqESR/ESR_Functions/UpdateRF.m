@@ -4,6 +4,7 @@ global RF_Address
 panel=guidata(gcbo);
 
 RFAlwaysON = panel.RFAlwaysON.Value;
+MWPower = str2double(panel.MWPower.String);
 
 SaveAcqParameters({{RFAlwaysON,'RFAlwaysON'}});
 
@@ -13,6 +14,6 @@ else
     STATE = 'OFF';
 end
 
-SwitchGEN(STATE);
+SwitchGEN(STATE,MWPower);
 
 end

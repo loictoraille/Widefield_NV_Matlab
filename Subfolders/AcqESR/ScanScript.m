@@ -440,7 +440,7 @@ panel.AcqTime.String = ['Acquisition time = ' num2str(AcquisitionTime_minutes) '
 
 if ~TestWithoutHardware
     EndAcqCamera();
-    SwitchGEN('OFF');%RF OFF
+    SwitchGEN('OFF',MWPower);%RF OFF
 end
 
 fullNameSave = [Data_Path nomSave];
