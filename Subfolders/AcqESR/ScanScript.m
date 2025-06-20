@@ -12,7 +12,7 @@ panel.nameFile.String = ['File: ' nomSave];
 
 if TotalScan > 1 && i_scan > 1
     rem_time_all = (TotalScan-i_scan)*time_one_scan;
-    panel.AcqTime.String = ['Total Remaining = ' formatDuration(rem_time_all)];
+    panel.AcqTime.String = [newline 'Total Remaining = ' formatDuration(rem_time_all)];
 else
     panel.AcqTime.String = '';
 end
@@ -25,7 +25,7 @@ end
 
 % List of variables to save
 varList = {'M', 'Ftot', 'CenterF_GHz', 'Width_MHz', 'NPoints', 'Acc', 'MWPower', 'T', 'ExposureTime', 'FrameRate', 'PixelClock', ...
-           'RANDOM', 'AcqParameters', 'FitParameters', 'CameraType', 'AcquisitionTime_minutes', 'Lum_Initial', 'Lum_Current','Lum_WithLightAndLaser'};
+           'RANDOM', 'AcqParameters', 'FitParameters', 'CameraType', 'AcquisitionTime_minutes', 'Lum_Initial', 'Lum_Current','Lum_WithLightAndLaser','Lum_Start_LightOn_LaserOff','Lum_Start_LightOff_LaserOn','Lum_Start_LightOn_LaserOn'};
 % variables to add when doing AutoAlignPiezo
 var_to_add = {'z_out','foc_out', 'Shift_Z', 'fit_z_successful', 'X_piez', 'Y_piez', 'Corr_select_trans', 'Shift_X', 'Shift_Y', 'fit_xy_successful','Lum_Post_AutoCorr'};
 
@@ -105,58 +105,51 @@ if ~TestWithoutHardware && AutoAlignPiezo && i_scan == 1
 end
 
 %% First Image
+% Lum_Initial > used as reference for multiple scans, taken the first scan and that's it
+% Lum_Start > used as reference in a single scan between different sweeps
 
 if panel.shutterlaser.Value == 0
     LaserOn(panel);% to turn on the laser for the scan part
 end
 
-% Taking reference images with light on
+if  ~TestWithoutHardware && i_scan == 1 && AutoAlignPiezo && TotalScan > 1
+    disp('Initial Autofocus Z when RepeatScan > 1');
+    [Opt_Z, z_out, foc_out, Shift_Z, fit_z_successful] = FuncIndepAutofocusPiezo(panel);
+end
+
+% need to prepare AFTER LightOn or LightOff, I don't know why
+
+% Taking reference images with light on and laser on/off
 if ~TestWithoutHardware
-    LightOn(panel);
-    [I,ISize,AOI] = PrepareCamera();
+    LightOn(panel);[I,ISize,AOI] = PrepareCamera();    
     Lum_WithLightAndLaser=TakeCameraImage(ISize,AOI);
+    Lum_Start_LightOn_LaserOn = Lum_WithLightAndLaser; 
+
     panel.UserData.Lum_WithLightAndLaser = Lum_WithLightAndLaser;
+
+    LaserOff(panel);[I,ISize,AOI] = PrepareCamera();    
+    Lum_Start_LightOn_LaserOff=TakeCameraImage(ISize,AOI);
+
+    LightOff(panel);LaserOn(panel);[I,ISize,AOI] = PrepareCamera();
+    Lum_Start_LightOff_LaserOn=TakeCameraImage(ISize,AOI);
 else
     Lum_WithLightAndLaser = ImageTestMat(1:h_test-10+1,1:w_test-10+1);
+    Lum_Start_LightOn_LaserOff = ImageTestMat(1:h_test-10+1,1:w_test-10+1);
+    Lum_Start_LightOff_LaserOn = ImageTestMat(1:h_test-10+1,1:w_test-10+1);
 end
 
-% Taking reference images with light on and laser off for piezo alignment procedure
-if  ~TestWithoutHardware && i_scan == 1 && AutoAlignPiezo
-    if TotalScan > 1
-        disp('Initial Autofocus Z when RepeatScan > 1')
-         [Opt_Z, z_out, foc_out, Shift_Z, fit_z_successful] = FuncIndepAutofocusPiezo(panel);
-    end
-
-    Lum_Initial=Lum_WithLightAndLaser;
-    writematrix(Lum_Initial,[Data_Path nomSave '_Lum_Initial.csv']);
+% Taking references images with light on and laser on/off for piezo alignment procedure
+if  ~TestWithoutHardware && i_scan == 1 && AutoAlignPiezo && TotalScan > 1
+    Lum_Initial_LaserOff = Lum_Start_LightOn_LaserOff;    
+    Lum_Initial = Lum_Start_LightOn_LaserOn;
+%     writematrix(Lum_Initial,[Data_Path nomSave '_Lum_Initial.csv']);
     ax_lum_initial = panel.ax_lum_initial;
-    imagesc(ax_lum_initial,Lum_Initial);axis(ax_lum_initial,'image');caxis(ax_lum_initial,[0 str2double(panel.MaxLum.String)]);
+    imagesc(ax_lum_initial,Lum_Start_LightOn_LaserOn);axis(ax_lum_initial,'image');caxis(ax_lum_initial,[0 str2double(panel.MaxLum.String)]);
     set(ax_lum_initial,'Tag','ax_lum_initial'); % Necessary to rewrite tag of axes after imagesc (I don't know why)
-    title(ax_lum_initial, 'Initial reference image for autocorrelation');
-
-    LaserOff(panel);
-    if strcmp(CameraType,'Andor')
-        [I,ISize,AOI] = PrepareCamera(); % need to prepare AFTER LightOn or LightOff, I don't know why
-    end
-    Lum_Initial_LaserOff=TakeCameraImage(ISize,AOI);
-    LaserOn(panel);
-    if strcmp(CameraType,'Andor')
-        [I,ISize,AOI] = PrepareCamera(); % need to prepare AFTER LightOn or LightOff, I don't know why
-    end
+    title(ax_lum_initial, 'Initial reference image to check autocorrelation');
 end
 
-if ~TestWithoutHardware
-    LightOff(panel);% to turn off the light for the scan part
-    [I,ISize,AOI] = PrepareCamera();
-end
-
-if ~TestWithoutHardware 
-    ImageMatrix = TakeCameraImage(ISize,AOI); % Take Start Camera Image
-else
-    ImageMatrix = ImageTestMat(1:h_test-10+1,1:w_test-10+1)+100*rand(h_test-9,w_test-9);      
-end
-
-Lum_Start = ImageMatrix;Lum_Start_Crop = Lum_Start;
+Lum_Start = Lum_Start_LightOff_LaserOn;Lum_Start_Crop = Lum_Start_LightOff_LaserOn;
 
 if ~exist('Lum_Initial','var')
     Lum_Initial = Lum_Start;
@@ -301,22 +294,56 @@ for Acc=1:(AccNumber+99*ALIGN*AccNumber) %Loop on Accumulation number
         end
         
         if AutoAlignCam && Acc > 1 && ii == 1
+            % Modified to use the reference with light on and laser off, if it exists
+            % Hopefully it still works the same if it does not
+%             if ~TestWithoutHardware
+%                 LightOn(panel);LaserOff(panel);[I,ISize,AOI] = PrepareCamera();
+%                 Image_Align = TakeCameraImage(ISize,AOI);
+%             else
+%                 Image_Align = Lum_Current;
+%             end     
+
+%             Modified to use the reference with light on and laser on, if it exists
+%               (cannot turn laser off for this part, it makes NV centers
+%               depolarize)
+%             Hopefully it still works the same if it does not
+            if ~TestWithoutHardware
+                LightOn(panel);[I,ISize,AOI] = PrepareCamera();
+                Image_Align = TakeCameraImage(ISize,AOI);
+                Lum_WithLightAndLaser=Image_Align;
+                panel.UserData.Lum_WithLightAndLaser = Lum_WithLightAndLaser;
+                Image_ref = Lum_Start_LightOn_LaserOn;
+            else
+                Image_Align = Lum_Current;
+            end  
             if ~TestWithoutHardware
                 AOI = GetAOI();
-            end              
-            C = normxcorr2_general(Lum_Start,Lum_Current,numel(Lum_Start)/2);
+            else
+               AOI.Width = 59;AOI.Height = 175;AOI.X = 250;AOI.Y = 530;
+            end
+            % other basic mode
+%             Image_Align = Lum_Current;
+%             Image_ref = Lum_Start_LightOff_LaserOn;
+
+            C = normxcorr2_general(Image_ref,Image_Align,numel(Image_ref)/2);
             [ypeak, xpeak] = find(C==max(C(:)));
             Yshift = ypeak-AOI.Height;
             Xshift = xpeak-AOI.Width;            
-            if abs(Xshift) > 10 || abs(Yshift) > 10
-                disp(['AutoAlignCam sweep number' num2str(Acc) ': shift > 10 pixels, cancel']);
+            if abs(Xshift) > 15 || abs(Yshift) > 15
+                disp(['AutoAlignCam sweep number' num2str(Acc) ': shift > 15 pixels, cancel']);
             else
                 if ~TestWithoutHardware
                     if Yshift ~= 0 || Xshift ~= 0
                         EndAcqCamera();
                         SetAOI(AOI.X+Xshift,AOI.Y+Yshift,AOI.Width,AOI.Height);
                         [I,ISize,AOI] = PrepareCamera();
+                        Lum_WithLightAndLaser = TakeCameraImage(ISize,AOI);
+                        panel.UserData.Lum_WithLightAndLaser = Lum_WithLightAndLaser;
+                        LightOff(panel);[I,ISize,AOI] = PrepareCamera();
+                    else
+                        LightOff(panel);[I,ISize,AOI] = PrepareCamera();
                     end
+                    pause(0.1);% seems necessary to avoid extreme points being weird
                 else
                     AOI.X=AOI.X+Xshift; AOI.Y=AOI.Y+Yshift;
                 end
@@ -324,6 +351,7 @@ for Acc=1:(AccNumber+99*ALIGN*AccNumber) %Loop on Accumulation number
                     disp(['AutoAlignCam sweep number' num2str(Acc) ': xshift = ' num2str(Xshift) ' pixel, yshift = ' num2str(Yshift) ' pixel']);
                 end
             end
+%             LaserOn(panel);[I,ISize,AOI] = PrepareCamera();
         end
         
 %       If we want to Align Piezo between each sweep
@@ -402,15 +430,17 @@ for Acc=1:(AccNumber+99*ALIGN*AccNumber) %Loop on Accumulation number
     PixX=str2double(panel.PixX.String);%Read x_Pixel from GUI
     PixY=str2double(panel.PixY.String);%Read y_Pixel from GUI
     
-    %%Plot Mean Image (to see if image is moving)
-    if panel.stop.Value ~=1
+    %%Plot Image (to see if image is moving)
+    if panel.stop.Value ~=1 
         if  panel.DisplayLight.Value
-            LightOn(panel);
-            [I,ISize,AOI] = PrepareCamera();
-            Lum_WithLightAndLaser=TakeCameraImage(ISize,AOI);
-            panel.UserData.Lum_WithLightAndLaser = Lum_WithLightAndLaser;
-            LightOff(panel);% to turn off the light for the scan part
-            [I,ISize,AOI] = PrepareCamera();
+            if AutoAlignCam ~= 1
+                LightOn(panel);
+                [I,ISize,AOI] = PrepareCamera();
+                Lum_WithLightAndLaser=TakeCameraImage(ISize,AOI);
+                panel.UserData.Lum_WithLightAndLaser = Lum_WithLightAndLaser;
+                LightOff(panel);% to turn off the light for the scan part
+                [I,ISize,AOI] = PrepareCamera();
+            end
             PrintImage(panel.Axes1,Lum_WithLightAndLaser,AOIParameters,str2double(panel.MaxLum.String));
         else
             panel.UserData.Lum_Current = Lum_Current;
@@ -432,7 +462,7 @@ for Acc=1:(AccNumber+99*ALIGN*AccNumber) %Loop on Accumulation number
     rem_time = (AccNumber-Acc)*time_one_sweep;
     if TotalScan > 1 && i_scan > 1
         rem_time_all = (TotalScan-i_scan)*time_one_scan;
-        panel.AcqTime.String = ['Remaining time = ' formatDuration(rem_time) ' / Total = ' formatDuration(rem_time_all)];
+        panel.AcqTime.String = ['Remaining time = ' formatDuration(rem_time) newline 'Total = ' formatDuration(rem_time_all)];
     else
         panel.AcqTime.String = ['Remaining time = ' formatDuration(rem_time)];
     end
@@ -454,7 +484,7 @@ disp(['Scan lasted: ', num2str(floor(h)), 'h ', num2str(floor(m)), 'm ', num2str
 
 if TotalScan > 1 && i_scan > 1
     rem_time_all = (TotalScan-i_scan)*time_one_scan;
-    panel.AcqTime.String = ['Acquisition time = ' formatDuration(endacq) '/ Total Remaining = ' formatDuration(rem_time_all)];
+    panel.AcqTime.String = ['Acquisition time = ' formatDuration(endacq) newline 'Total Remaining = ' formatDuration(rem_time_all)];
 else
     panel.AcqTime.String = ['Acquisition time = ' formatDuration(endacq)];
 end

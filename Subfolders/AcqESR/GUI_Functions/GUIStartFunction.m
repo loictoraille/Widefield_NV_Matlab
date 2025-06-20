@@ -30,14 +30,16 @@ startTime = datetime('now'); % Capture l'heure de départ
 Lum_Initial = [];
 Lum_Initial_LaserOff = [];
 
-nomSave = NameGen(AcqParameters.Data_Path,AcqParameters.FileNamePrefix,AcqParameters.Save);
+[nomSave,numScan] = NameGen(AcqParameters.Data_Path,AcqParameters.FileNamePrefix,AcqParameters.Save);
 time_one_scan = 0; % initialization
 
+if AcqParameters.Save == 1 && TotalScan > 1
+    diary([AcqParameters.Data_Path nomSave '-' sprintf('%03d', numScan+TotalScan) '_log.txt']);  % Starts to save
+    disp('Sarting log of command window')  % Toute sortie affichée ici sera enregistrée
+end
+
 while i_scan <= TotalScan
-    if AcqParameters.Save == 1 && TotalScan > 1
-        diary([nomSave '-' sprintf('%03d', TotalScan) '_log.txt']);  % Starts to save
-        disp('Sarting log of command window')  % Toute sortie affichée ici sera enregistrée
-    end
+
     disp(['Starting acquisition number ' num2str(i_scan) ' / ' num2str(TotalScan)]);
     disp(['Current Date and Time: ', datestr(datetime('now'))]);
     if AcqParameters.RepeatScan > 1 && i_scan ~= 1
@@ -45,13 +47,13 @@ while i_scan <= TotalScan
     end
     tic
     [Lum_Initial,Lum_Initial_LaserOff] = StartFunction(i_scan, Lum_Initial, Lum_Initial_LaserOff, nomSave, time_one_scan);
-    if time_on_scan == 0
+    if time_one_scan == 0
         time_one_scan = toc;
     end
-    i_scan = i_scan + 1;
     if stop_tag.Value == 1 % Check STOP Button
         break;
     end
+    i_scan = i_scan + 1;
 end
 
 endTime = datetime('now'); % Capture l'heure de fin
@@ -62,6 +64,12 @@ if AcqParameters.RepeatScan > 1
     [h, m, s] = hms(elapsedTime);
     disp(['Full acquisition lasted: ', num2str(floor(h)), 'h ', num2str(floor(m)), 'm ', num2str(round(s)), 's']);
     diary off;
+    % update log file name
+    oldLogName = [AcqParameters.Data_Path nomSave '-' sprintf('%03d', numScan + TotalScan) '_log.txt'];
+    newLogName = [AcqParameters.Data_Path nomSave '-' sprintf('%03d', numScan + i_scan) '_log.txt'];
+    if exist(oldLogName,'file') == 2
+        movefile(oldLogName, newLogName);
+    end
 end
 
 
