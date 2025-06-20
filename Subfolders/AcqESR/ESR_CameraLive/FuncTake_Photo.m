@@ -6,6 +6,8 @@ set(h.picacq,'ForegroundColor',[0,0,1]);%Change button color to blue in the GUI
 load([getPath('Param') 'AcqParameters.mat'],'AcqParameters');
 Data_Path = AcqParameters.Data_Path;
 
+haxes = findobj('tag','Axes_Camera');
+
 MaxLum = str2double(h.MaxLum.String);
 
 [Picture,ISize,AOI] = PrepareCamera();

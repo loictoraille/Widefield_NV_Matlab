@@ -1,5 +1,5 @@
-function SwitchGEN(STATE)
-global smb TestWithoutHardware RF_Address
+function SwitchGEN(STATE,MWPower)
+global smb TestWithoutHardware 
 % The STATE variable combined with the RFAlwaysOn leads to a 
 % weird way to do it, but it works
 
@@ -15,6 +15,7 @@ if ~TestWithoutHardware
     else
         smb = Connect_RF();
     end
+    WriteSMB(['POW ',num2str(MWPower),' DBm']);% update at each switch
     WriteSMB(['OUTP ' STATE]);
 end
 

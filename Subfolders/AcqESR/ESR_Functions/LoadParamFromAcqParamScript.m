@@ -24,3 +24,5 @@ PixelClock = AcqParameters.PixelClock;
 SaveMode = AcqParameters.SaveMode;
 
 MaxLum = AcqParameters.MaxLum;
+
+TotalScan = AcqParameters.RepeatScan;

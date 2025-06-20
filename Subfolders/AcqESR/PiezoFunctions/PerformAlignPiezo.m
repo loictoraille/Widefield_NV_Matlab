@@ -12,6 +12,8 @@
 
 %% Initialization
 
+plotMaxLum = 11000; % used for tests only 
+
 if panel.stop.Value~=1
 
     disp('Starting Full Piezo Alignment Procedure');
@@ -46,17 +48,12 @@ if panel.stop.Value~=1
     [Opt_Z, z_out, foc_out, Shift_Z, fit_z_successful] = FuncIndepAutofocusPiezo(panel);
 
     %% Autocorrélation xy
-    % Alignment procedure with laser off then laser spot correlation procedure with laser on
+    % Alignment procedure with light on laser off then laser spot correlation procedure with light on laser on
 
-    LightOn(panel); % turning light on for all piezo alignment procedures
-    Tension4 = LaserOff(panel);
+    LightOn(panel); Tension4 = LaserOff(panel);
+    [I,ISize,AOI] = PrepareCamera(); % need to prepare AFTER LightOn or LightOff, I don't know why
 
-    if strcmp(CameraType,'Andor')
-        [I,ISize,AOI] = PrepareCamera(); % need to prepare AFTER LightOn or LightOff, I don't know why
-    end
-
-    % figure;imagesc(Lum_Initial);axis('image');caxis([0 65535]); % uncomment to test
-
+%     figure;imagesc(Lum_Initial);axis('image');caxis([0 plotMaxLum]); % uncomment to test
 
     % disp(['IniX = ' num2str(IniX)]); % uncomment to test
     % disp(['IniY = ' num2str(IniY)]);
@@ -72,7 +69,7 @@ if panel.stop.Value~=1
                 end
                 ind_prog = ind_prog + 1;
                 if rem(ind_prog,5) == 0 || ind_prog == 1
-                    disp(['Pre-alignment xy in progress ' num2str(ind_prog) '/' num2str(PiezoStepX*PiezoStepY)]);
+                    disp(['Scanning xy in progress ' num2str(ind_prog) '/' num2str(PiezoStepX*PiezoStepY)]);
                 end
                 NewX = min([10,LeftX + (i-1)*StepX]); X_piez(i) = NewX;
                 NewY = min([10,LeftY + (j-1)*StepY]); Y_piez(j) = NewY;
@@ -84,58 +81,9 @@ if panel.stop.Value~=1
                 end
 
                 SendAOItoCAM(AOI_init.X+DeltaX_pix(i,j),AOI_init.Y+DeltaY_pix(i,j),AOI_init.Width,AOI_init.Height);
-
-                if strcmp(CameraType,'Andor')
-                    [I,ISize,AOI] = PrepareCamera();
-                end
-
-                %         if i == 3 && j == 3
-                %             disp('test');
-                %         end
-
-                ImageCurrent = TakeCameraImage(ISize,AOI);
-                %         figure;imagesc(ImageCurrent);axis('image');caxis([0 65535]); % uncomment to test
-                AlignmentXY_List{i,j}=ImageCurrent;
-            end
-        end
-
-    end
-
-    Tension4 = LaserOn(panel);
-    if strcmp(CameraType,'Andor')
-        [I,ISize,AOI] = PrepareCamera();
-    end
-
-    if panel.stop.Value~=1
-
-        ind_prog = 0;
-        for i=1:PiezoStepX
-            for j=1:PiezoStepY
-                if panel.stop.Value==1%Check STOP Button
-                    break;
-                end
-                ind_prog = ind_prog + 1;
-                if rem(ind_prog,5) == 0 || ind_prog == 1
-                    disp(['Autocorrelation xy in progress ' num2str(ind_prog) '/' num2str(PiezoStepX*PiezoStepY)]);
-                end
-
-                %         disp(['NewX = ' num2str(NewX)]); % uncomment to test
-                %         disp(['NewY = ' num2str(NewY)]);
-                %         disp(['i = ' num2str(i)]);
-                %         disp(['j = ' num2str(j)]);
-                %         disp(DeltaX_pix(i,j));
-                %         disp(DeltaY_pix(i,j));
-
-                if strcmp(CameraType,'Andor')
-                    EndAcqCamera();
-                end
-
-                SendAOItoCAM(AOI_init.X+DeltaX_pix(i,j),AOI_init.Y+DeltaY_pix(i,j),AOI_init.Width,AOI_init.Height);
-
-                if strcmp(CameraType,'Andor')
-                    [I,ISize,AOI] = PrepareCamera();
-                end
-
+                
+                Tension4 = LaserOff(panel);
+                [I,ISize,AOI] = PrepareCamera(); % need to prepare AFTER LightOn or LightOff, I don't know why
                 CheckMaxAndWriteNI(X_piez(i), Y_piez(j), Opt_Z, Tension4)
 
                 %         if i == 3 && j == 3
@@ -143,169 +91,213 @@ if panel.stop.Value~=1
                 %         end
 
                 ImageCurrent = TakeCameraImage(ISize,AOI);
-                %         figure;imagesc(ImageCurrent);axis('image');caxis([0 65535]); % uncomment to test
+                %         figure;imagesc(ImageCurrent);axis('image');caxis([0 plotMaxLum]); % uncomment to test
+                AlignmentXY_List{i,j}=ImageCurrent;
+
+                Tension4 = LaserOn(panel);
+                [I,ISize,AOI] = PrepareCamera(); % need to prepare AFTER LightOn or LightOff, I don't know why
+                CheckMaxAndWriteNI(X_piez(i), Y_piez(j), Opt_Z, Tension4)
+
+                ImageCurrent = TakeCameraImage(ISize,AOI);
+                %         figure;imagesc(ImageCurrent);axis('image');caxis([0 plotMaxLum]); % uncomment to test
                 LaserXYList{i,j}=ImageCurrent;
+
             end
         end
 
     end
 
-    %% Treatment
 
-    if panel.stop.Value~=1
+    %% Treatment
+    % removing the corr part, all we want at the end is to compare the images, all the corr work has been done already
+
+%     if panel.stop.Value~=1
         for i=1:PiezoStepX
             for j=1:PiezoStepY
                 [crop1_out,crop2_out] = Align2Files(Lum_Initial_LaserOff,AlignmentXY_List{i,j},0); % align images without laser by autocorr
                 % uses those value to crop align the images with laser
                 Pic1crop{i,j} = Lum_Initial(crop1_out(1):crop1_out(2),crop1_out(3):crop1_out(4)); % result: crop both images to center laser spot
                 Pic2crop{i,j} = LaserXYList{i,j}(crop2_out(1):crop2_out(2),crop2_out(3):crop2_out(4));
-                sizepic = size(Pic2crop{i,j});sizepicx(i,j) = sizepic(2);sizepicy(i,j) = sizepic(1);
-                Corr_pic = xcorr2_fast_manual(Pic1crop{i,j},Pic2crop{i,j});
-                Corr_simple(i,j) = sum(sum(Corr_pic)); % simple correlation value between the images
-                [ypeak(i,j), xpeak(i,j)] = find(Corr_pic==max(Corr_pic(:))); % same method as Align2Files
-                Number_pixels(i,j) = numel(Pic1crop{i,j});
+%                 sizepic = size(Pic2crop{i,j});sizepicx(i,j) = sizepic(2);sizepicy(i,j) = sizepic(1);
+%                 Corr_pic{i,j} = xcorr2_fast_manual(Pic1crop{i,j},Pic2crop{i,j});
+%                 Corr_simple(i,j) = sum(sum(Corr_pic{i,j})); % simple correlation value between the images
+%                 [ypeak(i,j), xpeak(i,j)] = find(Corr_pic{i,j}==max(Corr_pic{i,j}(:))); % same method as Align2Files
+%                 Number_pixels(i,j) = numel(Pic1crop{i,j});
+                [ssimValue(i,j), ssimMap{i,j}] = ssim(Pic1crop{i,j}, Pic2crop{i,j});
             end
         end
-    end
+%     end
+
+    %%  % uncomment to test
+ 
+%     [crop1_out,crop2_out] = Align2Files(Lum_Initial_LaserOff,AlignmentXY_List{2,2},0);
+% 
+%     figure;imagesc(AlignmentXY_List{2,2});axis('image');caxis([0 plotMaxLum]);
+% 
+%     figure;imagesc(LaserXYList{2,2});axis('image');caxis([0 plotMaxLum]);
+% 
+%     figure;imagesc(Lum_Initial_LaserOff);axis('image');caxis([0 plotMaxLum]);
+%     figure;imagesc(Lum_Initial);axis('image');caxis([0 plotMaxLum]);
+
 
     %%  % uncomment to test
 
-    % figure('Position',[1000,100,1200,1200]);
-    % k=0;
-    % for i=1:PiezoStepX
-    %     for j=1:PiezoStepY
-    %         k=k+1;
-    %         subplot(PiezoStepX,PiezoStepY,k)
-    %         imagesc(AlignmentXY_List{i,j});axis('image');caxis([0 65535]);
-    %     end
-    % end
-    %
-    % figure('Position',[1000,100,1200,1200]);
-    % k=0;
-    % for i=1:PiezoStepX
-    %     for j=1:PiezoStepY
-    %         k=k+1;
-    %         subplot(PiezoStepX,PiezoStepY,k)
-    %         imagesc(LaserXYList{i,j});axis('image');caxis([0 65535]);
-    %     end
-    % end
-    %
-    % figure('Position',[1000,100,1200,1200]);
-    % k=0;
-    % for i=1:PiezoStepX
-    %     for j=1:PiezoStepY
-    %         k=k+1;
-    %         subplot(PiezoStepX,PiezoStepY,k)
-    %         imagesc(Pic1crop{i,j});axis('image');caxis([0 65535]);
-    %     end
-    % end
-    %
-    % figure('Position',[1000,100,1200,1200]);
-    % k=0;
-    % for i=1:PiezoStepX
-    %     for j=1:PiezoStepY
-    %         k=k+1;
-    %         subplot(PiezoStepX,PiezoStepY,k)
-    %         imagesc(Pic2crop{i,j});axis('image');caxis([0 65535]);
-    %     end
-    % end
+ 
+%     figure('Position',[1000,100,1200,1200]);
+%     k=0;
+%     for j=1:PiezoStepY
+%         for i=1:PiezoStepX
+%             k=k+1;
+%             subplot(PiezoStepY,PiezoStepX,k)
+%             imagesc(AlignmentXY_List{i,j});axis('image');caxis([0 plotMaxLum]);
+%         end
+%     end
+%     
+%     figure('Position',[1000,100,1200,1200]);
+%     k=0;
+%     for j=1:PiezoStepY
+%         for i=1:PiezoStepX
+%             k=k+1;
+%             subplot(PiezoStepX,PiezoStepY,k)
+%             imagesc(LaserXYList{i,j});axis('image');caxis([0 plotMaxLum]);
+%             title(['Xpiez = ' num2str(X_piez(i)) ', Ypiez = ' num2str(Y_piez(j))]);
+%         end
+%     end
+%     
+%     figure('Position',[1000,100,1200,1200]);
+%     k=0;
+%     for j=1:PiezoStepY
+%         for i=1:PiezoStepX
+%             k=k+1;
+%             subplot(PiezoStepX,PiezoStepY,k)
+%             imagesc(Pic1crop{i,j});axis('image');caxis([0 plotMaxLum]);
+%         end
+%     end
+%     
+%     figure('Position',[1000,100,1200,1200]);
+%     k=0;
+%     for j=1:PiezoStepY
+%         for i=1:PiezoStepX
+%             k=k+1;
+%             subplot(PiezoStepX,PiezoStepY,k)
+%             imagesc(Pic2crop{i,j});axis('image');caxis([0 plotMaxLum]);
+%             title(['Xpiez = ' num2str(X_piez(i)) ', Ypiez = ' num2str(Y_piez(j))]);
+%         end
+%     end
 
-    % Image plotted in Piezo tab is inverted compared to the image listing
+        % Image plotted in Piezo tab is inverted compared to the image listing
     % here, to compare, plot this new one and position is consistent with full
     % subplot images listings
-    % figure;imagesc(Y_piez,X_piez,Corr_select);axis('image');caxis([0 maxLum]);
+%     figure;imagesc(Y_piez,X_piez,ssimValue);axis('image');caxis([0 maxLum]); % check if it's correct
 
-    %% Corr_pos version (I like it best for now)
-    if panel.stop.Value~=1
-    Corr_pos = (abs(xpeak-sizepicx)+abs(ypeak-sizepicy)); % Finding the most correlated images
-    [~, min_idx_Corr_pos] = min(Corr_pos(:));
-    [x_best_Corr_pos, y_best_Corr_pos] = ind2sub(size(Corr_pos), min_idx_Corr_pos);
+    %% Corr selection
+% Removing the corr part, all we want at the end is to compare the images, all the corr work has been done already
 
-    %% Corr_simple version
+% Two different ways so far to select the best correlated image:
+% - A way called Corr_pos that uses Align2Files to determine how many pixels it had to shift to realign the images,
+% and uses the minimum value to choose the best image
+% - A way called Corr_simple that uses the raw correlation value between the two images
+% I'm not sure which way is more robust so far, it is unclear to me.
+% Corr_pos is bad when there is too low change and the number of pixels is 0 for a large range
+% Corr_pos seems less precise, so I select Corr_simple (renormalized to Corr_renorm) for now
 
-    Corr_renorm = Corr_simple./Number_pixels; % better to renormalize by the number of pixels in the cropped images
+%     % Corr_pos version
+%     
+%     if panel.stop.Value~=1
+%     Corr_pos = (abs(xpeak-sizepicx)+abs(ypeak-sizepicy)); % Finding the most correlated images
+%     [~, min_idx_Corr_pos] = min(Corr_pos(:));
+%     [x_best_Corr_pos, y_best_Corr_pos] = ind2sub(size(Corr_pos), min_idx_Corr_pos);
+% 
+%     % Corr_simple version
+% 
+%     Corr_renorm = Corr_simple./Number_pixels; % better to renormalize by the number of pixels in the cropped images
+% 
+%     % Version selected
+% 
+%     Corr_select = Corr_renorm; % seems better in our case now?
+% 
+%     end
 
-    %% Version selected
-    % arbitrary threshold to ignore Corr_pos when it's not precise enough, generally indicate that the scanned range is too small
-
-    if numel(find(Corr_pos == 0)) > numel(Corr_pos)/2
-        Corr_select = Corr_renorm;
-        disp('Using Corr_renorm to estimate best position, check if range is large enough')
-    else
-        Corr_select = Corr_pos;
-    end
-    end
     %% Fit
-    if panel.stop.Value~=1
-        % Generate 2D grid of X, Y coordinates
-        [X, Y] = meshgrid(1:size(Corr_select,2), 1:size(Corr_select,1));
 
-        % Invert data (since we are finding a minimum)
-        Z = Corr_select;
-        Z_inv = max(Z(:)) - Z;
+    if panel.stop.Value ~= 1
+    % Generate 2D grid of X, Y coordinates
+    [X, Y] = meshgrid(1:size(ssimValue,2), 1:size(ssimValue,1));
 
-        % Initial guesses for Gaussian parameters
-        A0 = max(Z_inv(:));
-        [~, min_idx] = max(Z_inv(:));
-        [y0, x0] = ind2sub(size(Z_inv), min_idx);
-        sigmaX0 = 1;
-        sigmaY0 = 1;
-        offset0 = min(Z_inv(:));  % Background level
+    % Use original Z values (maximum search)
+    Z = ssimValue;
 
-        % Flatten data for fitting
-        xdata = [X(:), Y(:)];
-        zdata = Z_inv(:);
+    % Initial guess for parameters
+    A0 = max(Z(:)); % Peak amplitude
+    [~, max_idx] = max(Z(:));
+    [y0, x0] = ind2sub(size(Z), max_idx); % Max location
+    sigmaX0 = 1;
+    sigmaY0 = 1;
+    offset0 = min(Z(:)); % Background level
 
-        % Define the 2D Gaussian function for fitting
-        gauss2D = @(p, xy) p(1) * exp(-((xy(:,1) - p(2)).^2 / (2 * p(3)^2) + (xy(:,2) - p(4)).^2 / (2 * p(5)^2))) + p(6);
+    % Flatten data for fitting
+    xdata = [X(:), Y(:)];
+    zdata = Z(:);
 
-        % Initial parameters [A, x0, sigmaX, y0, sigmaY, offset]
-        p0 = [A0, x0, sigmaX0, y0, sigmaY0, offset0];
+    % Define the 2D Gaussian function
+    gauss2D = @(p, xy) p(1) * exp(-((xy(:,1) - p(2)).^2 / (2 * p(3)^2) + (xy(:,2) - p(4)).^2 / (2 * p(5)^2))) + p(6);
 
-        % Set optimization options
-        options = optimset('Display', 'off');
+    % Initial parameters: [A, x0, sigmaX, y0, sigmaY, offset]
+    p0 = [A0, x0, sigmaX0, y0, sigmaY0, offset0];
 
-        % Fit the 2D Gaussian model
-        try
-            p_fit = lsqcurvefit(@(p, xy) gauss2D(p, xy), p0, xdata, zdata, [], [], options);
+    % Fit options
+    options = optimset('Display', 'off');
 
-            % Extract fitted parameters
-            A = p_fit(1);
-            y_min_pos = p_fit(2);
-            sigma_x = p_fit(3);
-            x_min_pos = p_fit(4);
-            sigma_y = p_fit(5);
+    try
+        % Fit 2D Gaussian model
+        p_fit = lsqcurvefit(@(p, xy) gauss2D(p, xy), p0, xdata, zdata, [], [], options);
 
-            % Check for validity
-            if isnan(x_min_pos) || isnan(y_min_pos) || x_min_pos < 1 || x_min_pos > size(Corr_select,2) || y_min_pos < 1 || y_min_pos > size(Corr_select,1)
-                error('Fit failed: Invalid maximum position.');
-            end
+        % Extract fitted parameters
+        A = p_fit(1);
+        x_max_pos = p_fit(2);
+        sigma_x = p_fit(3);
+        y_max_pos = p_fit(4);
+        sigma_y = p_fit(5);
 
-            fit_xy_successful = true;
-            disp('2D Gaussian fit successful.');
-        catch
-            % If the fit fails, use simple maximum search with smoothing
-            disp('2D Gaussian fit failed. Using direct minimum search.');
-
-            % Finding min closest to center
-            [min_val,~] = min(Corr_select(:));
-            [xmin_pos_vec, ymin_pos_vec] = find(Corr_select == min_val);
-            center_row = (size(Corr_select,1)+1)/2;
-            center_col = (size(Corr_select,2)+1)/2;
-
-            distances = sqrt((xmin_pos_vec - center_row).^2 + (ymin_pos_vec - center_col).^2);
-            [~,min_dist_idx] = min(distances);
-            x_min_pos = xmin_pos_vec(min_dist_idx);
-            y_min_pos = ymin_pos_vec(min_dist_idx);
-
-            fit_xy_successful = false;
+        % Validate result
+        if any(isnan([x_max_pos, y_max_pos])) || ...
+           x_max_pos < 1 || x_max_pos > size(Z,2) || ...
+           y_max_pos < 1 || y_max_pos > size(Z,1)
+            error('Fit failed: Invalid maximum position.');
         end
 
-    x_min = interp1(1:length(X_piez),X_piez,x_min_pos);
-    y_min = interp1(1:length(Y_piez),Y_piez,y_min_pos);
+        fit_xy_successful = true;
+        disp('2D Gaussian fit successful.');
+        fittypestring = '2D Gaussian fit';
 
-    Opt_X = round(x_min*100)/100;
-    Opt_Y = round(y_min*100)/100;
+    catch
+        % Fallback if fit fails
+        disp('2D Gaussian fit failed. Using direct maximum search.');
+
+        [max_val,~] = max(Z(:));
+        [y_vec, x_vec] = find(Z == max_val);
+
+        center_x = (size(Z,2)+1)/2;
+        center_y = (size(Z,1)+1)/2;
+
+        distances = sqrt((x_vec - center_x).^2 + (y_vec - center_y).^2);
+        [~, idx] = min(distances);
+
+        x_max_pos = x_vec(idx);
+        y_max_pos = y_vec(idx);
+
+        fit_xy_successful = false;
+        fittypestring = 'Maximum estimation';
+    end
+
+    % Interpolation to physical coordinates
+    x_max = interp1(1:length(X_piez), X_piez, y_max_pos);
+    y_max = interp1(1:length(Y_piez), Y_piez, x_max_pos);
+
+    
+
+    Opt_X = round(x_max*1000)/1000;
+    Opt_Y = round(y_max*1000)/1000;
     Shift_X = Opt_X-IniX;
     Shift_Y = Opt_Y-IniY;
 
@@ -314,18 +306,18 @@ if panel.stop.Value~=1
     if panel.stop.Value~=1
         % Plot results in piezo tab
 
-        Corr_select_trans = Corr_select.';
+        ssimValue_trans = ssimValue.';
 
         ax_piezo_autocorr = panel.ax_piezo_autocorr;
-        imagesc(ax_piezo_autocorr,X_piez,Y_piez,Corr_select_trans); axis(ax_piezo_autocorr,'image')
-        title(ax_piezo_autocorr, 'Last Autocorrelation XY - 2D Gaussian Fit');
+        imagesc(ax_piezo_autocorr,X_piez,Y_piez,ssimValue_trans); axis(ax_piezo_autocorr,'image')
+        title(ax_piezo_autocorr, ['Last Autocorrelation XY - ' fittypestring]);
         xlabel(ax_piezo_autocorr,'Value of the X piezo (V)');
         ylabel(ax_piezo_autocorr,'Value of the Y piezo (V)');
         c = colorbar(ax_piezo_autocorr);
         c.Label.String = 'Difference from the reference image (a.u.)';
         set(ax_piezo_autocorr,'Tag','ax_piezo_autocorr'); % Necessary to rewrite tag of axes after imagesc (I don't know why)
         hold(ax_piezo_autocorr,'on');
-        plot(ax_piezo_autocorr,x_min,y_min,'rx','MarkerSize',20,'LineWidth',2);
+        plot(ax_piezo_autocorr,x_max,y_max,'rx','MarkerSize',20,'LineWidth',2);
         hold(ax_piezo_autocorr,'off');
 
         disp(['Range tested from ' num2str(LeftX) ' V to ' num2str(RightX) ' V every ' num2str(StepX) ' V']);
@@ -333,7 +325,7 @@ if panel.stop.Value~=1
         disp(['NewX = ' num2str(Opt_X) ' V']);
         disp(['ShiftX = ' num2str(Shift_X) ' V']);
 
-        if Opt_X == LeftX ||  Opt_X == RightX
+        if Opt_X <= LeftX ||  Opt_X >= RightX
             disp('Edge of scanned X range reached');
         end
         disp(' ');
@@ -343,7 +335,7 @@ if panel.stop.Value~=1
         disp(['NewY = ' num2str(Opt_Y) ' V']);
         disp(['ShiftY = ' num2str(Shift_Y) ' V']);
 
-        if Opt_Y == LeftY ||  Opt_Y == RightY
+        if Opt_Y <= LeftY ||  Opt_Y >= RightY
             disp('Edge of scanned Y range reached');
         end
         disp(' ');
@@ -365,8 +357,9 @@ if panel.stop.Value~=1
         CheckMaxAndWriteNI(Opt_X, Opt_Y, Opt_Z, Tension4); % send new values to NI card
 
         % found the best laser position, but the precision for the AOI is not as good as with using normxcorr2_general > now we redo the AOI without laser (better)
+        % not sure about this part, think about it
 
-        LaserOff(panel);
+        LightOn(panel);LaserOff(panel);
 
         EndAcqCamera();
         SendAOItoCAM(AOI_init.X,AOI_init.Y,AOI_init.Width,AOI_init.Height);
@@ -404,5 +397,5 @@ if panel.stop.Value~=1
 end
 
 if panel.stop.Value==1
-    Lum_Post_AutoCorr = Lum_Initial; X_piez = []; Y_piez = []; Corr_select_trans = []; Shift_X = []; Shift_Y = []; fit_xy_successful = [];
+    Lum_Post_AutoCorr = Lum_Initial; X_piez = []; Y_piez = []; ssimValue_trans = []; Shift_X = []; Shift_Y = []; fit_xy_successful = [];
 end

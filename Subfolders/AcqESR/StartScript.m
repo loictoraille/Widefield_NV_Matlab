@@ -1,17 +1,17 @@
 
 % separated from scan script for ease of reading
 
-SwitchGEN('ON');
-
-panel=guidata(gcbo);
-
-panel = ToggleOffButtons(); % custom built function to turn off pix button and the like
-
 load([getPath('Param') 'AcqParameters.mat']);
 load([getPath('Param') 'FitParameters.mat']);
 Data_Path = AcqParameters.Data_Path;
 
 LoadParamFromAcqParamScript;
+
+SwitchGEN('ON',MWPower);
+
+panel=guidata(gcbo);
+
+panel = ToggleOffButtons(); % custom built function to turn off pix button and the like
 
 DelEx = AcqParameters.DelEx; % DelEx standalone uses the script, so we get it out
 

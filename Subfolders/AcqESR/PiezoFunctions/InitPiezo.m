@@ -4,9 +4,15 @@ global NI_card TestWithoutHardware
 
 if ~TestWithoutHardware
     
-    % initialise la connexion a la carte NI
+try
+    % Initialise la connexion à la carte NI
     NI_card = daq("ni");
     daq_list = daqlist;
+catch 
+    disp('NI card initialization failed: have you turned on the NI card? Is the correct toolbox installed?');
+    NI_card = [];
+    daq_list = [];
+end
 
     %     dq.Rate = 8000; % pour changer le rate, a tester
 

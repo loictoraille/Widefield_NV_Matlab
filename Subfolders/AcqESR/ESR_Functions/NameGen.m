@@ -1,4 +1,4 @@
-function nomSave = NameGen(pathIn,strIn,SaveValue)
+function [nomSave, num] = NameGen(pathIn,strIn,SaveValue)
 
 PATH = pathIn;
 
@@ -11,8 +11,11 @@ if SaveValue
         ch = ch + 1;    
         nomSave = [strIn '-' sprintf('%03d', ch)]; % Zero-padded number
     end
+
+    num = ch;
 else
     nomSave = 'backup';
+    num = 0;
 end
 
 end

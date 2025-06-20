@@ -19,13 +19,13 @@ cpanel2=uipanel('Parent',tab1,'Position',[0.22 0.88 0.202 0.12]);
 uicontrol('Parent',tab1,'Style', 'checkbox', 'String', 'Save','units','normalized','tag','Save',...
     'Position', [0.076 0.883 0.07 0.025],'FontSize',10,'Value',AcqParameters.Save,'Callback',@UpdateAcqParam);
 uicontrol('Parent',tab1,'Style', 'checkbox', 'String', 'AutoAlignPiezo','units','normalized','tag','AutoAlignPiezo',...
-    'Position', [0.076 0.973 0.07 0.025],'FontSize',10,'Value',AcqParameters.AutoAlignPiezo,'Callback',@UpdateAutoAlignPiezo);
+    'Position', [0.076 0.973 0.07 0.025],'FontSize',10,'Value',AcqParameters.AutoAlignPiezo,'Callback',@UpdateAcqParam,'Tooltip',['Used to realign the laser on the sample between multiple scans' newline 'Prerequisite: a steering mirror to pilot the laser']);
 uicontrol('Parent',tab1,'Style', 'checkbox', 'String', 'RefreshMode','units','normalized','tag','RefreshMode',...
     'Position', [0.15 0.943 0.065 0.025],'FontSize',10,'Tooltip','Does not accumulate the ESR Spectra and divides NumPoints by 4','Value',AcqParameters.RefreshMode,'Callback',@UpdateAcqParam);
 uicontrol('Parent',tab1,'Style', 'checkbox', 'String', 'ReadTemp','units','normalized','tag','ReadTemp',...
     'Position', [0.076 0.943 0.065 0.025],'FontSize',10,'Value',AcqParameters.ReadTemp,'Callback',@UpdateAcqParam);
 uicontrol('Parent',tab1,'Style', 'checkbox', 'String', 'AutoAlignCam','units','normalized','tag','AutoAlignCam',...
-    'Position', [0.15 0.973 0.066 0.025],'FontSize',10,'Value',AcqParameters.AutoAlignCam,'Callback',@UpdateAutoAlignCam);
+    'Position', [0.15 0.973 0.066 0.025],'FontSize',10,'Value',AcqParameters.AutoAlignCam,'Callback',@UpdateAcqParam,'Tooltip','Perfoms an autocorrelation between each sweep and adjusts the camera ROI to track the sample');
 uicontrol('Parent',tab1,'Style', 'checkbox', 'String', 'DelEx','units','normalized','tag','DelEx',...
     'Position', [0.15 0.883 0.065 0.025],'FontSize',10,'Value',AcqParameters.DelEx,'Tooltip','Deletes first and last frequency points before plotting and saving file','Callback',@UpdateAcqParam);
 
@@ -37,7 +37,7 @@ uicontrol('Parent',tab1,'Style', 'text', 'String', sprintf('TEST WITHOUT\n HARDW
     'Position', [0.076 0.917 0.085 0.05],'FontSize',15,'FontWeight','bold','VISIBLE',valuetestwohar);
 
 uicontrol('Parent',tab1,'Style','text','FontSize',10,'units','normalized','HorizontalAlignment','right','Position',[0.235 0.968 0.041 0.025],'String','MWPower');
-uicontrol('Parent',tab1,'Style','edit','tag','MWPower','FontSize',10,'units','normalized','Position',[0.279 0.973 0.02 0.025],'String',num2str(AcqParameters.MWPower),'Callback',@UpdateAcqParam);
+uicontrol('Parent',tab1,'Style','edit','tag','MWPower','FontSize',10,'units','normalized','Position',[0.279 0.973 0.02 0.025],'String',num2str(AcqParameters.MWPower),'Callback',@UpdateMWPower);
 uicontrol('Parent',tab1,'Style','text','FontSize',10,'units','normalized','HorizontalAlignment','left','Position',[0.301 0.968 0.02 0.025],'String','dBm');
     
 uicontrol('Parent',tab1,'Style','text','FontSize',10,'units','normalized','HorizontalAlignment','right','Position',[0.227 0.938 0.05 0.025],'String','NumPoints');
@@ -204,14 +204,14 @@ uicontrol('Parent',bg_np,'Style','text','FontSize',12,'units','normalized','Posi
 %%Text Information
 %%%%%%%%%%%%%%%%%%
 uicontrol('Parent',tab1,'Style','text','tag','nameFile','units','normalized','FontSize',16,'HorizontalAlignment','left','FontWeight','bold','Position',[0.01 0.21 0.24 0.05],'String',['File: ' AcqParameters.nomSave]);
-uicontrol('Parent',tab1,'Style','text','tag','numberSweep','units','normalized','FontSize',12,'HorizontalAlignment','right','Position',[0.13 0.05 0.13 0.03],'String',['Sweep number /' num2str(AcqParameters.NumSweeps)]);
-uicontrol('Parent',tab1,'Style','text','tag','numberFreq','units','normalized','FontSize',12,'HorizontalAlignment','right','Position',[0.13 0.01 0.13 0.03],'String',['Freq number /' num2str(AcqParameters.NumPoints)]);
+uicontrol('Parent',tab1,'Style','text','tag','numberSweep','units','normalized','FontSize',12,'HorizontalAlignment','right','Position',[0.13 0.06 0.13 0.03],'String',['Sweep number /' num2str(AcqParameters.NumSweeps)]);
+uicontrol('Parent',tab1,'Style','text','tag','numberFreq','units','normalized','FontSize',12,'HorizontalAlignment','right','Position',[0.13 0.03 0.13 0.03],'String',['Freq number /' num2str(AcqParameters.NumPoints)]);
 
-uicontrol('Parent',tab1,'Style','text','tag','sizeM','units','normalized','FontSize',12,'HorizontalAlignment','left','Position',[0.01 0.05 0.15 .03],'String','Size of M : (w,h,v) = (,,)');
+uicontrol('Parent',tab1,'Style','text','tag','sizeM','units','normalized','FontSize',12,'HorizontalAlignment','left','Position',[0.01 0.06 0.15 .03],'String','Size of M : (w,h,v) = (,,)');
 
 text(1.02,0.87,num2str(1),'FontSize',12,'Tag','lum1text','Units','Normalized','Parent',ax2,'Color','black');
 text(1.02,0.87,num2str(1),'FontSize',12,'Tag','lum0text','Units','Normalized','Parent',ax3,'Color','black');
 
-uicontrol('Parent',tab1,'Style','text','FontSize',12,'HorizontalAlignment','left','units','normalized','Position',[0.01 0.01 0.15 0.03],'String','','tag','AcqTime');
+uicontrol('Parent',tab1,'Style','text','FontSize',12,'HorizontalAlignment','left','units','normalized','Position',[0.01 0.02 0.15 0.04],'String',['test' newline 'test'],'tag','AcqTime');
 
 clear AcqParameters

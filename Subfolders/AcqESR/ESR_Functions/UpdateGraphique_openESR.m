@@ -16,11 +16,8 @@ ax = findobj('tag','Axes1');
 
 ImageMatrix = Lum_Current;
 
-if AcqParameters.DisplayLight
-    panel.DisplayLight.Value = 1;
+if panel.DisplayLight.Value == 1
     ImageMatrix = Lum_WithLightAndLaser;
-else
-    panel.DisplayLight.Value = 0;
 end
 
 if AcqParameters.MaxLum
@@ -53,7 +50,7 @@ MaxLum = str2double(panel.MaxLum.String);
 PrintImage(ax,ImageMatrix,AOIParameters,MaxLum);
 
 if exist('T','var') && ~isempty(T)
-    panel.Temp_txt.String = sprintf(['Ta=' num2str(roundn(mean(T(:,1)),-2)) '\nTb=' num2str(roundn(mean(T(:,2)),-2))]);
+    panel.Temp_txt.String = sprintf(['Ta=' num2str(roundn(mean(T(:,1),'omitnan'),-2)) '\nTb=' num2str(roundn(mean(T(:,2),'omitnan'),-2))]);
 end
 
 PixXStart = round(AOIParameters.AOI.Width/2);
