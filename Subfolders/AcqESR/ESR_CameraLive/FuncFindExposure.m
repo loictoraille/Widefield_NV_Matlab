@@ -35,7 +35,7 @@ if ExpEstimate > 500 % in ms
     disp('Find Exposure stopped: not enough signal');
     % if there is not enough lum, blocks the function to prevent overtime
 else
-    
+
     if strcmp(CameraType,'uEye') % check how to write it for andor camera
         imax = 10;
         i=0;
@@ -52,6 +52,18 @@ else
         end
     elseif strcmp(CameraType,'Peak')
         OptimizeAcquisitionSpeed();
+
+    elseif strcmpi(CameraType,'Thorlabs')
+        % not sure if I should use OptimizeAcquisitionSpeed as for Peak, unclear for now
+        imax = 10;
+        i=0;
+        while ExpEstimate > ME && i<imax
+            FrameRate = ObjCamera.GetMeasuredFrameRate;
+            ObjCamera.FrameRateControlValue_fps = FrameRate/2;
+            mE = ObjCamera.ExposureTimeRange_us.Minimum;
+            ME = ObjCamera.ExposureTimeRange_us.Maximum;
+            i = i+1;
+        end
     end
     
     Bmin=mE;

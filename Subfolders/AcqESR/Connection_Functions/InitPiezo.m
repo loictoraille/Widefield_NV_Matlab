@@ -1,9 +1,9 @@
 function InitPiezo(panel)
-global NI_card
+global NI_card SetupType
 
 load([getPath('Param') 'AcqParameters.mat']);
 
-if strcmp(AcqParameters.SetupType,"CEA") || strcmp(AcqParameters.SetupType,"ENS1")
+if strcmpi(SetupType,"CEA") || strcmpi(SetupType,"ENS1")
 
     % initialise la connexion à la carte NI
     NI_card = daq("ni");
@@ -24,12 +24,12 @@ if strcmp(AcqParameters.SetupType,"CEA") || strcmp(AcqParameters.SetupType,"ENS1
         panel.switchpiezo.Value = 1;
         panel.switchpiezo.ForegroundColor = [0,0,1];
 
-        if strcmp(AcqParameters.SetupType,"ENS1")
+        if strcmpi(SetupType,"ENS1")
             panel.light.Value = 1;
             panel.light.ForegroundColor = [0,0,1];
         end
 
-        if strcmp(AcqParameters.SetupType,"CEA")
+        if strcmpi(SetupType,"CEA")
             panel.shutterlaser.Value = 1;
             panel.shutterlaser.ForegroundColor = [0,0,1];
         end

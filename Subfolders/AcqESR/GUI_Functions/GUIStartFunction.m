@@ -1,5 +1,5 @@
 function GUIStartFunction(hobject,eventdata)
-global M ObjCamera CameraType handleImage smb TestWithoutHardware RF_Address Lum_Current
+global M ObjCamera CameraType handleImage MW_Gen TestWithoutHardware RF_Address Lum_Current
 
 set(hobject,'ForegroundColor',[0,0,1]);
 stop_tag = findobj('tag','stop');

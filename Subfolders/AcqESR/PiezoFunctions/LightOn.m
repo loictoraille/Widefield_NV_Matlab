@@ -1,5 +1,6 @@
 function Tension4 = LightOn(panel)
 % optionally return Tension4, the fourth tension value of the NI card, for ease of use in PerformAlignPiezo sequence
+global SetupType
 
 h = panel.light;
 h_betsa = panel.shutterBetsa;
@@ -7,7 +8,7 @@ h_betsa = panel.shutterBetsa;
 h.Value = 1;
 h.ForegroundColor = [0,0,1];
 
-if strcmp(panel.SetupType.String,"CEA") && isfield(panel,'UserData') && isfield(panel.UserData,'Betsa')
+if strcmpi(SetupType,"CEA") && isfield(panel,'UserData') && isfield(panel.UserData,'Betsa')
     h_betsa.ForegroundColor = [0,0,1];
     h_betsa.Value = 1;
 %     Betsa = panel.UserData.Betsa;

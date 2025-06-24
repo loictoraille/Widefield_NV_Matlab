@@ -11,7 +11,8 @@ elseif strcmp(CameraType,'uEye')
 elseif strcmp(CameraType,'Peak')
     src_mycam = get(ObjCamera, 'Source');    
     set(src_mycam, 'ExposureTime', 1000*ExpIn); % Peak in us
-
+elseif strcmpi(CameraType,'Thorlabs')
+    ObjCamera.ExposureTime_us = 1000*ExpIn; % Thorlabs in us
 elseif strcmp(CameraType,'heliCam')
 	disp('warning : sensitivity is not set up for the helicam');
 	heliCamSetExp(ObjCamera,ExpIn); % TODO: to set the exposure

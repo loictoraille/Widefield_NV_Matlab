@@ -1,12 +1,13 @@
 function TurnUnusedSettingsInvisible()
 % Remove all piezo buttons and stuff only used on CEA or ENS1 setup (for now)
+global SetupType
 
 load([getPath('Param') 'AcqParameters.mat'],'AcqParameters');
 
 
-if strcmp(AcqParameters.SetupType,"CEA") 
+if strcmpi(SetupType,"CEA") 
     ListUselessSettings = {};
-elseif strcmp(AcqParameters.SetupType,"ENS1")
+elseif strcmpi(SetupType,"ENS1")
     ListUselessSettings = {shutterBetsa};    
 else
     ListUselessSettings = {'calibPiezoPanelTitle','calibPiezoPanel','calibPiezoXText','calibPiezoX','calibPiezoYText',...

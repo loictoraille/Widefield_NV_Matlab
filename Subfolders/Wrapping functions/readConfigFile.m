@@ -1,4 +1,4 @@
-function [TestWithoutHardware, RF_Address, Data_Path, CameraChoice] = readConfigFile(filename)
+function [TestWithoutHardware, RF_Address, Data_Path, CameraChoice, SetupType] = readConfigFile(filename)
     % Initialize default values
     TestWithoutHardware = 0;
     RF_Address = '';
@@ -34,12 +34,18 @@ function [TestWithoutHardware, RF_Address, Data_Path, CameraChoice] = readConfig
                 Data_Path = strrep(value,'/','\');
         elseif contains(key,'CameraChoice')
                 CameraChoice = value;
+        elseif contains(key,'SetupType')
+                SetupType = value;
         end
 
         % Skip the next empty line
         if ~feof(fid)
             fgetl(fid);
         end
+    end
+
+    if ~exist('SetupType', 'var')
+        SetupType = 'BASE';
     end
 
     % Close the file

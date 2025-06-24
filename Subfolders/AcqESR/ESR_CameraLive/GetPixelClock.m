@@ -17,6 +17,9 @@ elseif strcmp(CameraType,'uEye')
     [~,Pix]=ObjCamera.Timing.PixelClock.Get();%Query current values  
 elseif strcmp(CameraType,'Peak')
     % no such parameter it seems, using 'DeviceClockFrequency'
+    Pix = 395000000; 
+elseif strcmpi(CameraType,'Thorlabs')
+    % no such parameter it seems
     Pix = 395000000;
 
 elseif strcmp(CameraType,'heliCam')

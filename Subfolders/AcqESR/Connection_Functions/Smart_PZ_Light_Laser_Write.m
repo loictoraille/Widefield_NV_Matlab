@@ -1,6 +1,7 @@
 function Tension4 = Smart_PZ_Light_Laser_Write(panel)
 % function that uses the NI card and the com port to control piezo, light and laser
 % optionally return Tension4, the fourth tension value of the NI card, for ease of use in PerformAlignPiezo sequence
+global SetupType
 
 load([getPath('Param') 'AcqParameters.mat']);
 
@@ -19,7 +20,7 @@ else
     piezo_X = 0;piezo_Y = 0;piezo_Z = 0;
 end
 
-if strcmp(AcqParameters.SetupType,"CEA")
+if strcmpi(SetupType,"CEA")
     if laser_state
         piezo_4 = 5;
     else
@@ -27,7 +28,7 @@ if strcmp(AcqParameters.SetupType,"CEA")
     end
 end
 
-if strcmp(AcqParameters.SetupType,"ENS1")
+if strcmpi(SetupType,"ENS1")
     if light_state
         piezo_4 = Light_value;
     else
@@ -41,7 +42,7 @@ end
 
 CheckMaxAndWriteNI(piezo_X, piezo_Y, piezo_Z, piezo_4);
 
-if strcmp(AcqParameters.SetupType,"CEA") && isfield(panel,'UserData') && isfield(panel.UserData,'Betsa')
+if strcmpi(SetupType,"CEA") && isfield(panel,'UserData') && isfield(panel.UserData,'Betsa')
     Betsa = panel.UserData.Betsa;
     if light_state
         writeline(Betsa, "RLY61"); % turns reflected light on

@@ -11,6 +11,8 @@ elseif strcmp(CameraType,'uEye')
 elseif strcmp(CameraType,'Peak')
     src_mycam = get(ObjCamera, 'Source');
     Fra = src_mycam.AcquisitionFrameRate;
+elseif strcmpi(CameraType,'Thorlabs')
+    Fra = ObjCamera.GetMeasuredFrameRate;
 elseif strcmp(CameraType,'heliCam')
 	%TODO: Function to write
 	Fra = heliCamGetFrameRate(ObjCamera);

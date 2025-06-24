@@ -1,10 +1,10 @@
 function WriteSMB(stringIn)
-global smb
+global MW_Gen
 
-maxRetries = 2;
+maxRetries = 2; % During long acquisitions, the connexion to the MW generator can stop. This code is here to disconnect then connect again to the generator so that the acquisition can continue
 for attempt = 1:maxRetries
     try
-        smb.Write(stringIn);
+        MW_Gen.Write(stringIn);
         break; % Exit loop if successful
     catch ME
         if attempt == maxRetries
@@ -12,13 +12,13 @@ for attempt = 1:maxRetries
             disp(ME.message);
             disp('Trying to disconnect RF generator');
             try
-                smb.Close();
+                MW_Gen.Close();
             catch
                 disp('Unable to disconnect to RF generator');
             end
             try
-                smb = Connect_RF();
-                smb.Write(stringIn);
+                MW_Gen = Connect_RF();
+                MW_Gen.Write(stringIn);
             catch
                 disp('Unable to reconnect to RF generator');
             end

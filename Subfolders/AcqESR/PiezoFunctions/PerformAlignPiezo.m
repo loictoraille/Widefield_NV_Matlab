@@ -111,7 +111,7 @@ if panel.stop.Value~=1
     %% Treatment
     % removing the corr part, all we want at the end is to compare the images, all the corr work has been done already
 
-%     if panel.stop.Value~=1
+    if panel.stop.Value~=1
         for i=1:PiezoStepX
             for j=1:PiezoStepY
                 [crop1_out,crop2_out] = Align2Files(Lum_Initial_LaserOff,AlignmentXY_List{i,j},0); % align images without laser by autocorr
@@ -126,7 +126,7 @@ if panel.stop.Value~=1
                 [ssimValue(i,j), ssimMap{i,j}] = ssim(Pic1crop{i,j}, Pic2crop{i,j});
             end
         end
-%     end
+    end
 
     %%  % uncomment to test
  

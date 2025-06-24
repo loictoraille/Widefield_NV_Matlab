@@ -1,6 +1,6 @@
 
 function CloseReq(hobject,eventdata)
-global ObjCamera CameraType smb TestWithoutHardware NI_card
+global ObjCamera CameraType MW_Gen TestWithoutHardware NI_card SetupType
 
 panel = guidata(gcf);
 
@@ -31,16 +31,16 @@ if TestWithoutHardware~=1 && ~isempty(CameraType)
     Exit_Camera();
 end
 
-if TestWithoutHardware~=1 && exist('smb','var') && any(isprop(smb,'Session'))
+if TestWithoutHardware~=1 && exist('MW_Gen','var') && any(isprop(MW_Gen,'Session'))
     try
-        smb.Write('OUTP OFF'); %RF OFF
-        smb.Close();
+        MW_Gen.Write('OUTP OFF'); %RF OFF
+        MW_Gen.Close();
     catch
         disp('Connexion to RF Generator was not closed properly');
     end
 end
 
-if  TestWithoutHardware~=1 && strcmp(AcqParameters.SetupType,"CEA") && exist('NI_card','var') && any(isprop(NI_card,'Running')) && ~isempty(daqlist)
+if  TestWithoutHardware~=1 && strcmpi(SetupType,"CEA") && exist('NI_card','var') && any(isprop(NI_card,'Running')) && ~isempty(daqlist)
     try
         LaserOff(panel);
     catch
@@ -73,10 +73,7 @@ if TestWithoutHardware~=1 && ~isempty(panel) && isfield(panel,'UserData') && isf
     clear Betsa
 end
 
-clear global ObjCamera
-clear global CameraType
-clear global smb
-clear global NI_card
+clear global
 
 if isvalid(hobject) % Ensure the figure handle is still valid
     delete(hobject); % Deletes only the specific figure

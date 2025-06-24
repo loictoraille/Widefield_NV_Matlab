@@ -29,6 +29,11 @@ elseif strcmp(CameraType,'Peak')
     PixRange.Minimum = 395000000;
     PixRange.Maximum = 395000000;    
 
+elseif strcmpi(CameraType,'Thorlabs')
+    % no such parameter it seems
+    PixRange.Minimum = 395000000;
+    PixRange.Maximum = 395000000;
+
 elseif strcmp(CameraType,'heliCam')
     % TODO: might not exist for this camera
     PixRange.Minimum = 395000000;

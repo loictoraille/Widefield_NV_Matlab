@@ -21,7 +21,8 @@ if strcmp(CameraType,'Andor')
 elseif strcmp(CameraType,'Peak') 
     start(ObjCamera);
     % essential so that the getsnapshot function does not initialize every time
-
+elseif strcmpi(CameraType,'Thorlabs')
+    ObjCamera.Arm;
 elseif strcmp(CameraType,'heliCam')
 	%TODO create the function that set up the camera
 	heliCamStartAcqMode(ObjCamera);

@@ -8,5 +8,8 @@ TCPIP::129.175.56.96::inst0::INSTR
 Data_Path
 C:\Users\ADM_TORAILLEL\Desktop\Working folder\
 
-CameraChoice (uEye, Peak, Andor)
+CameraChoice (uEye, Peak, Andor, heliCam, Thorlabs)
 uEye
+
+SetupType (BASE, CEA, ENS, LIST, THALES, etc)
+CEA

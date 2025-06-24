@@ -46,29 +46,26 @@ if strcmp(CameraChoice,'Andor')
     
 elseif strcmp(CameraChoice,'uEye')
 
-    % tries to open uEye Camera
-    if isempty(ObjCamera)
-        if exist('C:\Program Files\IDS\uEye\Develop\DotNet\signed\uEyeDotNet.dll', 'file') ~= 2 % check if uEye dll is installed on the computer
-            disp('uEye dll is not installed');
-        else
-            NET.addAssembly('C:\Program Files\IDS\uEye\Develop\DotNet\signed\uEyeDotNet.dll');
-            ObjCamera=uEye.Camera();%Define Camera Object
-            [~,CamID]=ObjCamera.Device.GetCameraID;
-            ObjCamera.Init(); %Initialize camera
-            CameraType = 'uEye';
-            InitAOILEVEL();
-            %     updateuEyeParameterFile(); % To make sure TriggerMode is ok, manually changes the file
-            % Deprecated: no longer uses the uEye .ini file loading, so don't bother
-            % To load the uEye .ini, activate the Full_uEye_Load in the LoadCameraParam function
-            LoadCameraParam();
-            %     ObjCamera.Gain.Hardware.Factor.SetMaster(400); % To set the gain, need to do some tests
-            disp('uEye Camera initialized');
-            ObjCamera.Trigger.Set(uEye.Defines.TriggerMode.Software);%%To make sure TriggerMode is ok, may be unnecessary now
-            ObjCamera.PixelFormat.Set(uEye.Defines.ColorMode.Mono12);%%To make sure the value CMode=Mono12 so that reshape function works in TakeCameraImage;indeed ColorMode is not loaded in parameter.ini
-        end
+    if exist('C:\Program Files\IDS\uEye\Develop\DotNet\signed\uEyeDotNet.dll', 'file') ~= 2 % check if uEye dll is installed on the computer
+        disp('uEye dll is not installed');
+    else
+        NET.addAssembly('C:\Program Files\IDS\uEye\Develop\DotNet\signed\uEyeDotNet.dll');
+        ObjCamera=uEye.Camera();%Define Camera Object
+        [~,CamID]=ObjCamera.Device.GetCameraID;
+        ObjCamera.Init(); %Initialize camera
+        CameraType = 'uEye';
+        InitAOILEVEL();
+        %     updateuEyeParameterFile(); % To make sure TriggerMode is ok, manually changes the file
+        % Deprecated: no longer uses the uEye .ini file loading, so don't bother
+        % To load the uEye .ini, activate the Full_uEye_Load in the LoadCameraParam function
+        LoadCameraParam();
+        %     ObjCamera.Gain.Hardware.Factor.SetMaster(400); % To set the gain, need to do some tests
+        disp('uEye Camera initialized');
+        ObjCamera.Trigger.Set(uEye.Defines.TriggerMode.Software);%%To make sure TriggerMode is ok, may be unnecessary now
+        ObjCamera.PixelFormat.Set(uEye.Defines.ColorMode.Mono12);%%To make sure the value CMode=Mono12 so that reshape function works in TakeCameraImage;indeed ColorMode is not loaded in parameter.ini
     end
 
-        
+
 elseif strcmp(CameraChoice,'Peak')
     ObjCamera = ImaqInit();
     src_mycam = get(ObjCamera, 'Source');
@@ -86,6 +83,25 @@ elseif strcmp(CameraChoice,'Peak')
     ListUselessSettings = {'sldpix','pixmin','pixmax','pixtext','Input_PixelClock','maxspeed'};
     TurnOffUselessSettings(ListUselessSettings);
 
+elseif strcmpi(CameraChoice,'Thorlabs')
+    if exist('C:\Program Files\Thorlabs\TSICamera\DotNet\Thorlabs.TSI.TLCamera.dll', 'file') ~= 2 % check if Thorlabs dll is installed on the computer
+        disp('Thorlabs dll file was not found');
+    else
+        NET.addAssembly('C:\Program Files\Thorlabs\TSICamera\DotNet\Thorlabs.TSI.TLCamera.dll');
+        tlCameraSDK = Thorlabs.TSI.TLCamera.TLCameraSDK.OpenTLCameraSDK;
+        serialNumbers = tlCameraSDK.DiscoverAvailableCameras;
+        if serialNumbers.Count > 0
+        ObjCamera = tlCameraSDK.OpenCamera(serialNumbers.Item(0), false); % Open the first TLCamera using the serial number
+        ObjCamera.OperationMode = Thorlabs.TSI.TLCameraInterfaces.OperationMode.SoftwareTriggered;
+        ObjCamera.FramesPerTrigger_zeroForUnlimited = 1; % set to zero for continuous acquisition?
+        InitAOILEVEL();
+        LoadCameraParam();
+        ListUselessSettings = {'sldframe','framin','framax','fratext','Input_FrameRate'};
+        TurnOffUselessSettings(ListUselessSettings);
+        else
+            disp('Thorlabs camera is probably not connected')
+        end
+    end
 elseif strcmp(CameraChoice,'heliCam')
 	%TODO: Maybe clear the ObjCamera before initializing it
 	if isempty(ObjCamera)

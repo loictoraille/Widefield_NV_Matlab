@@ -1,6 +1,6 @@
 
 function SwitchPiezo(~,~)
-global NI_card TestWithoutHardware
+global NI_card TestWithoutHardware SetupType
 
 hpiezo=findobj('tag','switchpiezo');
 
@@ -16,11 +16,11 @@ end
 hpiezo.String = 'Piezo OFF';
 hpiezo.ForegroundColor = [0,0,0];
 
-if strcmp(AcqParameters.SetupType,"CEA")
+if strcmpi(SetupType,"CEA")
     hlaser=findobj('tag','shutterlaser');
     hlaser.Value = 0;
     hlaser.ForegroundColor = [0,0,0];
-elseif strcmp(AcqParameters.SetupType,"ENS1")
+elseif strcmpi(SetupType,"ENS1")
     hlight=findobj('tag','light');
     hlight.Value = 0;
     hlight.ForegroundColor = [0,0,0];

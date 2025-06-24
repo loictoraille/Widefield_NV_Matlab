@@ -5,9 +5,10 @@ close all ; clear global ; clearvars
 addpath(genpath('Subfolders'));addpath(genpath(getPath('Main')));
 
 %% Parameters  --  Copy-paste your Param folder in ESR Programs\Subfolders\Param
-global TestWithoutHardware CameraType ObjCamera smb RF_Address 
+global TestWithoutHardware CameraType ObjCamera MW_Gen RF_Address SetupType
 
-[TestWithoutHardware, RF_Address, Data_Path, CameraChoice] = readConfigFile('Config.txt');
+[TestWithoutHardware, RF_Address, Data_Path, CameraChoice, SetupType] = readConfigFile('Config.txt');
+% Setup type helps defining setup differences, such as what is connected on the NI Card, if there is a laser shutter, etc
 
 CheckAndUpdateAcqParameters('','default');CheckAndUpdateFitParameters('','default');
 
