@@ -20,7 +20,7 @@ elseif strcmp(CameraType,'heliCam')
     AOIYmin = 0;
     AOIWidthMax = 512;
     AOIHeightMax = 542;
-elseif strcmp(CameraType,'Thorlabs')
+elseif strcmpi(CameraType,'Thorlabs')
     AOIXmin = 0;
     AOIYmin = 0;
     AOIWidthMax = 1280;

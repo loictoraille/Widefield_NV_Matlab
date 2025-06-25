@@ -20,8 +20,8 @@ elseif strcmp(CameraType,'Peak')
     ExpRange.Minimum = res.ConstraintValue(1)/1000; % Peak in us
     ExpRange.Maximum = res.ConstraintValue(2)/1000;
 elseif strcmpi(CameraType,'Thorlabs')
-    ExpRange.Minimum = ObjCamera.ExposureTimeRange_us.Minimum/1000; % Thorlabs in us
-    ExpRange.Maximum = ObjCamera.ExposureTimeRange_us.Maximum/1000;
+    ExpRange.Minimum = double(ObjCamera.ExposureTimeRange_us.Minimum)/1000; % Thorlabs in us
+    ExpRange.Maximum = double(ObjCamera.ExposureTimeRange_us.Maximum)/1000;
     
 elseif strcmp(CameraType,'heliCam')
 	%TODO: To adapte to a version independent of the sensitivity and the frequency of the demodulation 

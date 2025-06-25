@@ -38,17 +38,25 @@ elseif strcmp(CameraType,'Peak')
     ImageMatrix = getsnapshot(ObjCamera);
 
 elseif strcmpi(CameraType,'Thorlabs')
-    wait_to_retrieve_image = 2.5*ObjCamera.FrameTime_us / 1000000; % empirically chosen for an exposure time of 10 ms and a SensorReadoutTime of 6 ms (constant)
     ObjCamera.IssueSoftwareTrigger;
-    pause(wait_to_retrieve_image); % If insufficient time elapses, the trigger is ignored.
-    imageFrame = ObjCamera.GetPendingFrameOrNull; 
-    if ~isempty(imageFrame)
-        % Get the image data as 1D uint16 array
-        imageData = uint16(imageFrame.ImageData.ImageData_monoOrBGR);
-        ImageMatrix = reshape(imageData, [AOI.Width, AOI.Height]);
-        delete(imageFrame);
+    polling_interval = 0.1*ObjCamera.FrameTime_us / 1000000; % Try every tenth of frame
+    while exist('ObjCamera', 'var') && ObjCamera.NumberOfQueuedFrames == 0
+        pause(polling_interval);
     end
-
+    if exist('ObjCamera', 'var')
+        try
+            imageFrame = ObjCamera.GetPendingFrameOrNull;
+            if ~isempty(imageFrame)
+                % Get the image data as 1D uint16 array
+                imageData = uint16(imageFrame.ImageData.ImageData_monoOrBGR);
+                ImageMatrix = reshape(imageData, [AOI.Width, AOI.Height]);
+                delete(imageFrame);
+            end
+        catch
+            ImageMatrix = [];
+        end
+    end
+    
 elseif strcmp(CameraType,'heliCam')
 	% TODO to get a single image mode for quick and live acquisition
 	disp('Unfinished TAkeCameraImage');
