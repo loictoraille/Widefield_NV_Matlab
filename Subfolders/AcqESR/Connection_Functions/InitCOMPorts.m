@@ -1,8 +1,9 @@
 function InitCOMPorts(panel)
+global SetupType
 
 load([getPath('Param') 'AcqParameters.mat']);
 
-switch AcqParameters.SetupType
+switch SetupType
 
     case "CEA"
         try

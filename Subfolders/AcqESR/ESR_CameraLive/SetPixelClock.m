@@ -3,6 +3,7 @@ function SetPixelClock(PixelClockIn)
 global ObjCamera CameraType
 
 if strcmp(CameraType,'Andor') 
+    % Probably useless
     % check if it works
 %     [rc, PixelReadoutRateCount] = AT_GetEnumCount(ObjCamera,'PixelReadoutRate');
 %     AT_CheckWarning(rc);
@@ -22,6 +23,8 @@ elseif strcmp(CameraType,'uEye')
     ObjCamera.Timing.PixelClock.Set(PixelClockIn);
 
     %TODO : is it fine to have the Peak and the heliCam undefined
+else
+
 end
 
 end

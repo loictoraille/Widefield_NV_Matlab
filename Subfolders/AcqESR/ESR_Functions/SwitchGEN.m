@@ -1,5 +1,5 @@
 function SwitchGEN(STATE,MWPower)
-global smb TestWithoutHardware 
+global MW_Gen TestWithoutHardware 
 % The STATE variable combined with the RFAlwaysOn leads to a 
 % weird way to do it, but it works
 
@@ -11,9 +11,9 @@ global smb TestWithoutHardware
 
 if ~TestWithoutHardware
     
-    if exist('smb','var') && any(isprop(smb,'Session'))
+    if exist('MW_Gen','var') && any(isprop(MW_Gen,'Session'))
     else
-        smb = Connect_RF();
+        MW_Gen = Connect_RF();
     end
     WriteSMB(['POW ',num2str(MWPower),' DBm']);% update at each switch
     WriteSMB(['OUTP ' STATE]);

@@ -1,5 +1,5 @@
 function DisplayLightUpdate(hobject,~)
-global NI_card
+global NI_card SetupType
 
 DisplayLight = hobject.Value;
 panel = guidata(gcbo);
@@ -10,11 +10,11 @@ MaxLum = AcqParameters.MaxLum;
 LightControl = 0;
 if DisplayLight
 % Check if a light control is connected
-    if strcmp(AcqParameters.SetupType,"CEA") && isfield(panel,'UserData') && isfield(panel.UserData,'Betsa')
+    if strcmpi(SetupType,"CEA") && isfield(panel,'UserData') && isfield(panel.UserData,'Betsa')
         LightControl = 1;
     end
 
-    if strcmp(AcqParameters.SetupType,"ENS1") && exist('NI_card','var') && any(isprop(NI_card,'Running')) && ~isempty(daqlist)
+    if strcmpi(SetupType,"ENS1") && exist('NI_card','var') && any(isprop(NI_card,'Running')) && ~isempty(daqlist)
         LightControl = 1;
     end
 end

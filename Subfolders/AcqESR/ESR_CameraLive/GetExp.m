@@ -9,12 +9,15 @@ if strcmp(CameraType,'Andor')
     Exp = Exp*1000;% to correct for Andor which is in s
     Exp_unit = 'ms';
 elseif strcmp(CameraType,'uEye')
-    [~,Exp]=ObjCamera.Timing.Exposure.Get();%Query current values
+    [~,Exp]=ObjCamera.Timing.Exposure.Get(); %Query current values
     Exp = Exp; % uEye is in ms
     Exp_unit = 'ms';
 elseif strcmp(CameraType,'Peak')
     src_mycam = get(ObjCamera, 'Source');
     Exp = src_mycam.ExposureTime/1000; % to correct for Peak which is in us
+    Exp_unit = 'ms';
+elseif strcmpi(CameraType,'Thorlabs')
+    Exp = ObjCamera.ExposureTime_us/1000; % to correct for Thorlabs which is in us
     Exp_unit = 'ms';
 
 elseif strcmp(CameraType,'heliCam')

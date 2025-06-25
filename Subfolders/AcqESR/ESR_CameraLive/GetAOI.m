@@ -38,6 +38,11 @@ elseif strcmp(CameraType,'heliCam') %TODO: creat the ObjCamera.ROIPOsition
     AOI.Width = 512;
     AOI.Height = 542;
 
+elseif strcmpi(CameraType,'Thorlabs')
+    AOI.X = ObjCamera.ROIAndBin.ROIOriginX_pixels;
+    AOI.Y = ObjCamera.ROIAndBin.ROIOriginY_pixels;
+    AOI.Width = ObjCamera.ROIAndBin.ROIWidth_pixels;
+    AOI.Height = ObjCamera.ROIAndBin.ROIHeight_pixels;
 end
 
 

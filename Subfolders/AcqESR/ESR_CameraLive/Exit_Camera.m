@@ -31,7 +31,9 @@ elseif strcmp(CameraType,'Peak')
     delete(ObjCamera);    
 elseif strcmp(CameraType,'heliCam')
 	heliCamCloseCamera(ObjCamera);
-
+elseif strcmpi(CameraType,'Thorlabs')
+    ObjCamera.Dispose; %Releasing the camera
+    delete(ObjCamera);
 end
 
 clear global ObjCamera

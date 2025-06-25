@@ -53,6 +53,14 @@ elseif strcmp(CameraType,'Peak')
         disp('Minimum Width with Peak Camera is 256 pixel');
     end
     SetAOI((NewX+AOI.X-mod((NewX+AOI.X),-4)),NewY+AOI.Y,max(256,NewWidth-mod(NewWidth,-2)),NewHeight);
+elseif strcmpi(CameraType,'Thorlabs')
+    if NewWidth < 16
+        disp('Minimum Width with Thorlabs Camera is 256 pixel');
+    end
+    if NewHeight < 2
+        disp('Minimum Height with Thorlabs Camera is 2 pixel');
+    end
+    SetAOI((NewX+AOI.X-mod((NewX+AOI.X),-16)),NewY+AOI.Y,max(16,NewWidth-mod(NewWidth,-16)),max(2,NewHeight-mod(NewHeight,-2))); 
 end    
 %%
 set(h.roidef,'ForegroundColor',[0,0,0]);%Change button color to black

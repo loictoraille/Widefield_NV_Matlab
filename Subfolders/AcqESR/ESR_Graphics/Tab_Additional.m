@@ -40,14 +40,6 @@ uicontrol('Parent', cpanel_com, 'Style', 'text', 'String', 'BetsaLight','units',
 edit_Betsa = uicontrol('Parent', cpanel_com, 'Style', 'edit', 'String', AcqParameters.COM_Betsa, 'units', 'normalized', 'Position', [0.4 0.5 0.3 0.2], 'FontSize', 12,'Tag', 'comBetsa','Callback',@UpdateAcqParam,'TooltipString','Can be found in the windows device manager');
 uicontrol('Parent', cpanel_com, 'Style', 'pushbutton', 'String', 'Test', 'units', 'normalized', 'Position', [0.75 0.5 0.2 0.2], 'FontSize', 12, 'Callback', @(src, event) testCOMPort('Betsa'));
 
-
-
-%% Setup Type
-% Helps defining setup differences, such as what is connected on the NI card, if there is a laser shutter, etc
-
-uicontrol('Parent', tab_additional, 'Style', 'text', 'String', 'Setup Type','units', 'normalized', 'Position', [0.075 0.3975 0.05 0.025], 'FontSize', 12, 'HorizontalAlignment', 'left');
-edit_SetupType = uicontrol('Parent', tab_additional, 'Style', 'edit', 'String', AcqParameters.SetupType, 'units', 'normalized', 'Position', [0.13 0.4 0.05 0.025], 'FontSize', 12,'Tag','SetupType','Callback',@UpdateAcqParam,'TooltipString','CEA, ENS1, ENS2: helps defining setup differences, such as what is connected on the NI card, if there is a laser shutter, etc');
-
 %% AutoFocus method
 % Autofocus method used by the piezo z align 
 

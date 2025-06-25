@@ -19,6 +19,10 @@ elseif strcmp(CameraType,'Peak')
 elseif strcmp(CameraType,'heliCam')
 	% TODO: function to write here
 	heliCamStopAcqMode(ObjCamera);
+
+elseif strcmpi(CameraType,'Thorlabs')
+    ObjCamera.Disarm; %Stopping continuous image acquisition
+
 end
 
 end

@@ -1,17 +1,22 @@
-function smb = Connect_RF()
+function MW_Gen = Connect_RF()
 global TestWithoutHardware RF_Address
+% It seems that I could upgrade directly VISA_Instrument to visadev 
 
 if ~TestWithoutHardware
     
     try
-        smb = VISA_Instrument(RF_Address);
-        smb.Write('FREQ:MODE CW');%RF mode = continuous
+        if contains(RF_Address,'TCPIP')
+            MW_Gen = VISA_Instrument(RF_Address);
+        elseif contains(RF_Address,'GPIB')
+            MW_Gen = visadev(RF_Address);
+        end
+        MW_Gen.Write('FREQ:MODE CW');%RF mode = continuous
     catch
         disp('Unable to connect to RF generator');
     end    
     
 else    
-    smb = NaN;
+    MW_Gen = NaN;
 end
 
 end
