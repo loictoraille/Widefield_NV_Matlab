@@ -1,5 +1,6 @@
 function MW_Gen = Connect_RF()
 global TestWithoutHardware RF_Address
+% It seems that I could upgrade directly VISA_Instrument to visadev 
 
 if ~TestWithoutHardware
     

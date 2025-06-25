@@ -12,7 +12,10 @@ for attempt = 1:maxRetries
             disp(ME.message);
             disp('Trying to disconnect RF generator');
             try
-                MW_Gen.Close();
+                if ismethod(MW_Gen, 'Close') % this function does not exist for visadev
+                    MW_Gen.Close();
+                end
+                clear MW_Gen
             catch
                 disp('Unable to disconnect to RF generator');
             end

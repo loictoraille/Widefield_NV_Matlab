@@ -34,7 +34,9 @@ end
 if TestWithoutHardware~=1 && exist('MW_Gen','var') && any(isprop(MW_Gen,'Session'))
     try
         MW_Gen.Write('OUTP OFF'); %RF OFF
-        MW_Gen.Close();
+        if ismethod(MW_Gen, 'Close') % this function does not exist for visadev
+            MW_Gen.Close();
+        end
     catch
         disp('Connexion to RF Generator was not closed properly');
     end
