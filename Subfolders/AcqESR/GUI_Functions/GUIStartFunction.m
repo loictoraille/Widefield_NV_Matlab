@@ -66,7 +66,7 @@ if AcqParameters.RepeatScan > 1
     diary off;
     % update log file name
     oldLogName = [AcqParameters.Data_Path nomSave '-' sprintf('%03d', numScan + TotalScan) '_log.txt'];
-    newLogName = [AcqParameters.Data_Path nomSave '-' sprintf('%03d', numScan + i_scan) '_log.txt'];
+    newLogName = [AcqParameters.Data_Path nomSave '-' sprintf('%03d', numScan + i_scan -1) '_log.txt'];
     if exist(oldLogName,'file') == 2
         movefile(oldLogName, newLogName);
     end

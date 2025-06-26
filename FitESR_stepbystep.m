@@ -68,7 +68,7 @@ end
 
 CheckJx(ix, iy, jx, NumComp, IsPair);
 
-B = fittofield(jx, NumComp, NumCompFittofield);
+B = fittofield(jx, NumComp, NumCompFittofield, FitMethod);
 
 %% Overwrite the fit starting point with the fit results
 WritePstartFit(jx, v_MHz, NumComp, IsPair, VarWidths, 'PstartFit'); 
@@ -84,7 +84,7 @@ WritePstartFit(jx, v_MHz, NumComp, IsPair, VarWidths, 'PstartFit');
 clear B0
 if NumComp == 1;NumCompFittofield = 1;end
 SaveName = CreateSaveName(NumComp,Cropping_Coord,BinThr,VarWidths,Smoothing_Factor,Detrending_Factor,ClearFFT,TrackingFit,fname,FitMethod,RemPositive);
-B = fittofield(FitTot, NumComp, NumCompFittofield);
+B = fittofield(FitTot, NumComp, NumCompFittofield, FitMethod);
 [B,Perm] = DefineCorrectPermutation(B,CorrectPermutation); 
 [B_renorm, B0(:,:,1), B0(:,:,2), B0(:,:,3)] = Renormalize(Renormalize_Parameters, B);
 PlotScale = PlotParameters(FitTot, B_renorm, ColorRescale, StdforRescalingTeslas , NumComp);

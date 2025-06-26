@@ -1,4 +1,4 @@
-function [BOut,StrBField] = fittofield(FitTot, NumCompFit, NumCompRecon)
+function [BOut,StrBField] = fittofield(FitTot, NumCompFit, NumCompRecon, FitMethod)
 %Return the vectorial magnetic field in the frame of the diamond.
 %FitTot can be a matrix of the fit results, or just one fit result.
 %Follows the protocol described in the supplementary of Lesik et al 
@@ -23,7 +23,11 @@ switch NumCompFit
     case 0.5
         BOut = 0; %cannot determine magnetic field
     case 1
-        BOut = sqrt(3)*FitTot(:,:,3)/gmub;
+        if FitMethod == 6
+            BOut = (real(sqrt(15.8^2-4*17*(9.39-FitTot(:,:,3))))-15.8)/2/17;
+        else
+            BOut = sqrt(3)*FitTot(:,:,3)/gmub;
+        end
     case 2
         BTmp(:,:,:) = FitTot(:,:,5:6)/gmub;
         BOut = zeros([size(BTmp(:,:,1)), 3]); %We will have Bz= B(:,:,3) = 0

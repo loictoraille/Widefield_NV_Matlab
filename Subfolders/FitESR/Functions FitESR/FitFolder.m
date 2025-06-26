@@ -1,6 +1,5 @@
 function [FNames, pName] = FitFolder(VarWidths, pName)
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
+% Outdated
 
 if nargin < 2 
     pName = 'C:\Users\Mayeul Chipaux\Documents\Data'; 
