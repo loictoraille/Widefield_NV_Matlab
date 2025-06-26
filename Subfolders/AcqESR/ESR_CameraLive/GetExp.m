@@ -17,7 +17,7 @@ elseif strcmp(CameraType,'Peak')
     Exp = src_mycam.ExposureTime/1000; % to correct for Peak which is in us
     Exp_unit = 'ms';
 elseif strcmpi(CameraType,'Thorlabs')
-    Exp = ObjCamera.ExposureTime_us/1000; % to correct for Thorlabs which is in us
+    Exp = double(ObjCamera.ExposureTime_us)/1000; % to correct for Thorlabs which is in us
     Exp_unit = 'ms';
 
 elseif strcmp(CameraType,'heliCam')

@@ -1,5 +1,5 @@
 
-function InitCameraAtStart(CameraChoice)
+function InitCameraAtStart(CameraChoice,panel)
 global ObjCamera CameraType handleImage TestWithoutHardware
 
 % Make sure to stop an eventual running acquisition
@@ -7,7 +7,7 @@ global ObjCamera CameraType handleImage TestWithoutHardware
 %     EndAcqCamera();
 % end
 
-if strcmp(CameraChoice,'Andor')
+if strcmpi(CameraChoice,'Andor')
     if exist([matlabroot '\toolbox\AndorSDK3\andorsdk3functions.mexw64'], 'file') ~= 3 % check if AndorSDK3 is installed on the computer
         disp('Andor SDK3 is not installed');
     else
@@ -20,7 +20,7 @@ if strcmp(CameraChoice,'Andor')
             if rc ~= 6 % check if camera opened successfully
                 AT_CheckError(rc);
                 disp('Andor Camera initialized');
-                CameraType = 'Andor';
+                CameraType = 'Andor'; % strcmpi to not be sensitive to Case for the CameraChoice selection. Further tests most often use strcmp, we avoid problems this way
                 EndAcqCamera();
                 
                 AndorSensorCooling();
@@ -44,7 +44,7 @@ if strcmp(CameraChoice,'Andor')
         end
     end
     
-elseif strcmp(CameraChoice,'uEye')
+elseif strcmpi(CameraChoice,'uEye')
 
     if exist('C:\Program Files\IDS\uEye\Develop\DotNet\signed\uEyeDotNet.dll', 'file') ~= 2 % check if uEye dll is installed on the computer
         disp('uEye dll is not installed');
@@ -53,7 +53,7 @@ elseif strcmp(CameraChoice,'uEye')
         ObjCamera=uEye.Camera();%Define Camera Object
         [~,CamID]=ObjCamera.Device.GetCameraID;
         ObjCamera.Init(); %Initialize camera
-        CameraType = 'uEye';
+        CameraType = 'uEye'; % strcmpi to not be sensitive to Case for the CameraChoice selection. Further tests most often use strcmp, we avoid problems this way
         InitAOILEVEL();
         %     updateuEyeParameterFile(); % To make sure TriggerMode is ok, manually changes the file
         % Deprecated: no longer uses the uEye .ini file loading, so don't bother
@@ -66,7 +66,7 @@ elseif strcmp(CameraChoice,'uEye')
     end
 
 
-elseif strcmp(CameraChoice,'Peak')
+elseif strcmpi(CameraChoice,'Peak')
     ObjCamera = ImaqInit();
     src_mycam = get(ObjCamera, 'Source');
     
@@ -76,7 +76,7 @@ elseif strcmp(CameraChoice,'Peak')
     % Configure the object for manual trigger mode.
     triggerconfig(ObjCamera, 'manual');    
 
-    CameraType = 'Peak';
+    CameraType = 'Peak'; % strcmpi to not be sensitive to Case for the CameraChoice selection. Further tests most often use strcmp, we avoid problems this way
     
     InitAOILEVEL();
     LoadCameraParam();
@@ -84,30 +84,34 @@ elseif strcmp(CameraChoice,'Peak')
     TurnOffUselessSettings(ListUselessSettings);
 
 elseif strcmpi(CameraChoice,'Thorlabs')
-    if exist('C:\Program Files\Thorlabs\TSICamera\DotNet\Thorlabs.TSI.TLCamera.dll', 'file') ~= 2 % check if Thorlabs dll is installed on the computer
+    dllPath = 'C:\Users\MS283248\Documents\DLL';
+    if exist([dllPath '\Thorlabs.TSI.TLCamera.dll'], 'file') ~= 2 % check if Thorlabs dll is installed on the computer
         disp('Thorlabs dll file was not found');
-    else
-        NET.addAssembly('C:\Program Files\Thorlabs\TSICamera\DotNet\Thorlabs.TSI.TLCamera.dll');
+    else        
+        setenv('PATH', [dllPath ';' getenv('PATH')]);
+        NET.addAssembly([dllPath, '\Thorlabs.TSI.TLCamera.dll']);
         tlCameraSDK = Thorlabs.TSI.TLCamera.TLCameraSDK.OpenTLCameraSDK;
+        panel.UserData.tlCameraSDK = tlCameraSDK;
         serialNumbers = tlCameraSDK.DiscoverAvailableCameras;
         if serialNumbers.Count > 0
         ObjCamera = tlCameraSDK.OpenCamera(serialNumbers.Item(0), false); % Open the first TLCamera using the serial number
         ObjCamera.OperationMode = Thorlabs.TSI.TLCameraInterfaces.OperationMode.SoftwareTriggered;
         ObjCamera.FramesPerTrigger_zeroForUnlimited = 1; % set to zero for continuous acquisition?
+        CameraType = 'Thorlabs'; % strcmpi to not be sensitive to Case for the CameraChoice selection. Further tests most often use strcmp, we avoid problems this way
         InitAOILEVEL();
         LoadCameraParam();
-        ListUselessSettings = {'sldframe','framin','framax','fratext','Input_FrameRate'};
+        ListUselessSettings = {'sldframe','pixmin','pixmax','pixtext','Input_PixelClock'};
         TurnOffUselessSettings(ListUselessSettings);
         else
             disp('Thorlabs camera is probably not connected')
         end
     end
-elseif strcmp(CameraChoice,'heliCam')
+elseif strcmpi(CameraChoice,'heliCam')
 	%TODO: Maybe clear the ObjCamera before initializing it
 	if isempty(ObjCamera)
 		ObjCamera = HelicamHandler();
 		heliCamSetParameters(ObjCamera);
-		CameraType = "heliCam";
+		CameraType = "heliCam"; % strcmpi to not be sensitive to Case for the CameraChoice selection. Further tests most often use strcmp, we avoid problems this way
 	end
 end
 
@@ -121,5 +125,7 @@ else
 	set(haxes,'Tag','Axes_Camera');
 
 end
+
+guidata(gcf,panel);
 
 end

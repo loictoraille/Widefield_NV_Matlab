@@ -1,4 +1,6 @@
 
+%% 
+
 %% TURN ANDOR CAMERA ON BEFORE EXECUTING
 
 close all ; clear global ; clearvars
@@ -62,8 +64,10 @@ else
 %     end
 
     InitPiezo(Total_handles);
+    Total_handles=guidata(gcf);
 
-    InitCameraAtStart(CameraChoice);
+    InitCameraAtStart(CameraChoice,Total_handles);
+    Total_handles=guidata(gcf);
 
     if ~isempty(ObjCamera)
 
@@ -80,8 +84,8 @@ else
         FuncAcqContinue(Total_handles);
 
     end
-
+    
  end
 
-
+ 
 

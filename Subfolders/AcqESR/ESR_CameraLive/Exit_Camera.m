@@ -2,6 +2,8 @@
 function Exit_Camera()
 global ObjCamera CameraType
 
+panel = guidata(gcbo);
+
 SaveCameraParam();
 
 AOI = GetAOI();
@@ -32,8 +34,12 @@ elseif strcmp(CameraType,'Peak')
 elseif strcmp(CameraType,'heliCam')
 	heliCamCloseCamera(ObjCamera);
 elseif strcmpi(CameraType,'Thorlabs')
-    ObjCamera.Dispose; %Releasing the camera
+    tlCameraSDK = panel.UserData.tlCameraSDK;
+
+    ObjCamera.Dispose; % Releasing the camera
     delete(ObjCamera);
+    tlCameraSDK.Dispose; % Releasing the SDK
+    delete(tlCameraSDK);
 end
 
 clear global ObjCamera

@@ -94,7 +94,7 @@ if PixX>AllLim{1}+BinLim && PixX<AllLim{2}-BinLim && PixY>AllLim{3}+BinLim && Pi
             MiddleFreq = GetBarycentre(SPX,SPY);
             MiddleFreqBin = GetBarycentre(SPXbin,SPYbin);
                    
-        case 5 % Automatic advanced baseline removing 
+        case {5,6} % Automatic advanced baseline removing 
     
             [FitPreset,FitResult,PFIT] = AutoFit(SPX,SPY,pStart,FitParameters);
             [FitPresetBin,FitResultBin,PFITBin] = AutoFit(SPXbin,SPYbin,pStartBin,FitParameters);
@@ -149,7 +149,7 @@ if PixX>AllLim{1}+BinLim && PixX<AllLim{2}-BinLim && PixY>AllLim{3}+BinLim && Pi
                 disp('Cannot work with uneven number of peaks and UsePstart option for now');
             end
             
-            [B,StrBField] = fittofield(PFITBin, NumComp, NumCompFittofield);
+            [B,StrBField] = fittofield(PFITBin, NumComp, NumCompFittofield, FitMethod);
             
             xpos_val = -0.0045*length(StrBField)+0.4;
             text(xpos_val,-0.13,StrBField,'FontSize',16,'FontWeight','bold','Color','red','Tag','StrBField','Units','Normalized','Parent',panel.Axes3);

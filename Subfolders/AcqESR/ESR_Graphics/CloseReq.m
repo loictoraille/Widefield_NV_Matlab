@@ -4,6 +4,8 @@ global ObjCamera CameraType MW_Gen TestWithoutHardware NI_card SetupType
 
 panel = guidata(gcf);
 
+panel.acqcont.Value = 0; % probably not necessary
+
 load([getPath('Param') 'AcqParameters.mat'],'-mat','AcqParameters');
 ResetPiezo = AcqParameters.ResetPiezo;
 

@@ -27,7 +27,7 @@ disp(file_name)
 clear B0
 if NumComp == 1;NumCompFittofield = 1;end
 SaveName = CreateSaveName(NumComp,Cropping_Coord,BinThr,VarWidths,Smoothing_Factor,Detrending_Factor,ClearFFT,TrackingFit,fname,FitMethod,RemPositive);
-B = fittofield(FitTot, NumComp, NumCompFittofield);
+B = fittofield(FitTot, NumComp, NumCompFittofield, FitMethod);
 [B,~] = DefineCorrectPermutation(B,CorrectPermutation); 
 [B_renorm, B0(:,:,1), B0(:,:,2), B0(:,:,3)] = Renormalize(Renormalize_Parameters, B);
 PlotScale = PlotParameters(FitTot, B_renorm, ColorRescale, StdforRescalingTeslas, NumComp);
