@@ -26,6 +26,8 @@ if strcmpi(SetupType,"CEA")
     else
         piezo_4 = 0;
     end
+    CheckMaxAndWriteNI(piezo_X, piezo_Y, piezo_Z, piezo_4);
+    Tension4 = piezo_4;
 end
 
 if strcmpi(SetupType,"ENS1")
@@ -38,9 +40,9 @@ if strcmpi(SetupType,"ENS1")
         panel.shutterlaser.Value = 0;
         panel.shutterlaser.ForegroundColor = [0,0,0];
     end
+    CheckMaxAndWriteNI(piezo_X, piezo_Y, piezo_Z, piezo_4);
+    Tension4 = piezo_4;
 end
-
-CheckMaxAndWriteNI(piezo_X, piezo_Y, piezo_Z, piezo_4);
 
 if strcmpi(SetupType,"CEA") && isfield(panel,'UserData') && isfield(panel.UserData,'Betsa')
     Betsa = panel.UserData.Betsa;
@@ -53,6 +55,9 @@ if strcmpi(SetupType,"CEA") && isfield(panel,'UserData') && isfield(panel.UserDa
     end
 end
 
-Tension4 = piezo_4;
+if ~exist('Tension4','var')
+    Tension4 = [];
+end
+
 
 end

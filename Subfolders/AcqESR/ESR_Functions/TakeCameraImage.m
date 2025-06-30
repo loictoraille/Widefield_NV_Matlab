@@ -49,12 +49,14 @@ elseif strcmpi(CameraType,'Thorlabs')
             if ~isempty(imageFrame)
                 % Get the image data as 1D uint16 array
                 imageData = uint16(imageFrame.ImageData.ImageData_monoOrBGR);
-                ImageMatrix = reshape(imageData, [AOI.Width, AOI.Height]);
+                ImageMatrix = reshape(imageData, [AOI.Width, AOI.Height])';
                 delete(imageFrame);
             end
         catch
             ImageMatrix = [];
         end
+    else
+        ImageMatrix = [];
     end
     
 elseif strcmp(CameraType,'heliCam')
