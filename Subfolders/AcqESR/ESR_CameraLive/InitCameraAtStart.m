@@ -100,7 +100,7 @@ elseif strcmpi(CameraChoice,'Thorlabs')
         CameraType = 'Thorlabs'; % strcmpi to not be sensitive to Case for the CameraChoice selection. Further tests most often use strcmp, we avoid problems this way
         InitAOILEVEL();
         LoadCameraParam();
-        ListUselessSettings = {'sldframe','pixmin','pixmax','pixtext','Input_PixelClock'};
+        ListUselessSettings = {'sldpix','pixmin','pixmax','pixtext','Input_PixelClock'};
         TurnOffUselessSettings(ListUselessSettings);
         else
             disp('Thorlabs camera is probably not connected')
