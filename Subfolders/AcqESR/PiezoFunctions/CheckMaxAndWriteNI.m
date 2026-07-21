@@ -26,7 +26,7 @@ if exist('NI_card','var') && any(isprop(NI_card,'Running')) && ~isempty(daqlist)
 
     write(NI_card,[X_value, Y_value, Z_value, L_value, laser_value]);
 
-    pause(0.1);
+    %pause(0.1); % adds inefficient time, let's try to remove it 
 
 end
     
