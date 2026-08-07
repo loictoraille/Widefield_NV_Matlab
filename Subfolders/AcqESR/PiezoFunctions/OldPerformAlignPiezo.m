@@ -347,7 +347,7 @@ if panel.stop.Value~=1
 
 
     if panel.stop.Value~=1
-        UpdateInputPiezo(Opt_X,Opt_Y,Opt_Z,AcqParameters.PiezoLight,panel); % stores the right piezo values
+        UpdateInputPiezo(Opt_X,Opt_Y,Opt_Z,AcqParameters.PiezoLight); % stores the right piezo values
 
         CheckMaxAndWriteNI(Opt_X, Opt_Y, Opt_Z, Tension4); % send new values to NI card
 

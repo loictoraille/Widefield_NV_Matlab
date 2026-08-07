@@ -46,6 +46,19 @@ if isfield(panel,'UserData') && isfield(panel.UserData,'MCC')
     end
 end
 
-UpdateAcqParam();
+%%
+
+if panel.Bbutton.Value == 1
+    B_state = 'ON';
+else
+    B_state = 'OFF';
+end
+Bname_User1 = panel.Bname_User1.String;
+Bname_User2 = panel.Bname_User2.String;
+
+SaveAcqParameters({{BxCoil,'BxCoil'},{ByCoil,'ByCoil'},{BzCoil,'BzCoil'}, ...
+    {XcoilCalib,'XcoilCalib'},{YcoilCalib,'YcoilCalib'},{ZcoilCalib,'ZcoilCalib'}...
+    {B_state,'B_state'},{Bname_User1,'Bname_User1'},{Bname_User2,'Bname_User2'},...
+    });
 
 end

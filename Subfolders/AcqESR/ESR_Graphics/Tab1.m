@@ -179,7 +179,7 @@ ExportESRButton=uicontrol('Parent',tab1,'Style', 'pushbutton', 'String', 'Export
 %%%%%%%%%%%%
 StartingX = 1;
 StartingY = 1;
-StartingBin = 5;
+StartingBin = 10;
 %Pixels chosen for the printed ESR
 uicontrol('Parent',tab1,'Style','text','units','normalized','Position',[0.012 0.15 0.05 0.05],'String','Pixel X (Column)');
 PixX_handle=uicontrol('Parent',tab1,'Style','edit','tag','PixX','units','normalized','Position',[0.01 0.11 0.05 0.05],'String',num2str(StartingX),'Callback',@Input_Pixels);

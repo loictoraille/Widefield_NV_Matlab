@@ -4,9 +4,9 @@ if rem(NumPeaks,2) ~= 0
     if var == 1
         StrResult = 'Freq = ';
         for i=1:NumPeaks
-            StrResult = [StrResult num2str(round(PFITin(NumPeaks+i)/1000,2)) ','];
+            StrResult = [StrResult num2str(round(PFITin(NumPeaks+i)/1000,3)) ','];
         end
-        StrResult = [StrResult(1:end-1) ' MHz'];
+        StrResult = [StrResult(1:end-1) ' GHz'];
     else
         StrPart1 = 'Contrasts = ';
         StrPart2 = 'Widths = ';

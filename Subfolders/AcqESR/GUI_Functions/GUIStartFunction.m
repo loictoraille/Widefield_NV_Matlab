@@ -56,7 +56,6 @@ while i_scan <= TotalScan
         SaveAcqParameters({{BuildName,'BuildName'}});
         nomSave = BuildName;
         PrintName = GetSaveName(BuildName,panel.Save.Value);
-        pause(0.001); % seems weirdly crucial to avoid naming errors
         panel.nameFile.String = PrintName;
     end
     tic

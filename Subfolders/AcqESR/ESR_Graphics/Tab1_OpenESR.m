@@ -214,10 +214,11 @@ uicontrol('Parent',bg_np,'Style','text','FontSize',12,'units','normalized','Posi
 %% B Field Panel
 %%%%%%%%%%%%
 
-BPanel = uipanel('Parent',tab1,'BorderType','none','Units','normalized','Position',[0.452 0.5 0.048 0.1],'Tag','BPanel','Visible','off');
-uicontrol('Parent',BPanel,'Style','text','Units','normalized','Position',[0 0.65 0.90 0.3],'HorizontalAlignment','left','Tag','BxCoilDisplay','String','BxCoil = 0 mT');
-uicontrol('Parent',BPanel,'Style','text','Units','normalized','Position',[0 0.37 0.90 0.3],'HorizontalAlignment','left','Tag','ByCoilDisplay','String','ByCoil = 0 mT');
-uicontrol('Parent',BPanel,'Style','text','Units','normalized','Position',[0 0.09 0.90 0.3],'HorizontalAlignment','left','Tag','BzCoilDisplay','String','BzCoil = 0 mT');
+BPanel = uipanel('Parent',tab1,'BorderType','none','Units','normalized','Position',[0.452 0.5 0.048 0.125],'Tag','BPanel','Visible','off');
+uicontrol('Parent',BPanel,'Style','text','Units','normalized','Position',[0 0.80 0.90 0.2],'HorizontalAlignment','left','Tag','BxCoilDisplay','String','BxCoil = 0 mT');
+uicontrol('Parent',BPanel,'Style','text','Units','normalized','Position',[0 0.55 0.90 0.2],'HorizontalAlignment','left','Tag','ByCoilDisplay','String','ByCoil = 0 mT');
+uicontrol('Parent',BPanel,'Style','text','Units','normalized','Position',[0 0.3 0.90 0.2],'HorizontalAlignment','left','Tag','BzCoilDisplay','String','BzCoil = 0 mT');
+uicontrol('Parent',BPanel,'Style','text','Units','normalized','Position',[0 0.05 0.90 0.2],'HorizontalAlignment','left','Tag','BtotCoilDisplay','String','BTot = 0 mT');
 
 %%%%%%%%%%%%%%%%%%
 %%Text Information
