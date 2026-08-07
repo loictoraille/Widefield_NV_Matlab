@@ -164,7 +164,7 @@ if panel.stop.Value~=1
 
 %% Send optimal value and go back to initial light and laser state
     if panel.stop.Value~=1
-        UpdateInputPiezo(IniX,IniY,Opt_Z,IniL,panel); % stores the right piezo values
+        UpdateInputPiezo(IniX,IniY,Opt_Z,IniL); % stores the right piezo values
 
         if light_state_ini
             LightOn(panel);

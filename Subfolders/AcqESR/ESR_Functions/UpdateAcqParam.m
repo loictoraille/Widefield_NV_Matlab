@@ -119,6 +119,22 @@ end
 Bname_User1 = panel.Bname_User1.String;
 Bname_User2 = panel.Bname_User2.String;
 
+%% Magnetic Scan (Theta / Phi)
+
+MagneticScan.ScanTheta_Enable = panel.ScanTheta_Enable.Value;
+MagneticScan.ScanTheta_AngleStart = str2double(panel.ScanTheta_AngleStart.String);
+MagneticScan.ScanTheta_AngleStop = str2double(panel.ScanTheta_AngleStop.String);
+MagneticScan.ScanTheta_AngleStep = str2double(panel.ScanTheta_AngleStep.String);
+MagneticScan.ScanTheta_PhiValue = str2double(panel.ScanTheta_PhiValue.String);
+MagneticScan.ScanTheta_MagneticFieldValue = str2double(panel.ScanTheta_MagneticFieldValue.String);
+
+MagneticScan.ScanPhi_Enable = panel.ScanPhi_Enable.Value;
+MagneticScan.ScanPhi_AngleStart = str2double(panel.ScanPhi_AngleStart.String);
+MagneticScan.ScanPhi_AngleStop = str2double(panel.ScanPhi_AngleStop.String);
+MagneticScan.ScanPhi_AngleStep = str2double(panel.ScanPhi_AngleStep.String);
+MagneticScan.ScanPhi_ThetaValue = str2double(panel.ScanPhi_ThetaValue.String);
+MagneticScan.ScanPhi_MagneticFieldValue = str2double(panel.ScanPhi_MagneticFieldValue.String);
+
 %%
 
 UpdateOpenESRParam();
@@ -144,7 +160,7 @@ SaveAcqParameters({{Data_Path,'Data_Path'},{Save,'Save'},{RandomFreq,'RandomFreq
     {FileNamePrefix,'FileNamePrefix'},{FileNamePrefixChoice,'FileNamePrefixChoice'},{FileNameUserPrefix,'FileNameUserPrefix'},...
     {MagSweep,'MagSweep'},{BSweepMin,'BSweepMin'},{BSweepMax,'BSweepMax'},{BxCoil,'BxCoil'},{ByCoil,'ByCoil'},{BzCoil,'BzCoil'},{XcoilCalib,'XcoilCalib'},{B_state,'B_state'},{Bname_User1,'Bname_User1'},{Bname_User2,'Bname_User2'},...
     {YcoilCalib,'YcoilCalib'},{ZcoilCalib,'ZcoilCalib'} ...
-    {BuildName,'BuildName'},...
-    {PrintName,'PrintName'}});
+    {BuildName,'BuildName'},{PrintName,'PrintName'},...
+    {MagneticScan,'MagneticScan'}});
 
 end

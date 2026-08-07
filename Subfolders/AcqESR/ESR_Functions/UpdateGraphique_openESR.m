@@ -101,6 +101,8 @@ if isfield(AcqParameters,'B_state') && strcmpi(AcqParameters.B_state,'ON')
     panel.BxCoilDisplay.String = sprintf('BxCoil = %.2f mT',AcqParameters.BxCoil);
     panel.ByCoilDisplay.String = sprintf('ByCoil = %.2f mT',AcqParameters.ByCoil);
     panel.BzCoilDisplay.String = sprintf('BzCoil = %.2f mT',AcqParameters.BzCoil);
+    BTotCalc = sqrt(AcqParameters.BxCoil^2+AcqParameters.ByCoil^2+AcqParameters.BzCoil^2);
+    panel.BtotCoilDisplay.String = sprintf('BtotCoil = %.2f mT',BTotCalc);
 else
     panel.BPanel.Visible = 'off';
 end

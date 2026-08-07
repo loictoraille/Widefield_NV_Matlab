@@ -79,28 +79,27 @@ end
 
 function writeConfigBlocks(filename, blocks)
 
-fid = fopen(filename, 'w');
+fid = fopen(filename, 'wb');  % binary mode: no automatic newline translation
 if fid == -1
     error('Could not open file %s for writing', filename);
 end
 
+CRLF = sprintf('\r\n');
+
+fprintf(fid, '%s', CRLF);
+
 for i = 1:numel(blocks)
-
-    fprintf(fid, '%s\n', blocks(i).key);
-    fprintf(fid, '%s\n', blocks(i).value);
-
+    fprintf(fid, '%s%s', blocks(i).key,   CRLF);
+    fprintf(fid, '%s%s', blocks(i).value, CRLF);
     % preserve original separator line behavior
     if ~isempty(blocks(i).sep)
-        fprintf(fid, '%s\n', blocks(i).sep);
+        fprintf(fid, '%s%s', blocks(i).sep, CRLF);
     else
-        fprintf(fid, '\n');
+        fprintf(fid, '%s', CRLF);
     end
-
 end
 
 fclose(fid);
-
 end
-
 
 end
